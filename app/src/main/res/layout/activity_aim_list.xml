@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".AimListScene.Views.AimListActivity">
 
-    <fragment android:name="com.example.michl.aimission.MainScene.Views.MainFragment"
-        android:id="@+id/frg_main"
+    <fragment android:name="com.example.michl.aimission.AimListScene.Views.AimListFragment"
+        android:id="@+id/frg_aimlist"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent" />

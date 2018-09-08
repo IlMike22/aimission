@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Aimission</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    >
+    <string name="hello_monthlist">Hello monthList fragment</string>
+    <string name="hello_aimlist">Hello aim list fragment</string>
+    <string name="hello_main">Hello main fragment</string>
 </resources>
