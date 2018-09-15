@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainScene.Views.MainActivity">
 
     <fragment android:name="com.example.michl.aimission.MainScene.Views.MainFragment"
         android:id="@+id/frg_main"
