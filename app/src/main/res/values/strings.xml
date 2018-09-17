@@ -4,4 +4,7 @@
     <string name="hello_monthlist">Hello monthList fragment</string>
     <string name="hello_aimlist">Hello aim list fragment</string>
     <string name="hello_main">Hello main fragment</string>
+    <string name="bottom_bar_home">Home</string>
+    <string name="bottom_bar_info">Info</string>
+    <string name="bottom_bar_settings">Einstellungen</string>
 </resources>
