@@ -7,4 +7,7 @@
     <string name="bottom_bar_home">Home</string>
     <string name="bottom_bar_info">Info</string>
     <string name="bottom_bar_settings">Einstellungen</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

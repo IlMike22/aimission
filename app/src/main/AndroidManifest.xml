@@ -3,7 +3,7 @@
     package="com.example.michl.aimission">
 
     <application
-        android:name="com.example.michl.aimission.Utility.Aimission"
+        android:name=".Utility.Aimission"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,7 +18,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".AimListScene.Views.AimListActivity" />
-        <activity android:name=".MonthListScene.Views.MonthListActivity"></activity>
+        <activity android:name=".MonthListScene.Views.MonthListActivity" />
+        <activity android:name=".InfoScene.Views.InfoActivity" />
+        <activity android:name=".SettingsScene.Views.SettingsActivity"></activity>
     </application>
 
 </manifest>
