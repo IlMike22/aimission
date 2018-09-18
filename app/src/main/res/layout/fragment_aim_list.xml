@@ -11,4 +11,18 @@
         android:layout_height="match_parent"
         android:text="@string/hello_aimlist" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/aimListRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </ScrollView>
+
+
 </FrameLayout>
