@@ -12,31 +12,53 @@ abstract class BaseActivity : AppCompatActivity(), BottomNavigationView.OnNaviga
 
     val router = BaseRouter()
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        Log.i("michl","onNavItemSelected called from baseactivity")
-        when (item.itemId)
-        {
-            R.id.action_home ->
-            {
-                router.openMainView()
-            }
-            R.id.action_info ->
-            {
-                router.openInfoView()
-            }
-            R.id.action_settings ->
-            {
-                router.openSettingsView()
-            }
-        }
 
-        return true
 
-    }
+//    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+//        Log.i("michl","onNavItemSelected called from baseactivity")
+//        when (item.itemId)
+//        {
+//            R.id.action_home ->
+//            {
+//                router.openMainView()
+//            }
+//            R.id.action_info ->
+//            {
+//                router.openInfoView()
+//            }
+//            R.id.action_settings ->
+//            {
+//                router.openSettingsView()
+//            }
+//        }
+//
+//        return true
+//
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
+
+        bottomNavBar.setOnNavigationItemSelectedListener { item ->
+
+            when (item.itemId) {
+                R.id.action_home -> {
+                    router.openMainView()
+                    true
+                }
+                R.id.action_info -> {
+                    router.openInfoView()
+                    true
+                }
+                R.id.action_settings -> {
+                    router.openSettingsView()
+                    true
+                }
+            }
+
+            return@setOnNavigationItemSelectedListener true
+        }
     }
 
     abstract fun getNavigationMenuItemId(): Int

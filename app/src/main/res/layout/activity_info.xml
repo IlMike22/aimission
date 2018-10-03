@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".InfoScene.Views.InfoActivity">
 
     <fragment
         android:id="@+id/frg_main"
         android:name="com.example.michl.aimission.InfoScene.Views.InfoFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1" />
 
 </android.support.constraint.ConstraintLayout>
