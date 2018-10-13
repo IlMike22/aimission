@@ -2,6 +2,7 @@ package com.example.michl.aimission.Utility
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 
 class Aimission : Application() {
     companion object {
@@ -9,6 +10,7 @@ class Aimission : Application() {
 
         fun getAppContext():Context?
         {
+            Log.i("mike","Context is $context")
             return Aimission.context
         }
     }

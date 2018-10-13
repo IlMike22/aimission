@@ -4,37 +4,12 @@ import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.MenuItem
 import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.activity_base.*
 
 abstract class BaseActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
-    val router = BaseRouter()
-
-
-
-//    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-//        Log.i("michl","onNavItemSelected called from baseactivity")
-//        when (item.itemId)
-//        {
-//            R.id.action_home ->
-//            {
-//                router.openMainView()
-//            }
-//            R.id.action_info ->
-//            {
-//                router.openInfoView()
-//            }
-//            R.id.action_settings ->
-//            {
-//                router.openSettingsView()
-//            }
-//        }
-//
-//        return true
-//
-//    }
+    val router = MainRouter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,16 +19,18 @@ abstract class BaseActivity : AppCompatActivity(), BottomNavigationView.OnNaviga
 
             when (item.itemId) {
                 R.id.action_home -> {
-                    router.openMainView()
-                    true
+//                    router.openMainView()
+
                 }
                 R.id.action_info -> {
-                    router.openInfoView()
-                    true
+//                    router.openInfoView()
+                    updateNavBarState()
+
                 }
                 R.id.action_settings -> {
-                    router.openSettingsView()
-                    true
+//                    router.openSettingsView()
+                    updateNavBarState()
+
                 }
             }
 
