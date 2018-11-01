@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "792141861651",
+    "firebase_url": "https://aimission-414d1.firebaseio.com",
+    "project_id": "aimission-414d1",
+    "storage_bucket": "aimission-414d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:792141861651:android:4567f6ef55ead467",
+        "android_client_info": {
+          "package_name": "com.example.michl.aimission"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "792141861651-pibn9tgqadd1c6uaog81cftptueva804.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.michl.aimission",
+            "certificate_hash": "427c32472d8dcc9c7fd588db7ee966405c55f8e8"
+          }
+        },
+        {
+          "client_id": "792141861651-gt41o4bql3pkf5virgegsq1pr2arumau.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN9mksW2Rtjb4_j3C8ZLmgVDdCfgNvlvQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "792141861651-gt41o4bql3pkf5virgegsq1pr2arumau.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

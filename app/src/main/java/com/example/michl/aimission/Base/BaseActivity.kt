@@ -19,18 +19,14 @@ abstract class BaseActivity : AppCompatActivity(), BottomNavigationView.OnNaviga
 
             when (item.itemId) {
                 R.id.action_home -> {
-//                    router.openMainView()
 
                 }
                 R.id.action_info -> {
-//                    router.openInfoView()
                     updateNavBarState()
 
                 }
                 R.id.action_settings -> {
-//                    router.openSettingsView()
                     updateNavBarState()
-
                 }
             }
 
