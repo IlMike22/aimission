@@ -37,8 +37,8 @@ class MainFragment : Fragment() {
 
         // writing a sample data to db (users name)
         // todo delete this later
-        var email = "michaelwidlok@gmail.com"
-        var pswrd = "mepfde"
+        var email = "xyz"
+        var pswrd = "xyz"
         firebaseAuth = FirebaseAuth.getInstance()
 
         // sample auth firebase with user credentials
