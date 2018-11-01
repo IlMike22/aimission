@@ -36,7 +36,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         // writing a sample data to db (users name)
-        // todo delete this later
+        // todo delete this later (watch out with credentials)
         var email = "xyz"
         var pswrd = "xyz"
         firebaseAuth = FirebaseAuth.getInstance()
