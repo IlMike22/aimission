@@ -13,6 +13,7 @@ import com.example.michl.aimission.Adapters.MonthListAdapter
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.R
+import com.example.michl.aimission.Utility.DbHelper
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -47,7 +48,20 @@ class MainFragment : Fragment() {
                     if(task.isSuccessful)
                     {
 
+                        // todo delete later -> sample data for writing and deleting with dbHelper class
+
                         Log.i("Aimission","Auth process success")
+                        var aimItem = AimItem("422","My new updated aim item",3,"This is my first aim item saved in firebase",1,2,0)
+                        var anotherAimItem = AimItem("343","A scnd item",1,"Anche questa é disponibile",3,1,0)
+                        var userId = task.result?.user?.uid
+                        Log.i("Aimission","User ID is $userId")
+
+                        userId?.apply {
+                            DbHelper.saveNewAim(this, aimItem)
+                            DbHelper.saveNewAim(this, anotherAimItem)
+                            DbHelper.deleteAimItem(this,anotherAimItem.id)
+                        }
+
                     }
                     else
                     {
@@ -55,20 +69,9 @@ class MainFragment : Fragment() {
                     }
                 }
 
-        // sample firebase db write operation with two test datasets
-        var aimItem = AimItem(232,"My new aim item",3,"This is my first aim item saved in firebase",1,2,0)
-        var anotherAimItem = AimItem(343,"A scnd item",1,"Anche questa é disponibile",3,1,0)
-        var array = ArrayList<AimItem>()
-        array.add(aimItem)
-        array.add(anotherAimItem)
-
-
-        var user = firebaseAuth.currentUser
-        Log.i("Aimission","User is ${user?.displayName}")
         var firebaseDb = FirebaseDatabase.getInstance()
         var databaseRef = firebaseDb.getReference("Aim")
 
-        databaseRef.setValue(array)
 
         // sample read out second dataset with known id
 
@@ -84,8 +87,8 @@ class MainFragment : Fragment() {
 
         })
 
-        array[1].description = "now we have another description and hopefully our data changed listener tells us something"
-        databaseRef.setValue(array)
+//        array[1].description = "now we have another description and hopefully our data changed listener tells us something"
+//        databaseRef.setValue(array)
 
 
         //todo test data, remove it later

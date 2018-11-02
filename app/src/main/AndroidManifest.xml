@@ -21,7 +21,8 @@
         <activity android:name=".MonthListScene.Views.MonthListActivity" />
         <activity android:name=".InfoScene.Views.InfoActivity" />
         <activity android:name=".SettingsScene.Views.SettingsActivity" />
-        <activity android:name=".Base.BaseActivity"></activity>
+        <activity android:name=".Base.BaseActivity" />
+        <activity android:name=".LoginScene.Views.LoginActivity"></activity>
     </application>
 
 </manifest>

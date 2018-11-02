@@ -11,4 +11,18 @@
         android:layout_height="match_parent"
         android:text="hello info fragment" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/frg_main_btnLogin"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Login" />
+
+    </LinearLayout>
+
 </FrameLayout>
