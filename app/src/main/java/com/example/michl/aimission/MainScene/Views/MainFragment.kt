@@ -1,6 +1,5 @@
 package com.example.michl.aimission.MainScene.Views
 
-import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -10,15 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.michl.aimission.Adapters.MonthListAdapter
-import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.R
-import com.example.michl.aimission.Utility.DbHelper
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
-import kotlinx.android.synthetic.main.activity_main.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
@@ -42,47 +39,19 @@ class MainFragment : Fragment() {
         var pswrd = "xyz"
         firebaseAuth = FirebaseAuth.getInstance()
 
-        // sample auth firebase with user credentials
-        firebaseAuth.signInWithEmailAndPassword(email,pswrd)
-                .addOnCompleteListener(activity as Activity) { task ->
-                    if(task.isSuccessful)
-                    {
-
-                        // todo delete later -> sample data for writing and deleting with dbHelper class
-
-                        Log.i("Aimission","Auth process success")
-                        var aimItem = AimItem("422","My new updated aim item",3,"This is my first aim item saved in firebase",1,2,0)
-                        var anotherAimItem = AimItem("343","A scnd item",1,"Anche questa é disponibile",3,1,0)
-                        var userId = task.result?.user?.uid
-                        Log.i("Aimission","User ID is $userId")
-
-                        userId?.apply {
-                            DbHelper.saveNewAim(this, aimItem)
-                            DbHelper.saveNewAim(this, anotherAimItem)
-                            DbHelper.deleteAimItem(this,anotherAimItem.id)
-                        }
-
-                    }
-                    else
-                    {
-                        Log.i("Aimission","no success")
-                    }
-                }
-
         var firebaseDb = FirebaseDatabase.getInstance()
         var databaseRef = firebaseDb.getReference("Aim")
 
 
         // sample read out second dataset with known id
 
-        databaseRef.addValueEventListener(object: ValueEventListener
-        {
+        databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
-                Log.i("aimission","an data changed error occured")
+                Log.i("aimission", "an data changed error occured")
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                Log.i("aimission","the data has changed")
+                Log.i("aimission", "the data has changed")
             }
 
         })
