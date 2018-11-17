@@ -7,10 +7,10 @@ interface InfoPresenterInput {
     fun onUserLoggedInError(email: String)
     fun onUserLoggedInSuccess(email: String, uid: String)
     fun onUserLoggedOutSuccess(uuid: String)
+    fun onUserStatus(isLoggedIn:Boolean, uuid:String, email:String)
 }
 
 class InfoPresenter : InfoPresenterInput {
-
 
     var output: WeakReference<InfoFragmentInput>? = null
 
@@ -21,12 +21,16 @@ class InfoPresenter : InfoPresenterInput {
 
     override fun onUserLoggedInSuccess(email: String, uid: String) {
         val successMessage = "User $email successfully logged in. The uid is $uid"
-        output?.get()?.afterUserLoggedInSuccess(successMessage)
+        output?.get()?.afterUserLoggedInSuccess(email, uid, successMessage)
     }
 
     override fun onUserLoggedOutSuccess(uuid: String) {
         val successMessage = "User $uuid was successfully logged out."
         output?.get()?.afterUserLoggedOutSuccess(successMessage)
+    }
+
+    override fun onUserStatus(isLoggedIn: Boolean, uuid:String, email:String) {
+        output?.get()?.afterCheckedIfUserIsLoggedIn(isLoggedIn, uuid, email)
     }
 
 }

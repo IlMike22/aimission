@@ -6,39 +6,48 @@ import com.google.firebase.auth.FirebaseAuth
 interface InfoInteractorInput {
     fun loginUserWithUserCredentials(email: String, password: String)
     fun logoutUser()
+    fun isUserLoggedIn()
 }
 
 class InfoInteractor : InfoInteractorInput {
 
     var output: InfoPresenterInput? = null
-    private lateinit var firebaseAuth: FirebaseAuth
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val TAG = "Aimission"
 
     override fun logoutUser() {
         val uuid = firebaseAuth.currentUser?.uid
         firebaseAuth.signOut()
-        output?.onUserLoggedOutSuccess(uuid?:"[noId]")
+        Log.i(TAG, "User successfully logged out.")
+        output?.onUserLoggedOutSuccess(uuid ?: "[noId]")
     }
 
     override fun loginUserWithUserCredentials(email: String, password: String) {
-        Log.i("Aimission", "now login with firebase.")
-        firebaseAuth = FirebaseAuth.getInstance()
-
-
         try {
             firebaseAuth.signInWithEmailAndPassword(email, password)
             var firebaseUser = firebaseAuth.currentUser
-            if (firebaseUser?.uid != null)
-                Log.i("Aimission", "User with uuid ${firebaseUser.uid} successfully logged in.")
-            else {
-                val errorMsg = "Unable to log in user. Cancelling."
-                Log.e("Aimission", errorMsg)
-                output?.onUserLoggedInError(errorMsg)
+            if (firebaseUser?.uid != null) {
+                Log.i(TAG, "User with uuid ${firebaseUser.uid} successfully logged in.")
+                output?.onUserLoggedInSuccess(email, firebaseAuth.currentUser?.uid ?: "[noUserId]")
+            } else {
+                val errorMsg = "Unable to log in user $email."
+                Log.e(TAG, errorMsg)
+                output?.onUserLoggedInError(email)
             }
         } catch (exception: Exception) {
-            Log.e("Aimission", "Error during user auth firebase process. Details: ${exception.message}")
+            Log.e(TAG, "Error during user auth firebase process. Details: ${exception.message}")
         }
+    }
 
-        output?.onUserLoggedInSuccess(email, firebaseAuth.currentUser?.uid ?: "[noUserId]")
+    override fun isUserLoggedIn() {
+        var currentUser = firebaseAuth.currentUser
+        if (currentUser != null) {
+            Log.i(TAG, "User is logged in. ID is ${currentUser.uid}")
+            output?.onUserStatus(true,currentUser.uid, currentUser.email.toString())
+        } else {
+            Log.i(TAG, "User is not loggged in.")
+            output?.onUserStatus(false,"","")
+        }
     }
 }
 
