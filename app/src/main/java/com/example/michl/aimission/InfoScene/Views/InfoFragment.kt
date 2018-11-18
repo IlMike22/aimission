@@ -11,7 +11,6 @@ import com.example.michl.aimission.InfoScene.InfoConfigurator
 import com.example.michl.aimission.InfoScene.InfoInteractorInput
 import com.example.michl.aimission.InfoScene.InfoRouter
 import com.example.michl.aimission.R
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_info.*
 
 interface InfoFragmentInput {
@@ -21,14 +20,15 @@ interface InfoFragmentInput {
     fun afterUserLoggedInSuccess(email: String, uuid: String, successMessage: String)
     fun afterUserLoggedOutSuccess(message: String)
     fun afterCheckedIfUserIsLoggedIn(isLoggedIn: Boolean, uuid: String, email: String)
+    fun onRegisterClicked()
 
 }
 
 class InfoFragment : Fragment(), InfoFragmentInput {
 
+
     lateinit var output: InfoInteractorInput
     lateinit var router: InfoRouter
-    private lateinit var firebaseAuth: FirebaseAuth
     private val TAG = "Aimission"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -53,15 +53,24 @@ class InfoFragment : Fragment(), InfoFragmentInput {
             onLogoutClicked()
         }
 
+        frg_main_btnRegister.setOnClickListener {
+            onRegisterClicked()
+        }
+
         output?.isUserLoggedIn()
 
         super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onLoginUserClicked(email: String, pswrd: String) {
+
+        if (email.isEmpty() || pswrd.isEmpty()) {
+            Toast.makeText(activity, "You must enter email and password to log in.", Toast.LENGTH_SHORT).show()
+            return
+        }
         // start login process
         Log.i("Aimission", "Trying to log in with username = $email and $pswrd")
-
+        showLoadingStatus()
         output?.loginUserWithUserCredentials(email, pswrd)
     }
 
@@ -70,10 +79,14 @@ class InfoFragment : Fragment(), InfoFragmentInput {
     }
 
     override fun afterUserLoggedInError(errorMessage: String) {
+        progressBar.visibility = View.GONE
+        showLoginStatus()
         Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun afterUserLoggedInSuccess(email: String, uuid: String, successMessage: String) {
+
+        progressBar.visibility = View.GONE
         Toast.makeText(activity, successMessage, Toast.LENGTH_SHORT).show()
         // disable login layout group, show logout layout group instead
         showLogoutStatus()
@@ -97,6 +110,10 @@ class InfoFragment : Fragment(), InfoFragmentInput {
         }
     }
 
+    override fun onRegisterClicked() {
+        router?.openRegisterView()
+    }
+
     private fun showLoginStatus() {
         logoutGroup.visibility = View.GONE
         loginGroup.visibility = View.VISIBLE
@@ -105,6 +122,12 @@ class InfoFragment : Fragment(), InfoFragmentInput {
     private fun showLogoutStatus() {
         loginGroup.visibility = View.GONE
         logoutGroup.visibility = View.VISIBLE
+    }
+
+    private fun showLoadingStatus() {
+        progressBar.visibility = View.VISIBLE
+        loginGroup.visibility = View.GONE
+        loginGroup.visibility = View.GONE
     }
 
     private fun showUserInformation(email: String, uuid: String) {

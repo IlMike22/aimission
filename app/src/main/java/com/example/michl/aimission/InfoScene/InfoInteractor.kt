@@ -24,16 +24,18 @@ class InfoInteractor : InfoInteractorInput {
 
     override fun loginUserWithUserCredentials(email: String, password: String) {
         try {
-            firebaseAuth.signInWithEmailAndPassword(email, password)
-            var firebaseUser = firebaseAuth.currentUser
-            if (firebaseUser?.uid != null) {
-                Log.i(TAG, "User with uuid ${firebaseUser.uid} successfully logged in.")
-                output?.onUserLoggedInSuccess(email, firebaseAuth.currentUser?.uid ?: "[noUserId]")
-            } else {
-                val errorMsg = "Unable to log in user $email."
-                Log.e(TAG, errorMsg)
-                output?.onUserLoggedInError(email)
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
+                var firebaseUser = firebaseAuth.currentUser
+                if (firebaseUser?.uid != null) {
+                    Log.i(TAG, "User with uuid ${firebaseUser.uid} successfully logged in.")
+                    output?.onUserLoggedInSuccess(email, firebaseAuth.currentUser?.uid ?: "[noUserId]")
+                } else {
+                    val errorMsg = "Unable to log in user $email."
+                    Log.e(TAG, errorMsg)
+                    output?.onUserLoggedInError(email)
+                }
             }
+
         } catch (exception: Exception) {
             Log.e(TAG, "Error during user auth firebase process. Details: ${exception.message}")
         }

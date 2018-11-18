@@ -22,7 +22,7 @@
         <activity android:name=".InfoScene.Views.InfoActivity" />
         <activity android:name=".SettingsScene.Views.SettingsActivity" />
         <activity android:name=".Base.BaseActivity" />
-        <activity android:name=".LoginScene.Views.LoginActivity"></activity>
+        <activity android:name=".RegisterScene.Views.RegisterActivity"></activity>
     </application>
 
 </manifest>

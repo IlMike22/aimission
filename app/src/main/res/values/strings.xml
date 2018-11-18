@@ -10,4 +10,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="frg_info_btn_login">Login</string>
+    <string name="frg_info_btn_register">Registrieren</string>
+    <string name="frg_info_tv_please_login">Bitte anmelden</string>
 </resources>
