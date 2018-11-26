@@ -13,4 +13,8 @@
     <string name="frg_info_btn_login">Login</string>
     <string name="frg_info_btn_register">Registrieren</string>
     <string name="frg_info_tv_please_login">Bitte anmelden</string>
+    <string name="txt_hint_email">Email</string>
+    <string name="btn_text_register">Register</string>
+    <string name="txt_hint_pswrd">Password</string>
+    <string name="txt_hint_pswrd_repeat">Repeat Password</string>
 </resources>
