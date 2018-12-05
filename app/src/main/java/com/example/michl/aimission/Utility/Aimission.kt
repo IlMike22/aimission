@@ -10,7 +10,6 @@ class Aimission : Application() {
 
         fun getAppContext():Context?
         {
-            Log.i("mike","Context is $context")
             return Aimission.context
         }
     }

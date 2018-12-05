@@ -19,7 +19,7 @@ abstract class BaseActivity : AppCompatActivity(), BottomNavigationView.OnNaviga
 
             when (item.itemId) {
                 R.id.action_home -> {
-
+                    updateNavBarState()
                 }
                 R.id.action_info -> {
                     updateNavBarState()

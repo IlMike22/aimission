@@ -4,9 +4,7 @@ import com.example.michl.aimission.RegisterScene.Views.RegisterFragment
 import java.lang.ref.WeakReference
 
 object RegisterConfigurator {
-    /*
-   Initialize all clean code components for info scene
-    */
+
     fun configure(fragment: RegisterFragment) {
 
         val router = RegisterRouter()

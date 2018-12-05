@@ -28,6 +28,5 @@ class MainRouter : MainRouterInput {
     override fun openMainView(manager: FragmentManager) {
         Log.i("mike", "open main view")
         manager.beginTransaction().replace(R.id.fragmentContainer, MainFragment()).addToBackStack(null).commit()
-
     }
 }

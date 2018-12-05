@@ -1,7 +1,9 @@
 package com.example.michl.aimission.InfoScene.Views
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import com.example.michl.aimission.Base.BaseActivity
 import com.example.michl.aimission.R
@@ -10,9 +12,9 @@ class InfoActivity : BaseActivity() {
 
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_info)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.i("Aimission","now we are here.")
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun getNavigationMenuItemId(): Int {

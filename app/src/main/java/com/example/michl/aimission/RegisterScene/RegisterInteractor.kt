@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 
 interface RegisterInteractorInput {
-    fun registerUser(email: String, pswrd: String): Boolean
+    fun registerUser(email: String, pswrd: String)
 }
 
 class RegisterInteractor : RegisterInteractorInput {
@@ -12,7 +12,7 @@ class RegisterInteractor : RegisterInteractorInput {
     var output: RegisterPresenterInput? = null
     private lateinit var mAuth: FirebaseAuth
 
-    override fun registerUser(email: String, pswrd: String): Boolean {
+    override fun registerUser(email: String, pswrd: String) {
         Log.i(TAG, "Try to register user $email with pswrd $pswrd")
         try {
             mAuth = FirebaseAuth.getInstance()
@@ -22,19 +22,18 @@ class RegisterInteractor : RegisterInteractorInput {
                     val user = mAuth.currentUser
                     Log.i(TAG, "New users uuid is ${user?.uid}")
 
-                    // todo update ui with user data
+                    user?.apply {
+                        output?.onUserRegistrationSucceed(email, uid)
+                    }
+
 
                 } else {
-                    Log.e(TAG, "User registration was not successful")
+                    Log.e(TAG, "User registration was not successful. Details: ${it.exception}")
+                    output?.onUserRegistrationFailed()
                 }
             }
         } catch (exc: Exception) {
             Log.e(TAG, "Something went wrong during user registration. Details: ${exc.message}")
         }
-
-
-
-        return false
     }
-
 }

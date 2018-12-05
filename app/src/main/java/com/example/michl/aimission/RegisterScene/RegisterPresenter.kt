@@ -4,15 +4,15 @@ import com.example.michl.aimission.RegisterScene.Views.RegisterFragmentInput
 import java.lang.ref.WeakReference
 
 interface RegisterPresenterInput {
-    fun onUserRegistrationSucceed(username:String, uuid:String)
+    fun onUserRegistrationSucceed(email:String, uuid:String)
     fun onUserRegistrationFailed()
 }
 
 class RegisterPresenter : RegisterPresenterInput {
     var output: WeakReference<RegisterFragmentInput>? = null
 
-    override fun onUserRegistrationSucceed(username:String, uuid:String) {
-       val message = "User $username was successfully created. The new uuid is $uuid"
+    override fun onUserRegistrationSucceed(email:String, uuid:String) {
+       val message = "User $email was successfully created. The new uuid is $uuid"
        output?.get()?.afterRegistrationSucceed(message)
     }
 

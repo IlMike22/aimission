@@ -1,5 +1,6 @@
 package com.example.michl.aimission.InfoScene.Views
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -21,11 +22,11 @@ interface InfoFragmentInput {
     fun afterUserLoggedOutSuccess(message: String)
     fun afterCheckedIfUserIsLoggedIn(isLoggedIn: Boolean, uuid: String, email: String)
     fun onRegisterClicked()
-
 }
 
-class InfoFragment : Fragment(), InfoFragmentInput {
+const val REQUEST_USER_REGISTER_SUCCEED = 1
 
+class InfoFragment : Fragment(), InfoFragmentInput {
 
     lateinit var output: InfoInteractorInput
     lateinit var router: InfoRouter
@@ -60,6 +61,16 @@ class InfoFragment : Fragment(), InfoFragmentInput {
         output?.isUserLoggedIn()
 
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_USER_REGISTER_SUCCEED)
+        {
+            Log.i(TAG, "We have a result. User registered correctly. Now loading user profile")
+            // todo implement function for loading current user and showing ui change
+        }
+        else
+            Log.i(TAG, "no result givven.")
     }
 
     override fun onLoginUserClicked(email: String, pswrd: String) {
@@ -111,7 +122,10 @@ class InfoFragment : Fragment(), InfoFragmentInput {
     }
 
     override fun onRegisterClicked() {
-        router?.openRegisterView()
+        activity?.apply {
+            router?.openRegisterView(this)
+
+        }
     }
 
     private fun showLoginStatus() {
