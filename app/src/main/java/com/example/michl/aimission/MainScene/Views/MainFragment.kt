@@ -58,13 +58,13 @@ class MainFragment : Fragment() {
 
 
         //todo test data, remove it later
-        val sampleData = MonthItem("Januar 2018", 19, 92)
+//        val sampleData = MonthItem("Januar 2018", 19, 92)
         val data = ArrayList<MonthItem>()
-        data.add(sampleData)
-        data.add(sampleData)
-        data.add(sampleData)
-        data.add(sampleData)
-        data.add(sampleData)
+//        data.add(sampleData)
+//        data.add(sampleData)
+//        data.add(sampleData)
+//        data.add(sampleData)
+//        data.add(sampleData)
         viewAdapter = MonthListAdapter(data)
         lytManager = LinearLayoutManager(activity?.applicationContext)
 

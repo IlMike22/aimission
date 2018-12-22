@@ -20,6 +20,10 @@ class RegisterInteractor : RegisterInteractorInput {
                 if (it.isSuccessful) {
                     Log.i(TAG, "User registration was successful")
                     val user = mAuth.currentUser
+
+                    // todo now create database entry with user id on table Person.
+
+
                     Log.i(TAG, "New users uuid is ${user?.uid}")
 
                     user?.apply {

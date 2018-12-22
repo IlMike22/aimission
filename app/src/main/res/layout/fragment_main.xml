@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".MainScene.Views.MainFragment">
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,6 +18,22 @@
             android:scrollbars="vertical" />
 
     </ScrollView>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabAddAim"
+            android:layout_width="322dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="336dp"
+            android:layout_marginLeft="336dp"
+            android:layout_marginTop="464dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
 
 
 </FrameLayout>

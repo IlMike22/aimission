@@ -17,16 +17,16 @@ interface MainRouterInput {
 class MainRouter : MainRouterInput {
     override fun openSettingsView(manager: FragmentManager) {
         Log.i("mike", "open settings view")
-        manager.beginTransaction().replace(R.id.fragmentContainer, SettingsFragment()).addToBackStack(null).commit()
+        manager.beginTransaction().replace(R.id.fragmentContainer, SettingsFragment()).addToBackStack(null).commitAllowingStateLoss()
     }
 
     override fun openInfoView(manager: FragmentManager) {
         Log.i("mike", "open info view")
-        manager.beginTransaction().replace(R.id.fragmentContainer, InfoFragment()).addToBackStack(null).commit()
+        manager.beginTransaction().replace(R.id.fragmentContainer, InfoFragment()).addToBackStack(null).commitAllowingStateLoss()
     }
 
     override fun openMainView(manager: FragmentManager) {
         Log.i("mike", "open main view")
-        manager.beginTransaction().replace(R.id.fragmentContainer, MainFragment()).addToBackStack(null).commit()
+        manager.beginTransaction().replace(R.id.fragmentContainer, MainFragment()).addToBackStack(null).commitAllowingStateLoss()
     }
 }

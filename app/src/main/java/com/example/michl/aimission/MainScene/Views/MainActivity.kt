@@ -2,9 +2,9 @@ package com.example.michl.aimission.MainScene.Views
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.MenuItem
 import com.example.michl.aimission.Base.MainRouter
 import com.example.michl.aimission.InfoScene.REQUEST_USER_REGISTER_SUCCEED
@@ -12,7 +12,6 @@ import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.activity_base.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-
 
     val router = MainRouter()
 
@@ -28,7 +27,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             when (item.itemId) {
                 R.id.action_home -> {
                     router.openMainView(supportFragmentManager)
-
                 }
                 R.id.action_info -> {
                     router.openInfoView(supportFragmentManager)
@@ -40,23 +38,31 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
             return@setOnNavigationItemSelectedListener true
         }
-
-        fun getNavigationMenuItemId(): Int {
-            return R.id.action_home
-        }
-
-        fun getContentViewId(): Int {
-            return R.layout.activity_main
-        }
     }
 
-    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_home -> {
+                router.openMainView(supportFragmentManager)
+            }
+            R.id.action_info -> {
+                router.openInfoView(supportFragmentManager)
+            }
+            R.id.action_settings -> {
+                router.openSettingsView(supportFragmentManager)
+            }
+        }
+
+        return true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == REQUEST_USER_REGISTER_SUCCEED) // we came from registration view and have to reload main activity
+        if (resultCode == REQUEST_USER_REGISTER_SUCCEED) {
+            // we came from registration view and have to reload main activity
             recreate()
+            bottomNavBar.selectedItemId = R.id.action_home
+        }
+
         super.onActivityResult(requestCode, resultCode, data)
     }
 }
