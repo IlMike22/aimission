@@ -4,7 +4,7 @@ import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.example.michl.aimission.AimListScene.AimListRouter
+import com.example.michl.aimission.AimDetailScene.AimDetailRouter
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.cv_item_aim.view.*
@@ -29,7 +29,7 @@ class AimListAdapter(private val data:ArrayList<AimItem>):RecyclerView.Adapter<A
         }
     }
 
-    private val router = AimListRouter()
+    private val router = AimDetailRouter()
     class ViewHolderAimItem(val aimItem: CardView):RecyclerView.ViewHolder(aimItem)
 
 

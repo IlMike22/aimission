@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.michl.aimission.Adapters.MonthListAdapter
+import com.example.michl.aimission.MainScene.MainConfigurator
+import com.example.michl.aimission.MainScene.MainInteractorInput
+import com.example.michl.aimission.MainScene.MainRouter
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.R
 import com.google.firebase.auth.FirebaseAuth
@@ -18,11 +21,21 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : Fragment() {
+
+interface MainFragmentInput {
+
+}
+
+class MainFragment : MainFragmentInput, Fragment() {
 
     private lateinit var lytManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var firebaseAuth: FirebaseAuth
+    lateinit var router: MainRouter
+
+    lateinit var output: MainInteractorInput
+
+    val TAG = "MainFragment"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -32,6 +45,8 @@ class MainFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        MainConfigurator.configure(this)
 
         // writing a sample data to db (users name)
         firebaseAuth = FirebaseAuth.getInstance()
@@ -52,6 +67,12 @@ class MainFragment : Fragment() {
             }
 
         })
+
+        fabAddAim.setOnClickListener {
+            activity?.supportFragmentManager?.apply {
+                router.openAimDetailView()
+            }
+        }
 
 //        array[1].description = "now we have another description and hopefully our data changed listener tells us something"
 //        databaseRef.setValue(array)
@@ -79,4 +100,6 @@ class MainFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
     }
+
+
 }

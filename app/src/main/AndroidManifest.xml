@@ -17,7 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AimListScene.Views.AimListActivity" />
+        <activity android:name=".AimDetailScene.Views.AimDetailActivity" />
         <activity android:name=".MonthListScene.Views.MonthListActivity" />
         <activity android:name=".InfoScene.Views.InfoActivity" />
         <activity android:name=".SettingsScene.Views.SettingsActivity" />

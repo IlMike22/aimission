@@ -1,6 +1,7 @@
 package com.example.michl.aimission.RegisterScene
 
 import android.util.Log
+import com.example.michl.aimission.Utility.DbHelper
 import com.google.firebase.auth.FirebaseAuth
 
 interface RegisterInteractorInput {
@@ -20,16 +21,17 @@ class RegisterInteractor : RegisterInteractorInput {
                 if (it.isSuccessful) {
                     Log.i(TAG, "User registration was successful")
                     val user = mAuth.currentUser
-
-                    // todo now create database entry with user id on table Person.
-
-
                     Log.i(TAG, "New users uuid is ${user?.uid}")
+
+                    // crate new user id reference on aim table.
+                    user?.let { user ->
+                        DbHelper.createNewPersonReference(user.uid)
+                        Log.i(TAG, "Created new user id dataset on aim table if has not already exists.")
+                    }
 
                     user?.apply {
                         output?.onUserRegistrationSucceed(email, uid)
                     }
-
 
                 } else {
                     Log.e(TAG, "User registration was not successful. Details: ${it.exception}")
