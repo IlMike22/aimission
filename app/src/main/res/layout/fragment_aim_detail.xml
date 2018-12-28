@@ -41,23 +41,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_txt_title" />
 
-        <Button
-            android:id="@+id/frg_aimdetail_btn_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="556dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:text="Ziel speichern"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/frg_aimdetail_switch_comesback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -79,11 +64,11 @@
             android:text="Ziel startet jeden Monat aufs Neue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.272"
-            app:layout_constraintStart_toEndOf="@+id/switch1"
+            app:layout_constraintStart_toEndOf="@+id/frg_aimdetail_switch_comesback"
             app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_txt_description" />
 
         <Switch
-            android:id="@+id/switch2"
+            android:id="@+id/frg_aimdetail_switch_repeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -91,7 +76,7 @@
             android:layout_marginTop="48dp"
             android:text="Wiederholend"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switch1" />
+            app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_switch_comesback" />
 
         <EditText
             android:id="@+id/frg_aimdetail_txt_repeat"
@@ -102,13 +87,13 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="19dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="number"
             app:layout_constraintBottom_toTopOf="@+id/textView3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.047"
-            app:layout_constraintStart_toEndOf="@+id/switch2"
+            app:layout_constraintStart_toEndOf="@+id/frg_aimdetail_switch_repeat"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:layout_constraintVertical_bias="0.361" />
 
@@ -128,7 +113,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <Switch
-            android:id="@+id/switch3"
+            android:id="@+id/frg_aimdetail_switch_aaim"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -136,7 +121,7 @@
             android:layout_marginTop="56dp"
             android:text="A-Ziel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switch2" />
+            app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_switch_repeat" />
 
     <TextView
         android:id="@+id/textView3"
@@ -146,16 +131,19 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="56dp"
         android:text="A-Ziele werden besonders hervorgehoben"
-        app:layout_constraintStart_toEndOf="@+id/switch3"
+        app:layout_constraintStart_toEndOf="@+id/frg_aimdetail_switch_aaim"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/frg_aimdetail_btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button"
-            tools:layout_editor_absoluteX="244dp"
-            tools:layout_editor_absoluteY="445dp" />
+            android:layout_marginStart="268dp"
+            android:layout_marginLeft="268dp"
+            android:layout_marginTop="16dp"
+            android:text="speichern"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
 </android.support.constraint.ConstraintLayout>

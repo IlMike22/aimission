@@ -3,22 +3,80 @@ package com.example.michl.aimission.AimDetailScene.Views
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.widget.Toast
+import com.example.michl.aimission.AimDetailScene.AimDetailConfigurator
+import com.example.michl.aimission.AimDetailScene.AimDetailInteractorInput
+import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.Genre
+import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.R
+import kotlinx.android.synthetic.main.fragment_aim_detail.*
+import java.util.*
 
 
-interface AimDetailInput
-{
+interface AimDetailFragmentInput {
     fun onAimSavedSuccessfully()
-    fun onAimSavedFailed(errorMsg:String)
+    fun onAimSavedFailed(errorMsg: String)
     fun onAimDeletedSuccessfully()
-    fun onAimDeletedFailed(errorMsg:String)
+    fun onAimDeletedFailed(errorMsg: String)
+    fun onFirebaseUserNotExists(msg: String)
+    fun onFirebaseUserExists(userId: String)
+    fun afterAimStoredSuccessfully()
+    fun afterAimStoredFailed()
 }
 
-class AimDetailFragment : AimDetailInput, Fragment() {
+class AimDetailFragment : AimDetailFragmentInput, Fragment() {
+
+    val TAG = "AimDetailFragment"
+    var output: AimDetailInteractorInput? = null
+    var userID:String = ""
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+
+        return inflater.inflate(R.layout.fragment_aim_detail, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        AimDetailConfigurator.configure(this)
+
+        //todo get intent data here if list item was selected. if there is no data we have the new item create mode
+
+        // first of all we verify that user is logged in on firebase
+        output?.getFirebaseUser()
+
+        frg_aimdetail_btn_save.setOnClickListener {
+            val title = frg_aimdetail_txt_title.text.toString()
+            val description = frg_aimdetail_txt_description.text.toString()
+            val ishighPriority = frg_aimdetail_switch_aaim.text
+            val repeatCount = frg_aimdetail_txt_repeat.text
+
+
+            var aimItem = AimItem(UUID.randomUUID().toString(),title,description,1,false, Status.OPEN,Genre.PRIVATE)
+
+            output?.createNewAim(userID,aimItem)
+        }
+    }
+
+
+    override fun onFirebaseUserNotExists(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        activity?.finish()
+    }
+
+    override fun onFirebaseUserExists(userId: String) {
+        Toast.makeText(context, userId, Toast.LENGTH_SHORT).show()
+        Log.i(TAG, "Firebase user exists. User id is $userId")
+        userID = userId
+    }
+
     override fun onAimSavedSuccessfully() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -35,13 +93,15 @@ class AimDetailFragment : AimDetailInput, Fragment() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-
-        //todo get intent data here to specify which month was selected
-
-        return inflater.inflate(R.layout.fragment_aim_detail, container, false)
+    override fun afterAimStoredSuccessfully() {
+        Toast.makeText(context,"Aim stored successfully!",Toast.LENGTH_SHORT).show()
     }
+
+    override fun afterAimStoredFailed() {
+        Toast.makeText(context,"Aim stored failed!",Toast.LENGTH_SHORT).show()
+    }
+
+
+
 
 }
