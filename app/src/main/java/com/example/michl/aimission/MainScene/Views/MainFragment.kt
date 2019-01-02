@@ -12,6 +12,7 @@ import com.example.michl.aimission.Adapters.MonthListAdapter
 import com.example.michl.aimission.MainScene.MainConfigurator
 import com.example.michl.aimission.MainScene.MainInteractorInput
 import com.example.michl.aimission.MainScene.MainRouter
+import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.R
 import com.google.firebase.auth.FirebaseAuth
@@ -24,9 +25,12 @@ import kotlinx.android.synthetic.main.fragment_main.*
 
 interface MainFragmentInput {
 
+    fun showAllUserItems(items: ArrayList<AimItem>)
+
 }
 
 class MainFragment : MainFragmentInput, Fragment() {
+
 
     private lateinit var lytManager: RecyclerView.LayoutManager
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -62,8 +66,13 @@ class MainFragment : MainFragmentInput, Fragment() {
                 Log.i("aimission", "an data changed error occured")
             }
 
-            override fun onDataChange(p0: DataSnapshot) {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.i("aimission", "the data has changed")
+                var item = dataSnapshot.child("Aim")
+
+//                item.
+//                var genre = item.child("genre")
+//                var prio = item.child("highPriority")
             }
 
         })
@@ -73,6 +82,10 @@ class MainFragment : MainFragmentInput, Fragment() {
                 router.openAimDetailView()
             }
         }
+
+        // try to read all aim items from current user (if he is logged in, otherwise show login text)
+        output?.loadAllUserItems()
+
 
 //        array[1].description = "now we have another description and hopefully our data changed listener tells us something"
 //        databaseRef.setValue(array)
@@ -101,5 +114,11 @@ class MainFragment : MainFragmentInput, Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-
+    /*
+    Loads all aim items for current user from db and creates list which is shown in MainFragment.
+    If user is not logged in, we show an empty list with request to login instead.
+     */
+    override fun showAllUserItems(items: ArrayList<AimItem>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

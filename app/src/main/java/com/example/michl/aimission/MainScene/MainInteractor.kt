@@ -7,7 +7,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 interface MainInteractorInput
 {
-    fun readAllAims()
+    fun loadAllUserItems()
 
 }
 
@@ -15,9 +15,16 @@ class MainInteractor:MainInteractorInput
 {
     var output: MainPresenterInput? = null
 
-    override fun readAllAims() {
+    override fun loadAllUserItems() {
         val userId = getCurrentUserId()
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (userId.isNullOrEmpty())
+            output?.onNoUserIdExists()
+        else
+        {
+            // load all user items from db..
+
+        }
+
     }
 
     private fun getCurrentUserId():String

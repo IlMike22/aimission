@@ -33,7 +33,7 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
     val TAG = "AimDetailFragment"
     var output: AimDetailInteractorInput? = null
-    var userID:String = ""
+    var userID: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -53,16 +53,32 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
         output?.getFirebaseUser()
 
         frg_aimdetail_btn_save.setOnClickListener {
+            var isHighPrio = false
+            var repeatCount = 0
             val title = frg_aimdetail_txt_title.text.toString()
             val description = frg_aimdetail_txt_description.text.toString()
-            val ishighPriority = frg_aimdetail_switch_aaim.text
-            val repeatCount = frg_aimdetail_txt_repeat.text
+
+            try {
+                repeatCount = frg_aimdetail_txt_repeat.text.toString().toInt()
+            } catch (exc: Exception) {
+                Log.e(TAG, "Could not convert String into Int (repeatCount). Repeat count remains 0 as initially given.")
+            }
+
+            if (frg_aimdetail_switch_aaim.isChecked)
+                isHighPrio = true
 
 
-            var aimItem = AimItem(UUID.randomUUID().toString(),title,description,1,false, Status.OPEN,Genre.PRIVATE)
+            try {
+                var aimItem = AimItem(UUID.randomUUID().toString(), title, description, repeatCount, isHighPrio, Status.OPEN, Genre.PRIVATE)
 
-            output?.createNewAim(userID,aimItem)
+                output?.createNewAim(userID, aimItem)
+            } catch (exc: Exception) {
+                Log.e(TAG, "Unable to store new aim item. Reason: ${exc.message}")
+                Toast.makeText(context, "Something went wrong while trying to save your new aim item. Please try again", Toast.LENGTH_SHORT).show()
+            }
+
         }
+
     }
 
 
@@ -94,14 +110,11 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
     }
 
     override fun afterAimStoredSuccessfully() {
-        Toast.makeText(context,"Aim stored successfully!",Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Aim stored successfully!", Toast.LENGTH_SHORT).show()
+        activity?.finish()
     }
 
     override fun afterAimStoredFailed() {
-        Toast.makeText(context,"Aim stored failed!",Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Aim stored failed! Please try again.", Toast.LENGTH_SHORT).show()
     }
-
-
-
-
 }

@@ -3,23 +3,22 @@ package com.example.michl.aimission.AimDetailScene
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Utility.DbHelper
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 
 interface AimDetailInteractorInput {
     fun createNewAim(userId: String, item: AimItem)
     fun deleteSingleAim(userId: String)
-    fun updateAim(userId:String, item:AimItem)
+    fun updateAim(userId: String, item: AimItem)
     fun getFirebaseUser()
 
 }
 
 class AimDetailInteractor : AimDetailInteractorInput {
 
-    var output:AimDetailPresenterInput? = null
+    var output: AimDetailPresenterInput? = null
 
     override fun getFirebaseUser() {
-        output?.validateFirebaseUser(FirebaseAuth.getInstance().currentUser?.uid?:"")
+        output?.validateFirebaseUser(FirebaseAuth.getInstance().currentUser?.uid ?: "")
     }
 
     override fun updateAim(userId: String, item: AimItem) {
@@ -31,7 +30,7 @@ class AimDetailInteractor : AimDetailInteractorInput {
     }
 
     override fun createNewAim(userId: String, item: AimItem) {
-        if (DbHelper.saveNewAim(userId,item))
+        if (DbHelper.saveNewAim(userId, item))
             output?.onAimStoredSuccessfully()
         else
             output?.onAimStoredFailed()
