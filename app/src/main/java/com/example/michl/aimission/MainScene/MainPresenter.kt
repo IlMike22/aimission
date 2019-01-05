@@ -16,7 +16,8 @@ class MainPresenter : MainPresenterInput
     var output : WeakReference<MainFragmentInput>? = null
 
     override fun onNoUserIdExists() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val errorMsg = "Couldn't find user id. Are you logged in?"
+        output?.get()?.afterUserIdNotFound(errorMsg)
     }
 
     override fun onItemsLoadedSuccessfully() {

@@ -54,12 +54,12 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
         frg_aimdetail_btn_save.setOnClickListener {
             var isHighPrio = false
-            var repeatCount = 0
+            var repeatCount:Long = 0
             val title = frg_aimdetail_txt_title.text.toString()
             val description = frg_aimdetail_txt_description.text.toString()
 
             try {
-                repeatCount = frg_aimdetail_txt_repeat.text.toString().toInt()
+                repeatCount = frg_aimdetail_txt_repeat.text.toString().toLong()
             } catch (exc: Exception) {
                 Log.e(TAG, "Could not convert String into Int (repeatCount). Repeat count remains 0 as initially given.")
             }

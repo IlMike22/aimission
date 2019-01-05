@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.michl.aimission.Adapters.MonthListAdapter
 import com.example.michl.aimission.MainScene.MainConfigurator
 import com.example.michl.aimission.MainScene.MainInteractorInput
@@ -26,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 interface MainFragmentInput {
 
     fun showAllUserItems(items: ArrayList<AimItem>)
+    fun afterUserIdNotFound(errorMsg: String)
 
 }
 
@@ -68,11 +70,7 @@ class MainFragment : MainFragmentInput, Fragment() {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.i("aimission", "the data has changed")
-                var item = dataSnapshot.child("Aim")
-
-//                item.
-//                var genre = item.child("genre")
-//                var prio = item.child("highPriority")
+                output?.updateItemList(dataSnapshot)
             }
 
         })
@@ -82,14 +80,6 @@ class MainFragment : MainFragmentInput, Fragment() {
                 router.openAimDetailView()
             }
         }
-
-        // try to read all aim items from current user (if he is logged in, otherwise show login text)
-        output?.loadAllUserItems()
-
-
-//        array[1].description = "now we have another description and hopefully our data changed listener tells us something"
-//        databaseRef.setValue(array)
-
 
         //todo test data, remove it later
 //        val sampleData = MonthItem("Januar 2018", 19, 92)
@@ -120,5 +110,9 @@ class MainFragment : MainFragmentInput, Fragment() {
      */
     override fun showAllUserItems(items: ArrayList<AimItem>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun afterUserIdNotFound(errorMsg: String) {
+        Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 }
