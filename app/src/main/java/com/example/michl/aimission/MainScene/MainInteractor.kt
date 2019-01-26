@@ -19,16 +19,9 @@ class MainInteractor : MainInteractorInput {
         if (userId.isNullOrEmpty())
             output?.onNoUserIdExists()
         else {
-            // load all user items from db..
-            // todo Attention! This functionality must not be called in view. Refact it later.
-            // onDataChange Listener in Interactor?
-
-            var itemCount = data.childrenCount
-
-            createNewItemListFromDb(userId, data)
-
+            val items = createNewItemListFromDb(userId, data)
+            output?.onItemsLoadedSuccessfully(items)
         }
-
     }
 
     private fun getCurrentUserId(): String {

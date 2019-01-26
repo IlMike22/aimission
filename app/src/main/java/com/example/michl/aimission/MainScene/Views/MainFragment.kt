@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.michl.aimission.Adapters.AimListAdapter
 import com.example.michl.aimission.Adapters.MonthListAdapter
 import com.example.michl.aimission.MainScene.MainConfigurator
 import com.example.michl.aimission.MainScene.MainInteractorInput
@@ -89,7 +90,18 @@ class MainFragment : MainFragmentInput, Fragment() {
 //        data.add(sampleData)
 //        data.add(sampleData)
 //        data.add(sampleData)
-        viewAdapter = MonthListAdapter(data)
+
+
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    /*
+    Loads all aim items for current user from db and creates list which is shown in MainFragment.
+    If user is not logged in, we show an empty list with request to login instead.
+     */
+    override fun showAllUserItems(items: ArrayList<AimItem>) {
+
+        viewAdapter = AimListAdapter(items)
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
         // todo init recycler view here and connect it with layoutManager and Adapter
@@ -100,16 +112,6 @@ class MainFragment : MainFragmentInput, Fragment() {
             adapter = viewAdapter
             layoutManager = lytManager
         }
-
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    /*
-    Loads all aim items for current user from db and creates list which is shown in MainFragment.
-    If user is not logged in, we show an empty list with request to login instead.
-     */
-    override fun showAllUserItems(items: ArrayList<AimItem>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun afterUserIdNotFound(errorMsg: String) {
