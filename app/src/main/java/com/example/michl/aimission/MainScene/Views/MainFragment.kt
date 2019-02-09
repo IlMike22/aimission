@@ -29,6 +29,8 @@ interface MainFragmentInput {
 
     fun showAllUserItems(items: ArrayList<AimItem>)
     fun afterUserIdNotFound(errorMsg: String)
+    fun afterMonthItemsLoadedSuccessfully(items:ArrayList<MonthItem>)
+    fun afterMonthItemsLoadedFailed(errorMsg:String)
 
 }
 
@@ -36,7 +38,8 @@ class MainFragment : MainFragmentInput, Fragment() {
 
 
     private lateinit var lytManager: RecyclerView.LayoutManager
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var aimItemAdapter: RecyclerView.Adapter<*>
+    private lateinit var monthItemAdapter: RecyclerView.Adapter<*>
     private lateinit var firebaseAuth: FirebaseAuth
     lateinit var router: MainRouter
 
@@ -71,7 +74,7 @@ class MainFragment : MainFragmentInput, Fragment() {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.i("aimission", "the data has changed")
-                output?.updateItemList(dataSnapshot)
+                //output?.updateItemList(dataSnapshot)
             }
 
         })
@@ -82,15 +85,7 @@ class MainFragment : MainFragmentInput, Fragment() {
             }
         }
 
-        //todo test data, remove it later
-//        val sampleData = MonthItem("Januar 2018", 19, 92)
-        val data = ArrayList<MonthItem>()
-//        data.add(sampleData)
-//        data.add(sampleData)
-//        data.add(sampleData)
-//        data.add(sampleData)
-//        data.add(sampleData)
-
+        output?.getUsersMonthList()
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -101,20 +96,38 @@ class MainFragment : MainFragmentInput, Fragment() {
      */
     override fun showAllUserItems(items: ArrayList<AimItem>) {
 
-        viewAdapter = AimListAdapter(items)
+        aimItemAdapter = AimListAdapter(items)
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
-        // todo init recycler view here and connect it with layoutManager and Adapter
-        // than you can see the sample item in the fragment (at least I hope so)
 
-        monthListRV.apply {
-            setHasFixedSize(true)
-            adapter = viewAdapter
-            layoutManager = lytManager
-        }
+        // todo this is no longer needed because we show month items in main fragment.
+        // todo use this code for showing users aim items in a seperate view after user clicked a specific month
+//        monthListRV.apply {
+//            setHasFixedSize(true)
+//            adapter = aimItemAdapter
+//            layoutManager = lytManager
+//        }
     }
 
     override fun afterUserIdNotFound(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
+
+    override fun afterMonthItemsLoadedSuccessfully(items: ArrayList<MonthItem>) {
+        //todo show all month items in list
+        monthItemAdapter = MonthListAdapter(items)
+        lytManager = LinearLayoutManager(activity?.applicationContext)
+
+        monthListRV.apply {
+            setHasFixedSize(true)
+            adapter = monthItemAdapter
+            layoutManager = lytManager
+        }
+
+    }
+
+    override fun afterMonthItemsLoadedFailed(errorMsg: String) {
+        Toast.makeText(context,errorMsg,Toast.LENGTH_SHORT).show()
+    }
+
 }

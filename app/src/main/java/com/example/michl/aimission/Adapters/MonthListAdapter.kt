@@ -18,7 +18,7 @@ class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>) : RecyclerVie
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderMonthItem {
         val monthItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_item_month, parent, false) as CardView
         monthItem.setOnClickListener {
-            router.openAimDetailView()
+            router.openAimListView()
         }
         return ViewHolderMonthItem(monthItem)
     }

@@ -1,4 +1,4 @@
-package com.example.michl.aimission.MonthListScene.Views
+package com.example.michl.aimission.AimListScene.Views
 
 
 import android.os.Bundle
@@ -13,12 +13,12 @@ import com.example.michl.aimission.R
  * A simple [Fragment] subclass.
  *
  */
-class MonthListFragment : Fragment() {
+class AimListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_month_list, container, false)
+        return inflater.inflate(R.layout.fragment_aim_list, container, false)
     }
 
 }

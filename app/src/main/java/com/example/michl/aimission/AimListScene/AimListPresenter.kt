@@ -1,4 +1,4 @@
-package com.example.michl.aimission.MonthListScene
+package com.example.michl.aimission.AimListScene
 
 interface MonthListPresenterInput
 {
