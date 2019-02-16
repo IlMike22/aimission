@@ -15,7 +15,9 @@ import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.fragment_aim_detail.*
+import java.time.LocalDate
 import java.util.*
+import kotlin.math.absoluteValue
 
 
 interface AimDetailFragmentInput {
@@ -69,16 +71,14 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
 
             try {
-                var aimItem = AimItem(UUID.randomUUID().toString(), title, description, repeatCount, isHighPrio, Status.OPEN, Genre.PRIVATE)
+                var aimItem = AimItem(UUID.randomUUID().toString(), title, description, repeatCount, isHighPrio, Status.OPEN, Genre.PRIVATE, getCurrentMonth(), getCurrentYear())
 
                 output?.createNewAim(userID, aimItem)
             } catch (exc: Exception) {
                 Log.e(TAG, "Unable to store new aim item. Reason: ${exc.message}")
                 Toast.makeText(context, "Something went wrong while trying to save your new aim item. Please try again", Toast.LENGTH_SHORT).show()
             }
-
         }
-
     }
 
 
@@ -116,5 +116,18 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
     override fun afterAimStoredFailed() {
         Toast.makeText(context, "Aim stored failed! Please try again.", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getCurrentMonth():Int
+    {
+        val current = LocalDate.now()
+        return current.month.value
+    }
+
+    private fun getCurrentYear():Int
+    {
+        val current = LocalDate.now()
+        return current.year.absoluteValue
+
     }
 }

@@ -29,8 +29,8 @@ interface MainFragmentInput {
 
     fun showAllUserItems(items: ArrayList<AimItem>)
     fun afterUserIdNotFound(errorMsg: String)
-    fun afterMonthItemsLoadedSuccessfully(items:ArrayList<MonthItem>)
-    fun afterMonthItemsLoadedFailed(errorMsg:String)
+    fun afterMonthItemsLoadedSuccessfully(items: ArrayList<MonthItem>)
+    fun afterMonthItemsLoadedFailed(errorMsg: String)
 
 }
 
@@ -127,7 +127,7 @@ class MainFragment : MainFragmentInput, Fragment() {
     }
 
     override fun afterMonthItemsLoadedFailed(errorMsg: String) {
-        Toast.makeText(context,errorMsg,Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
 }
