@@ -9,12 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.michl.aimission.Adapters.AimListAdapter
 import com.example.michl.aimission.Adapters.MonthListAdapter
 import com.example.michl.aimission.MainScene.MainConfigurator
 import com.example.michl.aimission.MainScene.MainInteractorInput
 import com.example.michl.aimission.MainScene.MainRouter
-import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.R
 import com.google.firebase.auth.FirebaseAuth
@@ -27,7 +25,6 @@ import kotlinx.android.synthetic.main.fragment_main.*
 
 interface MainFragmentInput {
 
-    fun showAllUserItems(items: ArrayList<AimItem>)
     fun afterUserIdNotFound(errorMsg: String)
     fun afterMonthItemsLoadedSuccessfully(items: ArrayList<MonthItem>)
     fun afterMonthItemsLoadedFailed(errorMsg: String)
@@ -94,27 +91,12 @@ class MainFragment : MainFragmentInput, Fragment() {
     Loads all aim items for current user from db and creates list which is shown in MainFragment.
     If user is not logged in, we show an empty list with request to login instead.
      */
-    override fun showAllUserItems(items: ArrayList<AimItem>) {
-
-        aimItemAdapter = AimListAdapter(items)
-        lytManager = LinearLayoutManager(activity?.applicationContext)
-
-
-        // todo this is no longer needed because we show month items in main fragment.
-        // todo use this code for showing users aim items in a seperate view after user clicked a specific month
-//        monthListRV.apply {
-//            setHasFixedSize(true)
-//            adapter = aimItemAdapter
-//            layoutManager = lytManager
-//        }
-    }
 
     override fun afterUserIdNotFound(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
     override fun afterMonthItemsLoadedSuccessfully(items: ArrayList<MonthItem>) {
-        //todo show all month items in list
         monthItemAdapter = MonthListAdapter(items)
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
@@ -123,7 +105,6 @@ class MainFragment : MainFragmentInput, Fragment() {
             adapter = monthItemAdapter
             layoutManager = lytManager
         }
-
     }
 
     override fun afterMonthItemsLoadedFailed(errorMsg: String) {

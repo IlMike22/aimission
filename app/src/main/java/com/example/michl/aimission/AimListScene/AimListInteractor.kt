@@ -1,24 +1,19 @@
 package com.example.michl.aimission.AimListScene
 
-import android.icu.util.Calendar
-import com.example.michl.aimission.MainScene.MainPresenterInput
+import com.example.michl.aimission.Helper.DateHelper.DateHelper.getCurrentMonth
+import com.example.michl.aimission.Helper.DateHelper.DateHelper.getCurrentYear
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Genre
-import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Models.Status
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
-import java.time.LocalDate
-import java.time.LocalDateTime
 
-interface AimListInteractorInput
-{
+interface AimListInteractorInput {
     fun getItems(data: DataSnapshot)
 }
 
-class AimListInteractor : AimListInteractorInput
-{
+class AimListInteractor : AimListInteractorInput {
     var output: AimListPresenterInput? = null
 
     override fun getItems(data: DataSnapshot) {
@@ -65,18 +60,5 @@ class AimListInteractor : AimListInteractorInput
         }
         return itemList
     }
-
-    private fun getCurrentMonth(): Int
-    {
-            var current = LocalDate.now()
-            return current.month.value
-    }
-
-    private fun getCurrentYear():Int
-    {
-        return 2018
-    }
-
-
 }
 

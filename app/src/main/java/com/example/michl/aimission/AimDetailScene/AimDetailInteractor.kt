@@ -1,8 +1,11 @@
 package com.example.michl.aimission.AimDetailScene
 
+import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Utility.DbHelper
 import com.google.firebase.auth.FirebaseAuth
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 interface AimDetailInteractorInput {
@@ -30,6 +33,12 @@ class AimDetailInteractor : AimDetailInteractorInput {
     }
 
     override fun createNewAim(userId: String, item: AimItem) {
+
+        // add current month and year.
+
+        item.month = DateHelper.getCurrentMonth()
+        item.year = DateHelper.getCurrentYear()
+
         if (DbHelper.saveNewAim(userId, item))
             output?.onAimStoredSuccessfully()
         else

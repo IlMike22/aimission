@@ -6,7 +6,7 @@ import java.lang.ref.WeakReference
 
 object AimListConfigurator {
     /*
-      Initialize all clean code components for info scene
+      Initialize all clean code components for aim list scene
        */
     fun configure(fragment: AimListFragment) {
 

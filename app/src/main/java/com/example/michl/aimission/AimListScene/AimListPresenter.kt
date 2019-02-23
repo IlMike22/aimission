@@ -19,6 +19,6 @@ class AimListPresenter : AimListPresenterInput {
     }
 
     override fun onItemsLoadedSuccessfully(items: ArrayList<AimItem>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        output?.get()?.afterUserItemsLoadedSuccessfully(items)
     }
 }
