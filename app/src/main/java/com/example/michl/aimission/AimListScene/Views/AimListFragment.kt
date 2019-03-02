@@ -47,6 +47,10 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         val firebaseDb = FirebaseDatabase.getInstance()
         var databaseRef = firebaseDb.getReference("Aim")
 
+        // get current month and year information via intent
+        val currentMonth = activity?.intent?.getIntExtra("month",0)?:Log.i("AimListFragment","Cannot get intent data information month")
+        val currentYear = activity?.intent?.getIntExtra("year",0)?:Log.i("AimListFragment","Cannot get intent data information year")
+
 
         // sample read out second dataset with known id
         databaseRef.addValueEventListener(object : ValueEventListener {
@@ -56,7 +60,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.i("aimission", "the data has changed")
-                output?.getItems(dataSnapshot)
+                output?.getItems(dataSnapshot, currentMonth, currentYear)
             }
 
         })

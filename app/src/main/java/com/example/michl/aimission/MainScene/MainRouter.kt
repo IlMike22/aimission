@@ -10,13 +10,17 @@ import java.lang.ref.WeakReference
 
 interface MainRouterInput {
     fun openAimDetailView()
-    fun openAimListView()
+    fun openAimListView(month:Int, year:Int)
 }
 
 class MainRouter : MainRouterInput {
-    override fun openAimListView() {
+    override fun openAimListView(month:Int, year:Int) {
         Aimission.getAppContext()?.apply {
-            startActivity(Intent(Aimission.getAppContext(), AimListActivity::class.java))
+            var intent = Intent(Aimission.getAppContext(), AimListActivity::class.java)
+            intent.putExtra("month",month)
+            intent.putExtra("year",year)
+            startActivity(intent)
+
         } ?: Log.i("michl", "Context is null. Cannot route to next act")
     }
 

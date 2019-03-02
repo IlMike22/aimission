@@ -26,11 +26,13 @@ class MainInteractor : MainInteractorInput {
         // todo get all active months for userId from firebase
         // first create two dummy items that are shown in mainfragment
 
-        val monthItem1 = MonthItem("Januar 2019",12,10)
-        val monthItem2 = MonthItem("Februar 2019",10,4)
+        val monthItem1 = MonthItem("Januar 2019",12,10, 1,2019)
+        val monthItem2 = MonthItem("Februar 2019",10,4, 2, 2019)
+        val monthItem3 = MonthItem("März 2019",2,0,3,2019)
 
         months.add(monthItem1)
         months.add(monthItem2)
+        months.add(monthItem3)
 
         output?.onMonthItemsLoadedSuccessfully(months)
     }

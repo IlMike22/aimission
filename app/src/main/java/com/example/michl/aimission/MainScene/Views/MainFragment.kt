@@ -71,7 +71,6 @@ class MainFragment : MainFragmentInput, Fragment() {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.i("aimission", "the data has changed")
-                //output?.updateItemList(dataSnapshot)
             }
 
         })

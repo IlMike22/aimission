@@ -17,12 +17,11 @@ class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>) : RecyclerVie
 
     class ViewHolderMonthItem(val monthItem: CardView) : RecyclerView.ViewHolder(monthItem)
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderMonthItem {
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolderMonthItem {
         val monthItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_item_month, parent, false) as CardView
-        monthItem.setOnClickListener {
-            //todo router needs current item month and year information so we can show only relevant items in following list
-            router.openAimListView()
-        }
+//        monthItem.setOnClickListener {
+//
+//        }
         return ViewHolderMonthItem(monthItem)
     }
 
@@ -31,6 +30,11 @@ class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>) : RecyclerVie
             monthItemCV.monthNameTV.text = mDataSet[position].name
             monthItemCV.aimAmountTV.text = "${mDataSet[position].aimsAmount} Ziele insgesamt"
             monthItemCV.aimSucceededTV.text = "${mDataSet[position].aimsSucceeded} % erreicht"
+        }
+
+        holder.monthItem.setOnClickListener {
+            //todo router needs current item month and year information so we can show only relevant items in following list
+            router.openAimListView(mDataSet[position].month, mDataSet[position].year)
         }
     }
 
