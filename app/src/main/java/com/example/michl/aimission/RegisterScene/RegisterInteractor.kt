@@ -2,6 +2,7 @@ package com.example.michl.aimission.RegisterScene
 
 import android.util.Log
 import com.example.michl.aimission.Utility.DbHelper
+import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
 
 interface RegisterInteractorInput {
@@ -9,7 +10,6 @@ interface RegisterInteractorInput {
 }
 
 class RegisterInteractor : RegisterInteractorInput {
-    val TAG = "Aimission"
     var output: RegisterPresenterInput? = null
     private lateinit var mAuth: FirebaseAuth
 

@@ -14,6 +14,7 @@ import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.R
+import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import kotlinx.android.synthetic.main.fragment_aim_detail.*
 import java.time.LocalDate
 import java.util.*
@@ -33,7 +34,6 @@ interface AimDetailFragmentInput {
 
 class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
-    val TAG = "AimDetailFragment"
     var output: AimDetailInteractorInput? = null
     var userID: String = ""
 

@@ -14,6 +14,7 @@ import com.example.michl.aimission.R
 import com.example.michl.aimission.RegisterScene.RegisterConfigurator
 import com.example.michl.aimission.RegisterScene.RegisterInteractorInput
 import com.example.michl.aimission.RegisterScene.RegisterRouter
+import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import kotlinx.android.synthetic.main.fragment_register.*
 
 interface RegisterFragmentInput {
@@ -26,7 +27,6 @@ interface RegisterFragmentInput {
 
 class RegisterFragment : Fragment(), RegisterFragmentInput {
 
-    val TAG = "Aimission"
     lateinit var router: RegisterRouter
     lateinit var output: RegisterInteractorInput
 

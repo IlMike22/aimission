@@ -8,6 +8,7 @@ import com.example.michl.aimission.InfoScene.Views.InfoActivity
 import com.example.michl.aimission.InfoScene.Views.InfoFragment
 import com.example.michl.aimission.RegisterScene.Views.RegisterActivity
 import com.example.michl.aimission.Utility.Aimission
+import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
 
 const val REQUEST_USER_REGISTER_SUCCEED = 1
@@ -18,7 +19,6 @@ interface InfoRouterInput {
 
 class InfoRouter : InfoRouterInput {
     var fragment: WeakReference<InfoFragment>? = null
-    val TAG = "Aimission"
 
 
     override fun openRegisterView(activity: Activity) {

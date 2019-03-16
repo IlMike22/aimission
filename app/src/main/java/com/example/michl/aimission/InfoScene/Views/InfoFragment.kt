@@ -12,6 +12,8 @@ import com.example.michl.aimission.InfoScene.InfoConfigurator
 import com.example.michl.aimission.InfoScene.InfoInteractorInput
 import com.example.michl.aimission.InfoScene.InfoRouter
 import com.example.michl.aimission.R
+import com.example.michl.aimission.Utility.DbHelper
+import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import kotlinx.android.synthetic.main.fragment_info.*
 
 interface InfoFragmentInput {
@@ -30,7 +32,6 @@ class InfoFragment : Fragment(), InfoFragmentInput {
 
     lateinit var output: InfoInteractorInput
     lateinit var router: InfoRouter
-    private val TAG = "Aimission"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -66,7 +67,7 @@ class InfoFragment : Fragment(), InfoFragmentInput {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_USER_REGISTER_SUCCEED)
         {
-            Log.i(TAG, "We have a result. User registered correctly. Now loading user profile")
+            Log.i(DbHelper.TAG, "We have a result. User registered correctly. Now loading user profile")
             // todo implement function for loading current user and showing ui change
         }
         else

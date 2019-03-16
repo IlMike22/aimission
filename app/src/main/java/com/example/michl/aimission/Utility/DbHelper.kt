@@ -1,6 +1,5 @@
 package com.example.michl.aimission.Utility
 
-import android.content.ClipData
 import android.util.Log
 import com.example.michl.aimission.Models.AimItem
 import com.google.firebase.database.DatabaseReference
@@ -11,14 +10,14 @@ class DbHelper {
 
     companion object {
 
-        val TAG = "DBHelper"
+        val TAG = "Aimission"
 
         /*
         Writes a new item in firebase database (table Aim)
         */
         fun saveNewAim(userId: String, item: AimItem): Boolean {
             try {
-                getAimTableReference().child(userId).child(item.id).setValue(item)
+                getAimTableReference().child(userId).child(item.id ?: "").setValue(item)
                 return true
             } catch (exception: Exception) {
                 Log.e("Aimission", "Failed writing new item in table Aim. Details: ${exception.message}")
@@ -66,8 +65,7 @@ class DbHelper {
             return firebaseDb.getReference("Aim")
         }
 
-        private fun getPersonTableReference(): DatabaseReference
-        {
+        private fun getPersonTableReference(): DatabaseReference {
             val firebaseDB = FirebaseDatabase.getInstance()
             return firebaseDB.getReference("Person")
         }

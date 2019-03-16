@@ -11,6 +11,7 @@ abstract class BaseActivity : AppCompatActivity(), BottomNavigationView.OnNaviga
 
     val router = MainRouter()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)

@@ -24,7 +24,7 @@ class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapte
     override fun onBindViewHolder(holder: ViewHolderAimItem, position: Int) {
         holder.aimItem.apply {
             aimItemCV.titleTV.text = data[position].title
-            aimItemCV.statusTV.text = getAimStatus(data[position].status)
+            aimItemCV.statusTV.text = getAimStatus(data[position].status ?: Status.UNDEFINED)
         }
     }
 
@@ -42,6 +42,9 @@ class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapte
             }
             Status.DONE -> {
                 "Status: erledigt"
+            }
+            Status.UNDEFINED -> {
+                "Status: undefiniert"
             }
         }
     }

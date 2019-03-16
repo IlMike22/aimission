@@ -10,5 +10,4 @@ interface AimDetailRouterInput {
 
 class AimDetailRouter {
     var fragment: WeakReference<AimDetailFragment>? = null
-    val TAG = "AimDetailRouter"
 }

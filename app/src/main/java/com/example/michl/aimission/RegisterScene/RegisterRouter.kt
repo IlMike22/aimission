@@ -7,6 +7,7 @@ import com.example.michl.aimission.InfoScene.Views.InfoFragment
 import com.example.michl.aimission.RegisterScene.Views.RegisterActivity
 import com.example.michl.aimission.RegisterScene.Views.RegisterFragment
 import com.example.michl.aimission.Utility.Aimission
+import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
 
 interface RegisterRouterInput
@@ -17,7 +18,6 @@ interface RegisterRouterInput
 class RegisterRouter:RegisterRouterInput
 {
     var fragment: WeakReference<RegisterFragment>? = null
-    val TAG = "Aimission"
 
     override fun navigateToInfo() {
 

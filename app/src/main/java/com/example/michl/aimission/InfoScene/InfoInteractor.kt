@@ -1,6 +1,7 @@
 package com.example.michl.aimission.InfoScene
 
 import android.util.Log
+import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
 
 interface InfoInteractorInput {
@@ -13,7 +14,6 @@ class InfoInteractor : InfoInteractorInput {
 
     var output: InfoPresenterInput? = null
     private val firebaseAuth = FirebaseAuth.getInstance()
-    private val TAG = "Aimission"
 
     override fun logoutUser() {
         val uuid = firebaseAuth.currentUser?.uid

@@ -7,6 +7,7 @@ import com.example.michl.aimission.InfoScene.Views.InfoFragment
 import com.example.michl.aimission.MainScene.Views.MainFragment
 import com.example.michl.aimission.R
 import com.example.michl.aimission.SettingsScene.Views.SettingsFragment
+import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
 
 interface MainRouterInput {
@@ -19,7 +20,6 @@ interface MainRouterInput {
 
 class MainRouter : MainRouterInput {
 
-    val TAG = "MainRouter"
     var fragment: WeakReference<MainFragment>? = null
 
     override fun openAimDetailView(manager: FragmentManager) {
