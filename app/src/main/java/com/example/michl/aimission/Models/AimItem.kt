@@ -5,7 +5,7 @@ data class AimItem(
         var title:String?=null,
         var description:String?=null,
         var repeatCount:Int?=null, // if aim is marked as a repeated aim, save here the amount of numbers this aim should be absolved
-        var isHighPriority:Boolean?=null,
+        var highPriority:Boolean?=null,
         var status: Status?=null,
         var genre:Genre?=null,
         var month: Int?=null,
