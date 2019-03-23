@@ -16,6 +16,7 @@ import com.example.michl.aimission.AimListScene.AimListInteractorInput
 import com.example.michl.aimission.AimListScene.AimListRouter
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.R
+import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -48,18 +49,18 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         var databaseRef = firebaseDb.getReference("Aim")
 
         // get current month and year information via intent
-        val currentMonth = activity?.intent?.getIntExtra("month",0)?:Log.i("AimListFragment","Cannot get intent data information month")
-        val currentYear = activity?.intent?.getIntExtra("year",0)?:Log.i("AimListFragment","Cannot get intent data information year")
+        val currentMonth = activity?.intent?.getIntExtra("month",0)?:Log.i(TAG,"Cannot get intent data information month. Value is null.")
+        val currentYear = activity?.intent?.getIntExtra("year",0)?:Log.i(TAG,"Cannot get intent data information year. Value is null.")
 
 
         // sample read out second dataset with known id
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
-                Log.i("aimission", "an data changed error occured")
+                Log.i(TAG, "A data changed error occured.")
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Log.i("aimission", "the data has changed")
+                Log.i(TAG, "The data has changed.")
                 output?.getItems(dataSnapshot, currentMonth, currentYear)
             }
 
