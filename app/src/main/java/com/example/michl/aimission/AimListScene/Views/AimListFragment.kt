@@ -43,7 +43,6 @@ class AimListFragment : AimListFragmentInput, Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
 
         val firebaseDb = FirebaseDatabase.getInstance()
         var databaseRef = firebaseDb.getReference("Aim")
@@ -53,7 +52,6 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         val currentYear = activity?.intent?.getIntExtra("year",0)?:Log.i(TAG,"Cannot get intent data information year. Value is null.")
 
 
-        // sample read out second dataset with known id
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.i(TAG, "A data changed error occured.")
@@ -78,7 +76,6 @@ class AimListFragment : AimListFragmentInput, Fragment() {
     }
 
     override fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>) {
-        //todo fill list adapter with content and show items in list.
 
         aimListAdapter = AimListAdapter(items)
         lytManager = LinearLayoutManager(activity?.applicationContext)
@@ -94,5 +91,6 @@ class AimListFragment : AimListFragmentInput, Fragment() {
     override fun afterUserItemsLoadedFailed(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
+
 
 }
