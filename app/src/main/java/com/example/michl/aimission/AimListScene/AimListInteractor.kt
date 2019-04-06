@@ -66,7 +66,8 @@ class AimListInteractor : AimListInteractorInput {
         updatedItem?.id?.apply {
             val reference = FirebaseDatabase.getInstance().getReference("Aim")
 
-            var key = reference.child(this).setValue(updatedItem)
+            var key = reference.child(getCurrentUserId())
+            key.child(this).setValue(updatedItem)
 
             Log.i(TAG, "key is $key")
             return true

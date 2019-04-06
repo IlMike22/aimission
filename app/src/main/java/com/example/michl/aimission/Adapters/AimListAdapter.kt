@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.example.michl.aimission.AimListScene.AimListInteractor
 import com.example.michl.aimission.AimListScene.AimListRouter
 import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.cv_item_aim.view.*
@@ -22,6 +23,8 @@ class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapte
         val aimItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_item_aim, parent, false) as CardView
         aimItem.setOnClickListener {
             //todo call router and show aim detail view
+
+
         }
         return AimListAdapter.ViewHolderAimItem(aimItem)
     }
@@ -33,6 +36,7 @@ class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapte
             aimItemCV.titleTV.text = data[position].title
             aimItemCV.statusTV.text = getAimStatus(data[position].status)
             aimItemCV.aimTypeTV.text = getPriorityText(data[position].highPriority)
+            aimItemCV.genreTV.text = getGenreAsText(data[position].genre?:Genre.UNDEFINED)
 
             aimItemCV.btnFinishAim.setOnClickListener {
 
@@ -59,6 +63,20 @@ class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapte
         } ?: return ""
 
         return ""
+    }
+
+    private fun getGenreAsText(genre: Genre):String
+    {
+        return when (genre)
+        {
+            Genre.PRIVATE-> "privat"
+            Genre.EDUCATION -> "Weiterbildung privat"
+            Genre.FUN -> "Spaß und Freizeit"
+            Genre.WORK -> "Arbeit und berufliche Weiterbildung"
+            Genre.HEALTH -> "Gesundheit und Fittness"
+            Genre.FINANCES -> "Finanzen und Sparen"
+            Genre.UNDEFINED -> "nicht definiertes Genre"
+        }
     }
 
     private fun getAimStatus(status: Status?): String {
