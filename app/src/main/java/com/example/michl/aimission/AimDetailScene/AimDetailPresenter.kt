@@ -9,10 +9,12 @@ interface AimDetailPresenterInput
     fun validateFirebaseUser(userID:String)
     fun onAimStoredSuccessfully()
     fun onAimStoredFailed()
+    fun onAimReadSuccessfully(item:AimItem)
 }
 
 class AimDetailPresenter: AimDetailPresenterInput
 {
+
 
     var output:WeakReference<AimDetailFragmentInput>? = null
 
@@ -30,6 +32,10 @@ class AimDetailPresenter: AimDetailPresenterInput
     override fun onAimStoredFailed() {
         output?.get()?.afterAimStoredFailed()
     }
+    override fun onAimReadSuccessfully(item:AimItem) {
+        output?.get()?.showAimDetailData(item)
+    }
+
 
 }
 

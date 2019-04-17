@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.michl.aimission.AimListScene.AimListInteractor
 import com.example.michl.aimission.AimListScene.AimListRouter
+import com.example.michl.aimission.Helper.MODE_SELECTOR
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
@@ -14,18 +15,14 @@ import kotlinx.android.synthetic.main.cv_item_aim.view.*
 
 class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
 
-    //todo check if this way is a valid clean code way (defining router and interactor connection in adapter)
     val router = AimListRouter()
     val interactor = AimListInteractor()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderAimItem {
         val aimItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_item_aim, parent, false) as CardView
-        aimItem.setOnClickListener {
-            //todo call router and show aim detail view
 
 
-        }
         return AimListAdapter.ViewHolderAimItem(aimItem)
     }
 
@@ -45,11 +42,19 @@ class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapte
                 interactor.changeItemProgress(data[position])
 
                 if (data[position].status == Status.OPEN)
-                    aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_green_24dp)
-                else if (data[position].status == Status.DONE)
                     aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_black_24dp)
-
+                else if (data[position].status == Status.DONE)
+                    aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_green_24dp)
             }
+
+            aimItemCV.btnEditItem.setOnClickListener {
+                router.showAimDetailView(data[position].id?:"",MODE_SELECTOR.Edit)
+            }
+
+            if (data[position].status == Status.OPEN)
+                aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_black_24dp)
+            else if (data[position].status == Status.DONE)
+                aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_green_24dp)
         }
     }
 

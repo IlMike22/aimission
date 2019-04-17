@@ -47,3 +47,10 @@ class DateHelper {
         }
     }
 }
+
+enum class MODE_SELECTOR {
+    Read,
+    Edit
+}
+
+

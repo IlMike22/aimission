@@ -20,8 +20,6 @@ class RegisterRouter:RegisterRouterInput
     var fragment: WeakReference<RegisterFragment>? = null
 
     override fun navigateToInfo() {
-
-
         Aimission.getAppContext()?.apply {
             startActivity(Intent(Aimission.getAppContext(), InfoActivity::class.java))
         }?: Log.e(TAG, "Context is null. Cannot load activity InfoActivity")

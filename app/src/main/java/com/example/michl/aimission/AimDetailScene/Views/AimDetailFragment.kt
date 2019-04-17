@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.michl.aimission.AimDetailScene.AimDetailConfigurator
 import com.example.michl.aimission.AimDetailScene.AimDetailInteractorInput
+import com.example.michl.aimission.Helper.MODE_SELECTOR
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
@@ -30,9 +31,11 @@ interface AimDetailFragmentInput {
     fun onFirebaseUserExists(userId: String)
     fun afterAimStoredSuccessfully()
     fun afterAimStoredFailed()
+    fun showAimDetailData(item:AimItem)
 }
 
 class AimDetailFragment : AimDetailFragmentInput, Fragment() {
+
 
     var output: AimDetailInteractorInput? = null
     var userID: String = ""
@@ -50,6 +53,16 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
         AimDetailConfigurator.configure(this)
 
         //todo get intent data here if list item was selected. if there is no data we have the new item create mode
+
+        var bundle = activity?.intent?.extras
+        var mode = bundle?.get("Mode")
+        var id = bundle?.get("AimId")
+
+        //todo if mode is EDIT than show all data in the input fields
+        if (mode == MODE_SELECTOR.Edit)
+        {
+
+        }
 
         // first of all we verify that user is logged in on firebase
         output?.getFirebaseUser()
@@ -118,14 +131,16 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
         Toast.makeText(context, "Aim stored failed! Please try again.", Toast.LENGTH_SHORT).show()
     }
 
-    private fun getCurrentMonth():Int
-    {
+    override fun showAimDetailData(item: AimItem) {
+        Toast.makeText(context,"Found data ${item.id} and ${item.description}",Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getCurrentMonth(): Int {
         val current = LocalDate.now()
         return current.month.value
     }
 
-    private fun getCurrentYear():Int
-    {
+    private fun getCurrentYear(): Int {
         val current = LocalDate.now()
         return current.year.absoluteValue
 
