@@ -147,42 +147,42 @@
         app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_switch_aaim">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/rbPrivate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Privat" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/rbWork"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Beruf und berufliche Weiterbildung" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/rbEducation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="private Weiterbildung" />
 
         <RadioButton
-            android:id="@+id/radioButton4"
+            android:id="@+id/rbHealth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Sport und Fittness" />
 
         <RadioButton
-            android:id="@+id/radioButton5"
+            android:id="@+id/rbFun"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Spaß und Freizeit" />
 
         <RadioButton
-            android:id="@+id/radioButton6"
+            android:id="@+id/rbFinance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

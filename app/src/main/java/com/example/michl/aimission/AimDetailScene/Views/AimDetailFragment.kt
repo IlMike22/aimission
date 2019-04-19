@@ -52,20 +52,18 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
         AimDetailConfigurator.configure(this)
 
-        //todo get intent data here if list item was selected. if there is no data we have the new item create mode
-
         var bundle = activity?.intent?.extras
         var mode = bundle?.get("Mode")
-        var id = bundle?.get("AimId")
+        var id = bundle?.get("AimId") as String
 
-        //todo if mode is EDIT than show all data in the input fields
+
         if (mode == MODE_SELECTOR.Edit)
         {
-
+            output?.getDetailData(id)
         }
 
         // first of all we verify that user is logged in on firebase
-        output?.getFirebaseUser()
+        output?.getAndValidateFirebaseUser()
 
         frg_aimdetail_btn_save.setOnClickListener {
             var isHighPrio = false
@@ -132,7 +130,31 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
     }
 
     override fun showAimDetailData(item: AimItem) {
-        Toast.makeText(context,"Found data ${item.id} and ${item.description}",Toast.LENGTH_SHORT).show()
+        frg_aimdetail_txt_title.setText(item.title)
+        frg_aimdetail_txt_description.setText(item.description)
+        if (item.repeatCount ?:0 > 0)
+        {
+
+            frg_aimdetail_switch_repeat.isChecked = true
+        }
+
+        if (item.comesBack == true)
+            frg_aimdetail_switch_comesback.isChecked = true
+
+        if (item.highPriority == true)
+            frg_aimdetail_switch_aaim.isChecked= true
+        frg_aimdetail_txt_repeat.setText(item.repeatCount.toString())
+
+        when (item.genre)
+        {
+            Genre.PRIVATE -> rbPrivate.isChecked = true
+            Genre.WORK -> rbWork.isChecked= true
+            Genre.FUN -> rbFun.isChecked= true
+            Genre.EDUCATION -> rbEducation.isChecked= true
+            Genre.HEALTH -> rbHealth.isChecked= true
+            Genre.FINANCES -> rbFinance.isChecked= true
+            Genre.UNDEFINED -> Toast.makeText(context,"AimItem's genre is unknown!",Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun getCurrentMonth(): Int {

@@ -18,7 +18,7 @@ interface AimDetailInteractorInput {
     fun createNewAim(userId: String, item: AimItem)
     fun deleteSingleAim(userId: String)
     fun updateAim(userId: String, item: AimItem)
-    fun getFirebaseUser()
+    fun getAndValidateFirebaseUser()
     fun getDetailData(id:String)
 
 }
@@ -27,8 +27,8 @@ class AimDetailInteractor : AimDetailInteractorInput {
 
     var output: AimDetailPresenterInput? = null
 
-    override fun getFirebaseUser() {
-        output?.validateFirebaseUser(FirebaseAuth.getInstance().currentUser?.uid ?: "")
+    override fun getAndValidateFirebaseUser() {
+        output?.validateFirebaseUser(getFireBaseUser())
     }
 
     override fun updateAim(userId: String, item: AimItem) {
@@ -54,7 +54,7 @@ class AimDetailInteractor : AimDetailInteractorInput {
 
     override fun getDetailData(id: String) {
         //todo get firebase data
-        var query = FirebaseDatabase.getInstance().reference.child("Aim")
+        var query = FirebaseDatabase.getInstance().reference.child("Aim").child(getFireBaseUser()).child(id)
         query.addValueEventListener(object: ValueEventListener
         {
             override fun onCancelled(p0: DatabaseError) {
@@ -62,14 +62,23 @@ class AimDetailInteractor : AimDetailInteractorInput {
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var item = dataSnapshot.children
+                var dbItem = dataSnapshot
+
+                var item = dbItem.getValue(AimItem::class.java)
                 Log.i(TAG,"what is $item")
 
                 //now open presenter with aimitem data
-                output?.onAimReadSuccessfully(item as AimItem)  //this WILL crash :D
+                item?.apply {
+                    output?.onAimReadSuccessfully(this)
+                }?:Log.e(TAG,"Couldnt get detail item with $id")
             }
         })
 
+    }
+
+    private fun getFireBaseUser():String
+    {
+        return FirebaseAuth.getInstance().currentUser?.uid ?: ""
     }
 }
 
