@@ -67,8 +67,10 @@ class MainFragment : MainFragmentInput, Fragment() {
                 Log.i("aimission", "an data changed error occured")
             }
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+            override fun onDataChange(data: DataSnapshot) {
                 Log.i("aimission", "the data has changed")
+
+                output?.getUsersMonthList(data)
             }
 
         })
@@ -79,7 +81,7 @@ class MainFragment : MainFragmentInput, Fragment() {
             }
         }
 
-        output?.getUsersMonthList()
+
 
         super.onViewCreated(view, savedInstanceState)
     }

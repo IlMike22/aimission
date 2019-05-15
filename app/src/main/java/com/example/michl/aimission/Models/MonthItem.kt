@@ -4,5 +4,11 @@ data class MonthItem(
         var name:String,
         var aimsAmount:Int,
         var aimsSucceeded:Int,
-        var month:Int,
+        var month:Month,
         var year:Int)
+
+
+enum class Month
+{
+    JANUARY,FEBRUARY,MARCH,APRIL,MAY,JUNE,JULY,AUGUST,SEPTEMBER,NOVEMBER,DECEMBER
+}

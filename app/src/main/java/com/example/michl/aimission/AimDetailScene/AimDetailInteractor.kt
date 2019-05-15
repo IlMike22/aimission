@@ -53,7 +53,6 @@ class AimDetailInteractor : AimDetailInteractorInput {
     }
 
     override fun getDetailData(id: String) {
-        //todo get firebase data
         var query = FirebaseDatabase.getInstance().reference.child("Aim").child(getFireBaseUser()).child(id)
         query.addValueEventListener(object: ValueEventListener
         {
@@ -61,10 +60,8 @@ class AimDetailInteractor : AimDetailInteractorInput {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var dbItem = dataSnapshot
-
-                var item = dbItem.getValue(AimItem::class.java)
+            override fun onDataChange(data: DataSnapshot) {
+                var item = data.getValue(AimItem::class.java)
                 Log.i(TAG,"what is $item")
 
                 //now open presenter with aimitem data

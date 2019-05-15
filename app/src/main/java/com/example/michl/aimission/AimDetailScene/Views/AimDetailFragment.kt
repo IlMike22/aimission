@@ -53,13 +53,23 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
         AimDetailConfigurator.configure(this)
 
         var bundle = activity?.intent?.extras
+
         var mode = bundle?.get("Mode")
-        var id = bundle?.get("AimId") as String
+        var id = bundle?.get("AimId")
 
 
         if (mode == MODE_SELECTOR.Edit)
         {
-            output?.getDetailData(id)
+            if (id != null)
+                try
+                {
+                    output?.getDetailData(id as String)
+                }
+                catch(exc:Exception)
+                {
+                    Log.e(TAG, "Cannot parse bundle parameter AimId to String. ${exc.message}")
+                    //todo handle error case. what should app do?
+                }
         }
 
         // first of all we verify that user is logged in on firebase

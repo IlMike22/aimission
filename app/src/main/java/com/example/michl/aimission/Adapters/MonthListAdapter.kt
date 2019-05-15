@@ -33,8 +33,7 @@ class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>) : RecyclerVie
         }
 
         holder.monthItem.setOnClickListener {
-            //todo router needs current item month and year information so we can show only relevant items in following list
-            router.openAimListView(mDataSet[position].month, mDataSet[position].year)
+           // router.openAimListView(mDataSet[position].month, mDataSet[position].year) // todo fix compiler error 15.05.19
         }
     }
 
