@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AimListScene.Views.AimListFragment">
 
+    <include
+        android:id="@+id/includeEmptyTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="264dp"
+        android:layout_marginStart="40dp"
+        layout="@layout/empty_view_lyt"></include>
+
     <ScrollView
+        android:id="@+id/scrvAimList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -16,5 +26,8 @@
             android:scrollbars="vertical" />
 
     </ScrollView>
-
 </FrameLayout>
+
+
+
+

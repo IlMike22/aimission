@@ -1,6 +1,7 @@
 package com.example.michl.aimission.AimListScene.Views
 
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -71,6 +72,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                //todo onDataChange must not be called if you click a list item button such as checkmark or edit button....
                 Log.i(TAG, "The data has changed.")
                 currentMonth?.let { month ->
                     currentYear?.apply {
@@ -93,6 +95,8 @@ class AimListFragment : AimListFragmentInput, Fragment() {
 
     override fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>) {
 
+        includeEmptyTextView.visibility = View.GONE
+
         aimListAdapter = AimListAdapter(items)
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
@@ -105,7 +109,9 @@ class AimListFragment : AimListFragmentInput, Fragment() {
     }
 
     override fun afterNoUserItemsFound(msg: String) {
-        //todo later we show an empty screen and no longer a toast
+        includeEmptyTextView.visibility = View.VISIBLE
+        scrvAimList.visibility = View.GONE
+
         Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
     }
 
