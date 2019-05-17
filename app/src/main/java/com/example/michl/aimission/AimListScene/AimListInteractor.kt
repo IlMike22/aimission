@@ -3,6 +3,7 @@ package com.example.michl.aimission.AimListScene
 import android.util.Log
 import com.example.michl.aimission.Helper.DateHelper.DateHelper.convertDataInAimItem
 import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
@@ -10,7 +11,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 
 interface AimListInteractorInput {
-    fun getItems(data: DataSnapshot, month: Int, year: Int)
+    fun getItems(data: DataSnapshot, month: Month, year: Int)
     fun changeItemProgress(item: AimItem?):Boolean
 }
 
@@ -18,7 +19,7 @@ class AimListInteractor : AimListInteractorInput {
 
     var output: AimListPresenterInput? = null
 
-    override fun getItems(data: DataSnapshot, month: Int, year: Int) {
+    override fun getItems(data: DataSnapshot, month: Month, year: Int) {
         val userId = getCurrentUserId()
 
         if (userId.isNullOrEmpty())
@@ -50,7 +51,7 @@ class AimListInteractor : AimListInteractorInput {
         return FirebaseAuth.getInstance().currentUser?.uid ?: ""
     }
 
-    private fun createNewItemListFromDb(userId: String, data: DataSnapshot, currentMonth: Int, currentYear: Int): ArrayList<AimItem> {
+    private fun createNewItemListFromDb(userId: String, data: DataSnapshot, currentMonth: Month, currentYear: Int): ArrayList<AimItem> {
         userId?.apply {
 
             return convertDataInAimItem(data, currentMonth, currentYear)

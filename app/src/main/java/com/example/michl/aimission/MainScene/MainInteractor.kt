@@ -1,6 +1,7 @@
 package com.example.michl.aimission.MainScene
 
 import android.util.Log
+import com.example.michl.aimission.Helper.getMonthItem
 import com.example.michl.aimission.Models.*
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
@@ -30,12 +31,11 @@ class MainInteractor : MainInteractorInput {
         // get all months with at least one aim
 
 
-
         var query = FirebaseDatabase.getInstance().reference.child("Aim").child(userId)
         query.addValueEventListener(object: ValueEventListener
         {
             override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.i(TAG,"Firebase data sync was canceled.")
             }
 
             override fun onDataChange(data: DataSnapshot) {
@@ -77,7 +77,7 @@ class MainInteractor : MainInteractorInput {
         var monthList = ArrayList<MonthItem>()
         for (item in items)
         {
-            getMonth(item?.month)
+            getMonthItem(item?.let {item -> item.month}?:0)
 
         }
     }

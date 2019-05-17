@@ -5,17 +5,18 @@ import android.util.Log
 import com.example.michl.aimission.AimDetailScene.Views.AimDetailActivity
 import com.example.michl.aimission.MainScene.Views.MainFragment
 import com.example.michl.aimission.AimListScene.Views.AimListActivity
+import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.Utility.Aimission
 import java.lang.ref.WeakReference
 
 interface MainRouterInput {
     fun openAimDetailView()
-    fun openAimListView(month:Int, year:Int)
+    fun openAimListView(month:Month, year:Int)
 }
 
 class MainRouter : MainRouterInput {
-    override fun openAimListView(month: Int, year:Int) {
+    override fun openAimListView(month: Month, year:Int) {
         Aimission.getAppContext()?.apply {
             var intent = Intent(Aimission.getAppContext(), AimListActivity::class.java)
             intent.putExtra("month",month)

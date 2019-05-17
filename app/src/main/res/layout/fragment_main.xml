@@ -21,15 +21,14 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="676dp">
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabAddAim"
             android:layout_width="322dp"
             android:layout_height="45dp"
-            android:layout_marginStart="336dp"
-            android:layout_marginLeft="336dp"
-            android:layout_marginTop="464dp"
+            android:layout_marginStart="344dp"
+            android:layout_marginTop="624dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

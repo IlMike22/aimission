@@ -15,6 +15,7 @@ import com.example.michl.aimission.AimListScene.AimListConfigurator
 import com.example.michl.aimission.AimListScene.AimListInteractorInput
 import com.example.michl.aimission.AimListScene.AimListRouter
 import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.database.DataSnapshot
@@ -32,9 +33,11 @@ interface AimListFragmentInput {
     fun afterUserIdNotFound(msg: String)
     fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>)
     fun afterUserItemsLoadedFailed(errorMsg: String)
+    fun afterNoUserItemsFound(msg:String)
 }
 
 class AimListFragment : AimListFragmentInput, Fragment() {
+
 
     lateinit var router: AimListRouter
     lateinit var output: AimListInteractorInput
@@ -44,12 +47,22 @@ class AimListFragment : AimListFragmentInput, Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
+        var currentMonth:Month? = null
+        var currentYear:Int? = null
+
         val firebaseDb = FirebaseDatabase.getInstance()
         var databaseRef = firebaseDb.getReference("Aim")
 
         // get current month and year information via intent
-        val currentMonth = activity?.intent?.getIntExtra("month",0)?:Log.i(TAG,"Cannot get intent data information month. Value is null.")
-        val currentYear = activity?.intent?.getIntExtra("year",0)?:Log.i(TAG,"Cannot get intent data information year. Value is null.")
+        try {
+            currentMonth = activity?.intent?.getSerializableExtra("month") as Month
+            currentYear = activity?.intent?.getIntExtra("year",0)?:Log.i(TAG,"Cannot get intent data information year. Value is null.")
+
+        }
+        catch(exc:Exception)
+        {
+            Log.i(TAG,"Cannot get intent data information month.${exc.message}")
+        }
 
 
         databaseRef.addValueEventListener(object : ValueEventListener {
@@ -59,9 +72,12 @@ class AimListFragment : AimListFragmentInput, Fragment() {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.i(TAG, "The data has changed.")
-                output?.getItems(dataSnapshot, currentMonth, currentYear)
+                currentMonth?.let { month ->
+                    currentYear?.apply {
+                        output?.getItems(dataSnapshot, currentMonth, currentYear)
+                    }
+                }
             }
-
         })
         return inflater.inflate(R.layout.fragment_aim_list, container, false)
     }
@@ -86,6 +102,11 @@ class AimListFragment : AimListFragmentInput, Fragment() {
             layoutManager = lytManager
         }
 
+    }
+
+    override fun afterNoUserItemsFound(msg: String) {
+        //todo later we show an empty screen and no longer a toast
+        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
     }
 
     override fun afterUserItemsLoadedFailed(errorMsg: String) {
