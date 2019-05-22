@@ -35,7 +35,6 @@ class MainFragment : MainFragmentInput, Fragment() {
 
 
     private lateinit var lytManager: RecyclerView.LayoutManager
-    private lateinit var aimItemAdapter: RecyclerView.Adapter<*>
     private lateinit var monthItemAdapter: RecyclerView.Adapter<*>
     private lateinit var firebaseAuth: FirebaseAuth
     lateinit var router: MainRouter
@@ -70,18 +69,10 @@ class MainFragment : MainFragmentInput, Fragment() {
             override fun onDataChange(data: DataSnapshot) {
                 Log.i("aimission", "the data has changed")
 
-                output?.getUsersMonthList(data)
+                output.getUsersMonthList(data)
             }
 
         })
-
-        fabAddAim.setOnClickListener {
-            activity?.supportFragmentManager?.apply {
-                router.openAimDetailView()
-            }
-        }
-
-
 
         super.onViewCreated(view, savedInstanceState)
     }

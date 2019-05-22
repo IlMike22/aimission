@@ -5,7 +5,7 @@ import java.lang.ref.WeakReference
 
 interface RegisterPresenterInput {
     fun onUserRegistrationSucceed(email:String, uuid:String)
-    fun onUserRegistrationFailed()
+    fun onUserRegistrationFailed(msg:String)
 }
 
 class RegisterPresenter : RegisterPresenterInput {
@@ -16,8 +16,8 @@ class RegisterPresenter : RegisterPresenterInput {
        output?.get()?.afterRegistrationSucceed(message)
     }
 
-    override fun onUserRegistrationFailed() {
-        val errorMessage = "Couldnt register user. Please try again"
+    override fun onUserRegistrationFailed(msg:String) {
+        val errorMessage = "Couldnt register user. $msg"
         output?.get()?.afterRegistrationFailed(errorMessage)
     }
 
