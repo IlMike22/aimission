@@ -8,7 +8,6 @@ import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -27,8 +26,6 @@ class MainInteractor : MainInteractorInput {
 
     override fun getUsersMonthList(data: DataSnapshot) {
         val userId = getCurrentUserId()
-        val months = ArrayList<MonthItem>()
-        // todo get all active months for userId from firebase dynamically
 
         // get all months with at least one aim
 
@@ -50,12 +47,9 @@ class MainInteractor : MainInteractorInput {
 
                 if (items.size > 0) {
                     val userMonthList = getMonthItems(items)
-                    Log.i(TAG,userMonthList.size.toString())
-
-                    output?.onMonthItemsLoadedSuccessfully(items,userMonthList)
-                }
-                else
-                {
+                    Log.i(TAG, userMonthList.size.toString())
+                    output?.onMonthItemsLoadedSuccessfully(items, userMonthList)
+                } else {
                     //User does not have any aim defined yet. Create current month item for list so he can add his first aim.
                     //Get current month
                     val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
@@ -63,7 +57,7 @@ class MainInteractor : MainInteractorInput {
                     val month = getMonthItem(currentMonth)
                     val monthAsText = getMonthAsText(month)
 
-                    val firstItem = MonthItem(monthAsText,0,0,month,currentYear)
+                    val firstItem = MonthItem(monthAsText, 0, 0, month, currentYear)
                     output?.onEmptyMonthListLoaded(firstItem)
                 }
             }
@@ -76,21 +70,33 @@ class MainInteractor : MainInteractorInput {
         var result = ArrayList<MonthItem>()
         var monthList = ArrayList<Month>()
         var aimAmountPerMonth = 0
+        var lastMonth: Month? = null
+
 
         for (item in items) {
             val currentMonth = getMonthItem(item?.month)
+            if (lastMonth == null)
+                lastMonth = currentMonth
 
-            if (monthList.contains(currentMonth))
-            {
+            if (monthList.contains(currentMonth)) {
+
                 aimAmountPerMonth++ // month already in list, increment counter
-            }
-            else
-            {
-                aimAmountPerMonth++
-                //todo we still have to add solution percent per month
-                result.add(MonthItem(getMonthAsText(currentMonth),aimAmountPerMonth,0,currentMonth,item?.year?:0))
-                monthList.add(getMonthItem(item?.month))
+
+                if (items.indexOf(item) == items.size - 1) {
+                    // we have reached to last item of array
+                    result.add(MonthItem(getMonthAsText(currentMonth), aimAmountPerMonth, 0, lastMonth, item?.year
+                            ?: 0))
+                }
+            } else if (aimAmountPerMonth != 0) {
+                result.add(MonthItem(getMonthAsText(currentMonth), aimAmountPerMonth, 0, lastMonth, item?.year
+                        ?: 0))
                 aimAmountPerMonth = 0 //reset counter, new month incoming
+                lastMonth = null // reset last month
+                //todo we still have to add solution percent per month
+
+            } else {
+                aimAmountPerMonth++
+                monthList.add(getMonthItem(item?.month))
             }
         }
 

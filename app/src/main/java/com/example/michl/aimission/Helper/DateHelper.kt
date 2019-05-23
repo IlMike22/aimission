@@ -27,15 +27,15 @@ class DateHelper {
 
             try {
                 for (singleDataSet in data.children) {
-                        singleDataSet.getValue(AimItem::class.java)?.apply {
-                            queryYear?.let { year ->
-                                queryMonth?.let { month ->
-                                    if (this.year == year && this.month == getIntFromMonth(month))
-                                        aimList.add(this)
+                    singleDataSet.getValue(AimItem::class.java)?.apply {
+                        queryYear?.let { year ->
+                            queryMonth?.let { month ->
+                                if (this.year == year && this.month == getIntFromMonth(month))
+                                    aimList.add(this)
 
-                                }
-                            } ?: aimList.add(this)
-                        }
+                            }
+                        } ?: aimList.add(this)
+                    }
                 }
 
             } catch (exc: Exception) {
@@ -48,15 +48,12 @@ class DateHelper {
 }
 
 enum class MODE_SELECTOR {
-    Read,
     Edit,
     Create
 }
 
-fun getMonthItem(month:Int?):Month
-{
-    return when (month)
-    {
+fun getMonthItem(month: Int?): Month {
+    return when (month) {
         0 -> Month.UNKNOWN
         1 -> Month.JANUARY
         2 -> Month.FEBRUARY
@@ -74,10 +71,8 @@ fun getMonthItem(month:Int?):Month
     }
 }
 
-fun getIntFromMonth(month:Month):Int
-{
-    return when (month)
-    {
+fun getIntFromMonth(month: Month): Int {
+    return when (month) {
         Month.UNKNOWN -> 0
         Month.JANUARY -> 1
         Month.FEBRUARY -> 2
@@ -94,10 +89,8 @@ fun getIntFromMonth(month:Month):Int
     }
 }
 
-fun getMonthAsText(month:Month):String
-{
-    return when(month)
-    {
+fun getMonthAsText(month: Month): String {
+    return when (month) {
         Month.UNKNOWN -> "Unbekannt"
         Month.JANUARY -> "Januar"
         Month.FEBRUARY -> "Februar"

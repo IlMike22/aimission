@@ -30,7 +30,7 @@ class MainPresenter : MainPresenterInput {
     }
 
     override fun onEmptyMonthListLoaded(firstItem:MonthItem) {
-        val msg = "At the moment there are no months where you had defined any aim. Create now your first aim."
+        val msg = "At the moment there are no aims defined by you. Create now your first aim."
         output?.get()?.afterEmptyMonthListLoaded(msg, firstItem)
     }
 

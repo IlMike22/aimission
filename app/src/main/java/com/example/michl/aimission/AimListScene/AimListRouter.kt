@@ -22,7 +22,7 @@ class AimListRouter : AimListRouterInput {
 
         if (aimId.isEmpty() && mode != MODE_SELECTOR.Create)
         {
-            Log.e(TAG, "Couldnt open aim detail view. Id from list is empty.")
+            Log.e(TAG, "Couldn't open aim detail view. Id from list is empty.")
             return
         }
 

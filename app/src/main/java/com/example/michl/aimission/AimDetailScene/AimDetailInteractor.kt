@@ -11,8 +11,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 interface AimDetailInteractorInput {
@@ -20,7 +18,7 @@ interface AimDetailInteractorInput {
     fun deleteSingleAim(userId: String)
     fun updateAim(userId: String, item: AimItem)
     fun getAndValidateFirebaseUser()
-    fun getDetailData(id:String)
+    fun getDetailData(id: String)
 
 }
 
@@ -55,27 +53,25 @@ class AimDetailInteractor : AimDetailInteractorInput {
 
     override fun getDetailData(id: String) {
         var query = FirebaseDatabase.getInstance().reference.child("Aim").child(getFireBaseUser()).child(id)
-        query.addValueEventListener(object: ValueEventListener
-        {
+        query.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onDataChange(data: DataSnapshot) {
                 var item = data.getValue(AimItem::class.java)
-                Log.i(TAG,"what is $item")
+                Log.i(TAG, "what is $item")
 
                 //now open presenter with aimitem data
                 item?.apply {
                     output?.onAimReadSuccessfully(this)
-                }?:Log.e(TAG,"Couldnt get detail item with $id")
+                } ?: Log.e(TAG, "Couldnt get detail item with $id")
             }
         })
 
     }
 
-    private fun getFireBaseUser():String
-    {
+    private fun getFireBaseUser(): String {
         return FirebaseAuth.getInstance().currentUser?.uid ?: ""
     }
 }

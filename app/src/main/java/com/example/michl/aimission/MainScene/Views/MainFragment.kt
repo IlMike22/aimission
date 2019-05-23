@@ -70,7 +70,6 @@ class MainFragment : MainFragmentInput, Fragment() {
 
                 output.getUsersMonthList(data)
             }
-
         })
 
         super.onViewCreated(view, savedInstanceState)

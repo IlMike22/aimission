@@ -26,7 +26,7 @@ class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>) : RecyclerVie
 
     override fun onBindViewHolder(holder: ViewHolderMonthItem, position: Int) {
         holder.monthItem.apply {
-            monthItemCV.monthNameTV.text = mDataSet[position].name
+            monthItemCV.monthNameTV.text = "${mDataSet[position].name} ${mDataSet[position].year}"
             monthItemCV.aimAmountTV.text = "${mDataSet[position].aimsAmount} Ziele insgesamt"
             monthItemCV.aimSucceededTV.text = "${mDataSet[position].aimsSucceeded} % erreicht"
         }
