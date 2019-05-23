@@ -11,7 +11,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.FirebaseDatabase
 
 interface AimListInteractorInput {
-    fun getItems(data: DataSnapshot, month: Month, year: Int)
+    fun getItems(userId:String, data: DataSnapshot, month: Month, year: Int)
     fun changeItemProgress(item: AimItem?):Boolean
 }
 
@@ -19,7 +19,7 @@ class AimListInteractor : AimListInteractorInput {
 
     var output: AimListPresenterInput? = null
 
-    override fun getItems(data: DataSnapshot, month: Month, year: Int) {
+    override fun getItems(userId:String, data: DataSnapshot, month: Month, year: Int) {
         val userId = getCurrentUserId()
 
         if (userId.isNullOrEmpty())

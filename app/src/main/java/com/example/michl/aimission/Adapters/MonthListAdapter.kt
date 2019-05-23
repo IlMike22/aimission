@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.michl.aimission.MainScene.MainRouter
+import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.cv_item_month.view.*
@@ -31,7 +32,7 @@ class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>) : RecyclerVie
         }
 
         holder.monthItem.setOnClickListener {
-             router.openAimListView(mDataSet[position].month, mDataSet[position].year) // todo fix compiler error 15.05.19
+             router.openAimListView(mDataSet[position].month, mDataSet[position].year)
         }
     }
 
