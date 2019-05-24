@@ -18,4 +18,19 @@
     <string name="txt_hint_pswrd">Password</string>
     <string name="txt_hint_pswrd_repeat">Repeat Password</string>
     <string name="msg_no_items">Momentan gibt es hier nichts zu sehen.</string>
+    <string name="frg_aimdetail_tv_title">Titel</string>
+    <string name="frg_aimdetail_tv_description">Beschreibung</string>
+    <string name="frg_aimdetail_switch_periodic">Wiederkehrend</string>
+    <string name="frg_aimdetail_tv_periodic">Ziel startet jeden Monat aufs Neue</string>
+    <string name="frg_aimdetail_switch_repitive">Wiederholend</string>
+    <string name="frg_aimdetail_tv_repeat_count">Wie oft wiederholen?</string>
+    <string name="frg_aimdetail_switch_aaim">A-Ziel</string>
+    <string name="frg_aimdetail_tv_aaim">A-Ziele werden besonders hervorgehoben</string>
+    <string name="frg_aimdetail_btn_save">speichern</string>
+    <string name="frg_aimdetail_rb_private">Privat</string>
+    <string name="frg_aimdetail_rb_work">Beruf und berufliche Weiterbildung</string>
+    <string name="frg_aimdetail_rb_education">private Weiterbildung</string>
+    <string name="frg_aimdetail_rb_health">Sport und Fittness</string>
+    <string name="frg_aimdetail_rb_fun">Spaß und Freizeit</string>
+    <string name="frg_aimdetail_rb_finance">Finanzen und Sparen</string>
 </resources>

@@ -52,14 +52,14 @@ class AimDetailInteractor : AimDetailInteractorInput {
     }
 
     override fun getDetailData(id: String) {
-        var query = FirebaseDatabase.getInstance().reference.child("Aim").child(getFireBaseUser()).child(id)
+        val query = FirebaseDatabase.getInstance().reference.child("Aim").child(getFireBaseUser()).child(id)
         query.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
             override fun onDataChange(data: DataSnapshot) {
-                var item = data.getValue(AimItem::class.java)
+                val item = data.getValue(AimItem::class.java)
                 Log.i(TAG, "what is $item")
 
                 //now open presenter with aimitem data

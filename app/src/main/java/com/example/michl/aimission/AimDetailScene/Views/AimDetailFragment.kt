@@ -31,14 +31,14 @@ interface AimDetailFragmentInput {
     fun onFirebaseUserExists(userId: String)
     fun afterAimStoredSuccessfully()
     fun afterAimStoredFailed()
-    fun showAimDetailData(item:AimItem)
+    fun showAimDetailData(item: AimItem)
 }
 
 class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
 
     var output: AimDetailInteractorInput? = null
-    var userID: String = ""
+    private var userID: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -52,21 +52,17 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
         AimDetailConfigurator.configure(this)
 
-        var bundle = activity?.intent?.extras
+        val bundle = activity?.intent?.extras
 
-        var mode = bundle?.get("Mode")
-        var id = bundle?.get("AimId")
+        val mode = bundle?.get("Mode")
+        val id = bundle?.get("AimId")
 
 
-        if (mode == MODE_SELECTOR.Edit)
-        {
+        if (mode == MODE_SELECTOR.Edit) {
             if (id != null)
-                try
-                {
+                try {
                     output?.getDetailData(id as String)
-                }
-                catch(exc:Exception)
-                {
+                } catch (exc: Exception) {
                     Log.e(TAG, "Cannot parse bundle parameter AimId to String. ${exc.message}")
                     //todo handle error case. what should app do?
                 }
@@ -90,9 +86,10 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
             if (frg_aimdetail_switch_aaim.isChecked)
                 isHighPrio = true
 
+            val genre = getGenre(frg_aimdetail_rbGroup_genre.checkedRadioButtonId)
 
             try {
-                var aimItem = AimItem(UUID.randomUUID().toString(), title, description, repeatCount, isHighPrio, Status.OPEN, Genre.PRIVATE, getCurrentMonth(), getCurrentYear())
+                val aimItem = AimItem(UUID.randomUUID().toString(), title, description, repeatCount, isHighPrio, Status.OPEN, genre, getCurrentMonth(), getCurrentYear())
 
                 output?.createNewAim(userID, aimItem)
             } catch (exc: Exception) {
@@ -142,8 +139,7 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
     override fun showAimDetailData(item: AimItem) {
         frg_aimdetail_txt_title.setText(item.title)
         frg_aimdetail_txt_description.setText(item.description)
-        if (item.repeatCount ?:0 > 0)
-        {
+        if (item.repeatCount ?: 0 > 0) {
 
             frg_aimdetail_switch_repeat.isChecked = true
         }
@@ -152,18 +148,17 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
             frg_aimdetail_switch_comesback.isChecked = true
 
         if (item.highPriority == true)
-            frg_aimdetail_switch_aaim.isChecked= true
+            frg_aimdetail_switch_aaim.isChecked = true
         frg_aimdetail_txt_repeat.setText(item.repeatCount.toString())
 
-        when (item.genre)
-        {
-            Genre.PRIVATE -> rbPrivate.isChecked = true
-            Genre.WORK -> rbWork.isChecked= true
-            Genre.FUN -> rbFun.isChecked= true
-            Genre.EDUCATION -> rbEducation.isChecked= true
-            Genre.HEALTH -> rbHealth.isChecked= true
-            Genre.FINANCES -> rbFinance.isChecked= true
-            Genre.UNDEFINED -> Toast.makeText(context,"AimItem's genre is unknown!",Toast.LENGTH_SHORT).show()
+        when (item.genre) {
+            Genre.PRIVATE -> frg_aimdetail_rb_genrePrivate.isChecked = true
+            Genre.WORK -> frg_aimdetail_rb_genreWork.isChecked = true
+            Genre.FUN -> frg_aimdetail_rb_genreFun.isChecked = true
+            Genre.EDUCATION -> frg_aimdetail_rb_genreEducation.isChecked = true
+            Genre.HEALTH -> frg_aimdetail_rb_genreHealth.isChecked = true
+            Genre.FINANCES -> frg_aimdetail_rb_genreFinance.isChecked = true
+            Genre.UNDEFINED -> Toast.makeText(context, "AimItem's genre is unknown!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -175,6 +170,18 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
     private fun getCurrentYear(): Int {
         val current = LocalDate.now()
         return current.year.absoluteValue
+    }
 
+    private fun getGenre(selectedRbId: Int): Genre {
+
+        return when (selectedRbId) {
+            R.id.frg_aimdetail_rb_genrePrivate -> Genre.PRIVATE
+            R.id.frg_aimdetail_rb_genreWork -> Genre.WORK
+            R.id.frg_aimdetail_rb_genreEducation -> Genre.EDUCATION
+            R.id.frg_aimdetail_rb_genreHealth -> Genre.HEALTH
+            R.id.frg_aimdetail_rb_genreFun -> Genre.FUN
+            R.id.frg_aimdetail_rb_genreFinance -> Genre.FINANCES
+            else -> Genre.UNDEFINED
+        }
     }
 }

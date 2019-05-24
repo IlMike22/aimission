@@ -48,7 +48,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         var currentYear: Int? = null
 
         val firebaseDb = FirebaseDatabase.getInstance()
-        var databaseRef = firebaseDb.getReference("Aim")
+        val databaseRef = firebaseDb.getReference("Aim")
         val userId = getCurrentUserId()
 
         // get current month and year information via intent
@@ -62,7 +62,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         }
 
 
-        var query = databaseRef.child(userId)
+        val query = databaseRef.child(userId)
         query.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.i(TAG, "A data changed error occured.")
@@ -73,7 +73,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
                 Log.i(TAG, "The data has changed.")
                 currentMonth?.let { month ->
                     currentYear?.apply {
-                        output?.getItems(userId, dataSnapshot, currentMonth, currentYear)
+                        output.getItems(userId, dataSnapshot, currentMonth, currentYear)
                     }
                 }
             }

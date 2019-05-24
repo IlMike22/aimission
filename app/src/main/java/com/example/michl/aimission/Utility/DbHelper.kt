@@ -10,52 +10,43 @@ class DbHelper {
 
     companion object {
 
-        val TAG = "Aimission"
+        const val TAG = "Aimission"
 
         /*
         Writes a new item in firebase database (table Aim)
         */
         fun saveNewAim(userId: String, item: AimItem): Boolean {
-            try {
+            return try {
                 getAimTableReference().child(userId).child(item.id ?: "").setValue(item)
-                return true
+                true
             } catch (exception: Exception) {
                 Log.e("Aimission", "Failed writing new item in table Aim. Details: ${exception.message}")
-                return false
+                false
             }
         }
-//
-//        fun getAllAimsForUser(userId:String):ArrayList<AimItem>
-//        {
-//            val aims = ArrayList<AimItem>()
-//
-//            getAimTableReference().
-//
-//        }
 
         /*
         Deletes a specific aim item from table Aim
          */
         fun deleteAimItem(userId: String, itemId: String): Boolean {
-            try {
+            return try {
                 getAimTableReference().child(userId).child(itemId).setValue(null)
                 Log.i("Aimission", "Item was successfully deleted.")
-                return true
+                true
             } catch (exception: java.lang.Exception) {
                 Log.e("Aimission", "An error occured while deleting item. Details: ${exception.message}")
-                return false
+                false
             }
         }
 
         // Creates a new person id reference on aim table if not exists.
-        // todo maybe we dont need this.
         fun createNewPersonReference(userId: String): Boolean {
-            try {
+            return try {
                 getAimTableReference().child(userId).setValue(null)
-                return true
+                true
             } catch (exc: java.lang.Exception) {
                 Log.e(TAG, "An error occured while trying to add new user id dataset on aim table. Details: ${exc.message}")
-                return false
+                false
             }
         }
 
@@ -63,11 +54,6 @@ class DbHelper {
         private fun getAimTableReference(): DatabaseReference {
             val firebaseDb = FirebaseDatabase.getInstance()
             return firebaseDb.getReference("Aim")
-        }
-
-        private fun getPersonTableReference(): DatabaseReference {
-            val firebaseDB = FirebaseDatabase.getInstance()
-            return firebaseDB.getReference("Person")
         }
     }
 
