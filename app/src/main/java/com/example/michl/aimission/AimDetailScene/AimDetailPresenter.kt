@@ -10,11 +10,11 @@ interface AimDetailPresenterInput
     fun onAimStoredSuccessfully()
     fun onAimStoredFailed()
     fun onAimReadSuccessfully(item:AimItem)
+    fun onErrorMessageCreated(msg:String)
 }
 
 class AimDetailPresenter: AimDetailPresenterInput
 {
-
 
     var output:WeakReference<AimDetailFragmentInput>? = null
 
@@ -34,6 +34,10 @@ class AimDetailPresenter: AimDetailPresenterInput
     }
     override fun onAimReadSuccessfully(item:AimItem) {
         output?.get()?.showAimDetailData(item)
+    }
+
+    override fun onErrorMessageCreated(msg: String) {
+        output?.get()?.showErrorMessageToUser(msg)
     }
 
 

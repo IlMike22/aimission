@@ -32,9 +32,11 @@ interface AimDetailFragmentInput {
     fun afterAimStoredSuccessfully()
     fun afterAimStoredFailed()
     fun showAimDetailData(item: AimItem)
+    fun showErrorMessageToUser(msg:String)
 }
 
 class AimDetailFragment : AimDetailFragmentInput, Fragment() {
+
 
 
     var output: AimDetailInteractorInput? = null
@@ -60,12 +62,20 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
         if (mode == MODE_SELECTOR.Edit) {
             if (id != null)
+            {
                 try {
                     output?.getDetailData(id as String)
                 } catch (exc: Exception) {
                     Log.e(TAG, "Cannot parse bundle parameter AimId to String. ${exc.message}")
-                    //todo handle error case. what should app do?
+                    output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_unknown_error_edit_mode))
                 }
+            }
+            else
+            {
+                Log.e(TAG,"Cannot read item data for edit mode because item id is null.")
+                output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_item_id_null))
+            }
+
         }
 
         // first of all we verify that user is logged in on firebase
@@ -160,6 +170,10 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
             Genre.FINANCES -> frg_aimdetail_rb_genreFinance.isChecked = true
             Genre.UNDEFINED -> Toast.makeText(context, "AimItem's genre is unknown!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun showErrorMessageToUser(msg: String) {
+        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
     }
 
     private fun getCurrentMonth(): Int {

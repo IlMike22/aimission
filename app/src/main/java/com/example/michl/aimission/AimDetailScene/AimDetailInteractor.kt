@@ -19,10 +19,12 @@ interface AimDetailInteractorInput {
     fun updateAim(userId: String, item: AimItem)
     fun getAndValidateFirebaseUser()
     fun getDetailData(id: String)
+    fun createErrorMessageIfItemIdIsNull(msg:String)
 
 }
 
 class AimDetailInteractor : AimDetailInteractorInput {
+
 
     var output: AimDetailPresenterInput? = null
 
@@ -69,6 +71,10 @@ class AimDetailInteractor : AimDetailInteractorInput {
             }
         })
 
+    }
+
+    override fun createErrorMessageIfItemIdIsNull(msg:String) {
+        output?.onErrorMessageCreated(msg)
     }
 
     private fun getFireBaseUser(): String {
