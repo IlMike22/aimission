@@ -23,22 +23,23 @@ import kotlin.math.absoluteValue
 
 
 interface AimDetailFragmentInput {
-    fun onAimSavedSuccessfully()
-    fun onAimSavedFailed(errorMsg: String)
-    fun onAimDeletedSuccessfully()
-    fun onAimDeletedFailed(errorMsg: String)
+    fun afterDeleteItemSucceed()
+    fun afterDeleteItemFailed(msg: String)
     fun onFirebaseUserNotExists(msg: String)
     fun onFirebaseUserExists(userId: String)
-    fun afterAimStoredSuccessfully()
-    fun afterAimStoredFailed()
-    fun showAimDetailData(item:AimItem)
+    fun afterSaveItemSucceed()
+    fun afterSaveItemFailed(msg:String)
+    fun afterUpdateItemSucceed(msg:String)
+    fun afterUpdateItemFailed(msg:String)
+    fun showAimDetailData(item: AimItem)
+    fun showErrorMessageToUser(msg:String)
 }
 
 class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
 
     var output: AimDetailInteractorInput? = null
-    var userID: String = ""
+    private var userID: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -52,24 +53,28 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
         AimDetailConfigurator.configure(this)
 
-        var bundle = activity?.intent?.extras
+        val bundle = activity?.intent?.extras
 
-        var mode = bundle?.get("Mode")
-        var id = bundle?.get("AimId")
+        val mode = bundle?.get("Mode")
+        var itemId = bundle?.getString("AimId")
 
 
-        if (mode == MODE_SELECTOR.Edit)
-        {
-            if (id != null)
-                try
-                {
-                    output?.getDetailData(id as String)
-                }
-                catch(exc:Exception)
-                {
+        if (mode == MODE_SELECTOR.Edit) {
+            if (itemId != null)
+            {
+                try {
+                    output?.getDetailData(itemId as String)
+                } catch (exc: Exception) {
                     Log.e(TAG, "Cannot parse bundle parameter AimId to String. ${exc.message}")
-                    //todo handle error case. what should app do?
+                    output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_unknown_error_edit_mode))
                 }
+            }
+            else
+            {
+                Log.e(TAG,"Cannot read item data for edit mode because item id is null.")
+                output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_item_id_null))
+            }
+
         }
 
         // first of all we verify that user is logged in on firebase
@@ -90,11 +95,18 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
             if (frg_aimdetail_switch_aaim.isChecked)
                 isHighPrio = true
 
+            val genre = getGenre(frg_aimdetail_rbGroup_genre.checkedRadioButtonId)
 
             try {
-                var aimItem = AimItem(UUID.randomUUID().toString(), title, description, repeatCount, isHighPrio, Status.OPEN, Genre.PRIVATE, getCurrentMonth(), getCurrentYear())
+                if (itemId.isNullOrEmpty())
+                    itemId = UUID.randomUUID().toString()
+                val aimItem = AimItem(itemId, title, description, repeatCount, isHighPrio, Status.OPEN, genre, getCurrentMonth(), getCurrentYear())
 
-                output?.createNewAim(userID, aimItem)
+                if (mode == MODE_SELECTOR.Create)
+                    output?.createNewAim(userID, aimItem)
+                else if (mode == MODE_SELECTOR.Edit)
+                    output?.updateAim(userID,aimItem)
+
             } catch (exc: Exception) {
                 Log.e(TAG, "Unable to store new aim item. Reason: ${exc.message}")
                 Toast.makeText(context, "Something went wrong while trying to save your new aim item. Please try again", Toast.LENGTH_SHORT).show()
@@ -114,36 +126,37 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
         userID = userId
     }
 
-    override fun onAimSavedSuccessfully() {
+
+    override fun afterDeleteItemSucceed() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onAimSavedFailed(errorMsg: String) {
+    override fun afterDeleteItemFailed(msg: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onAimDeletedSuccessfully() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onAimDeletedFailed(errorMsg: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun afterAimStoredSuccessfully() {
+    override fun afterSaveItemSucceed() {
         Toast.makeText(context, "Aim stored successfully!", Toast.LENGTH_SHORT).show()
         activity?.finish()
     }
 
-    override fun afterAimStoredFailed() {
-        Toast.makeText(context, "Aim stored failed! Please try again.", Toast.LENGTH_SHORT).show()
+    override fun afterSaveItemFailed(msg:String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun afterUpdateItemSucceed(msg:String) {
+        Toast.makeText(context,msg,Toast.LENGTH_LONG).show()
+        activity?.finish()
+    }
+
+    override fun afterUpdateItemFailed(msg: String) {
+        Toast.makeText(context,msg,Toast.LENGTH_LONG).show()
     }
 
     override fun showAimDetailData(item: AimItem) {
         frg_aimdetail_txt_title.setText(item.title)
         frg_aimdetail_txt_description.setText(item.description)
-        if (item.repeatCount ?:0 > 0)
-        {
+        if (item.repeatCount ?: 0 > 0) {
 
             frg_aimdetail_switch_repeat.isChecked = true
         }
@@ -152,19 +165,22 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
             frg_aimdetail_switch_comesback.isChecked = true
 
         if (item.highPriority == true)
-            frg_aimdetail_switch_aaim.isChecked= true
+            frg_aimdetail_switch_aaim.isChecked = true
         frg_aimdetail_txt_repeat.setText(item.repeatCount.toString())
 
-        when (item.genre)
-        {
-            Genre.PRIVATE -> rbPrivate.isChecked = true
-            Genre.WORK -> rbWork.isChecked= true
-            Genre.FUN -> rbFun.isChecked= true
-            Genre.EDUCATION -> rbEducation.isChecked= true
-            Genre.HEALTH -> rbHealth.isChecked= true
-            Genre.FINANCES -> rbFinance.isChecked= true
-            Genre.UNDEFINED -> Toast.makeText(context,"AimItem's genre is unknown!",Toast.LENGTH_SHORT).show()
+        when (item.genre) {
+            Genre.PRIVATE -> frg_aimdetail_rb_genrePrivate.isChecked = true
+            Genre.WORK -> frg_aimdetail_rb_genreWork.isChecked = true
+            Genre.FUN -> frg_aimdetail_rb_genreFun.isChecked = true
+            Genre.EDUCATION -> frg_aimdetail_rb_genreEducation.isChecked = true
+            Genre.HEALTH -> frg_aimdetail_rb_genreHealth.isChecked = true
+            Genre.FINANCES -> frg_aimdetail_rb_genreFinance.isChecked = true
+            Genre.UNDEFINED -> Toast.makeText(context, "AimItem's genre is unknown!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun showErrorMessageToUser(msg: String) {
+        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
     }
 
     private fun getCurrentMonth(): Int {
@@ -175,6 +191,18 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
     private fun getCurrentYear(): Int {
         val current = LocalDate.now()
         return current.year.absoluteValue
+    }
 
+    private fun getGenre(selectedRbId: Int): Genre {
+
+        return when (selectedRbId) {
+            R.id.frg_aimdetail_rb_genrePrivate -> Genre.PRIVATE
+            R.id.frg_aimdetail_rb_genreWork -> Genre.WORK
+            R.id.frg_aimdetail_rb_genreEducation -> Genre.EDUCATION
+            R.id.frg_aimdetail_rb_genreHealth -> Genre.HEALTH
+            R.id.frg_aimdetail_rb_genreFun -> Genre.FUN
+            R.id.frg_aimdetail_rb_genreFinance -> Genre.FINANCES
+            else -> Genre.UNDEFINED
+        }
     }
 }

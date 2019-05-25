@@ -13,6 +13,7 @@ import com.example.michl.aimission.Adapters.MonthListAdapter
 import com.example.michl.aimission.MainScene.MainConfigurator
 import com.example.michl.aimission.MainScene.MainInteractorInput
 import com.example.michl.aimission.MainScene.MainRouter
+import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.R
 import com.google.firebase.auth.FirebaseAuth
@@ -26,16 +27,14 @@ import kotlinx.android.synthetic.main.fragment_main.*
 interface MainFragmentInput {
 
     fun afterUserIdNotFound(errorMsg: String)
-    fun afterMonthItemsLoadedSuccessfully(items: ArrayList<MonthItem>)
+    fun afterMonthItemsLoadedSuccessfully(monthItems: ArrayList<MonthItem>)
     fun afterMonthItemsLoadedFailed(errorMsg: String)
-
+    fun afterEmptyMonthListLoaded(msg:String, firstItem:MonthItem)
 }
 
 class MainFragment : MainFragmentInput, Fragment() {
 
-
     private lateinit var lytManager: RecyclerView.LayoutManager
-    private lateinit var aimItemAdapter: RecyclerView.Adapter<*>
     private lateinit var monthItemAdapter: RecyclerView.Adapter<*>
     private lateinit var firebaseAuth: FirebaseAuth
     lateinit var router: MainRouter
@@ -59,7 +58,6 @@ class MainFragment : MainFragmentInput, Fragment() {
         var firebaseDb = FirebaseDatabase.getInstance()
         var databaseRef = firebaseDb.getReference("Aim")
 
-
         // sample read out second dataset with known id
 
         databaseRef.addValueEventListener(object : ValueEventListener {
@@ -70,18 +68,9 @@ class MainFragment : MainFragmentInput, Fragment() {
             override fun onDataChange(data: DataSnapshot) {
                 Log.i("aimission", "the data has changed")
 
-                output?.getUsersMonthList(data)
+                output.getUsersMonthList(data)
             }
-
         })
-
-        fabAddAim.setOnClickListener {
-            activity?.supportFragmentManager?.apply {
-                router.openAimDetailView()
-            }
-        }
-
-
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -90,14 +79,14 @@ class MainFragment : MainFragmentInput, Fragment() {
     Loads all aim items for current user from db and creates list which is shown in MainFragment.
     If user is not logged in, we show an empty list with request to login instead.
      */
-
     override fun afterUserIdNotFound(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterMonthItemsLoadedSuccessfully(items: ArrayList<MonthItem>) {
-        monthItemAdapter = MonthListAdapter(items)
+    override fun afterMonthItemsLoadedSuccessfully(monthItems: ArrayList<MonthItem>) {
+        monthItemAdapter = MonthListAdapter(monthItems)
         lytManager = LinearLayoutManager(activity?.applicationContext)
+
 
         monthListRV.apply {
             setHasFixedSize(true)
@@ -108,6 +97,20 @@ class MainFragment : MainFragmentInput, Fragment() {
 
     override fun afterMonthItemsLoadedFailed(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun afterEmptyMonthListLoaded(msg: String, firstItem:MonthItem) {
+        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
+        var monthList = ArrayList<MonthItem>()
+        monthList.add(firstItem)
+        monthItemAdapter = MonthListAdapter(monthList)
+        lytManager = LinearLayoutManager(activity?.applicationContext)
+
+        monthListRV.apply {
+            setHasFixedSize(true)
+            adapter = monthItemAdapter
+            layoutManager = lytManager
+        }
     }
 
 }

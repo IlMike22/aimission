@@ -3,6 +3,7 @@ package com.example.michl.aimission.RegisterScene
 import android.util.Log
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 
 interface RegisterInteractorInput {
@@ -34,8 +35,15 @@ class RegisterInteractor : RegisterInteractorInput {
                     }
 
                 } else {
-                    Log.e(TAG, "User registration was not successful. Details: ${it.exception}")
-                    output?.onUserRegistrationFailed()
+                    Log.e(TAG, "User registration was not successful. Details: ${it.exception?.message}")
+                    if (it.exception is FirebaseNetworkException)
+                    {
+                        output?.onUserRegistrationFailed("A network error occured. Are you connected to the internet?")
+                    }
+                    else
+                    {
+                        output?.onUserRegistrationFailed("Unknown error reason.")
+                    }
                 }
             }
         } catch (exc: Exception) {

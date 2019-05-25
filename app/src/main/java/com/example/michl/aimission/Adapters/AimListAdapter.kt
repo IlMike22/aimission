@@ -16,14 +16,14 @@ import kotlinx.android.synthetic.main.cv_item_aim.view.*
 class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
 
     val router = AimListRouter()
-    val interactor = AimListInteractor()
+    private val interactor = AimListInteractor()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderAimItem {
         val aimItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_item_aim, parent, false) as CardView
 
 
-        return AimListAdapter.ViewHolderAimItem(aimItem)
+        return ViewHolderAimItem(aimItem)
     }
 
     override fun getItemCount() = data.size
@@ -33,7 +33,7 @@ class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapte
             aimItemCV.titleTV.text = data[position].title
             aimItemCV.statusTV.text = getAimStatus(data[position].status)
             aimItemCV.aimTypeTV.text = getPriorityText(data[position].highPriority)
-            aimItemCV.genreTV.text = getGenreAsText(data[position].genre?:Genre.UNDEFINED)
+            aimItemCV.genreTV.text = getGenreAsText(data[position].genre ?: Genre.UNDEFINED)
 
             aimItemCV.btnFinishAim.setOnClickListener {
 
@@ -48,7 +48,7 @@ class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapte
             }
 
             aimItemCV.btnEditItem.setOnClickListener {
-                router.showAimDetailView(data[position].id?:"",MODE_SELECTOR.Edit)
+                router.showAimDetailView(data[position].id ?: "", MODE_SELECTOR.Edit)
             }
 
             if (data[position].status == Status.OPEN)
@@ -70,11 +70,9 @@ class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapte
         return ""
     }
 
-    private fun getGenreAsText(genre: Genre):String
-    {
-        return when (genre)
-        {
-            Genre.PRIVATE-> "privat"
+    private fun getGenreAsText(genre: Genre): String {
+        return when (genre) {
+            Genre.PRIVATE -> "privat"
             Genre.EDUCATION -> "Weiterbildung privat"
             Genre.FUN -> "Spaß und Freizeit"
             Genre.WORK -> "Arbeit und berufliche Weiterbildung"

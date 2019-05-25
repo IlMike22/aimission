@@ -1,22 +1,23 @@
 package com.example.michl.aimission.AimDetailScene
 
+import android.util.Log
 import com.example.michl.aimission.AimDetailScene.Views.AimDetailFragmentInput
 import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
 
-interface AimDetailPresenterInput
-{
-    fun validateFirebaseUser(userID:String)
-    fun onAimStoredSuccessfully()
-    fun onAimStoredFailed()
-    fun onAimReadSuccessfully(item:AimItem)
+interface AimDetailPresenterInput {
+    fun validateFirebaseUser(userID: String)
+    fun onSaveItemSucceed()
+    fun onSaveItemFailed()
+    fun onUpdateItemSucceed()
+    fun onUpdateItemFailed()
+    fun onAimReadSuccessfully(item: AimItem)
+    fun onErrorMessageCreated(msg: String)
 }
 
-class AimDetailPresenter: AimDetailPresenterInput
-{
-
-
-    var output:WeakReference<AimDetailFragmentInput>? = null
+class AimDetailPresenter : AimDetailPresenterInput {
+    var output: WeakReference<AimDetailFragmentInput>? = null
 
     override fun validateFirebaseUser(userID: String) {
         if (userID.isNullOrEmpty())
@@ -25,15 +26,33 @@ class AimDetailPresenter: AimDetailPresenterInput
             output?.get()?.onFirebaseUserExists(userID)
     }
 
-    override fun onAimStoredSuccessfully() {
-        output?.get()?.afterAimStoredSuccessfully()
+    override fun onSaveItemSucceed() {
+        output?.get()?.afterSaveItemSucceed()
     }
 
-    override fun onAimStoredFailed() {
-        output?.get()?.afterAimStoredFailed()
+    override fun onSaveItemFailed() {
+        val msg = "An error occured while trying to update item."
+        output?.get()?.afterSaveItemFailed(msg)
     }
-    override fun onAimReadSuccessfully(item:AimItem) {
+
+    override fun onAimReadSuccessfully(item: AimItem) {
         output?.get()?.showAimDetailData(item)
+    }
+
+    override fun onErrorMessageCreated(msg: String) {
+        output?.get()?.showErrorMessageToUser(msg)
+    }
+
+    override fun onUpdateItemFailed() {
+        val msg = "An error occured while trying to update item."
+        Log.e(TAG, msg)
+        output?.get()?.afterUpdateItemFailed(msg)
+    }
+
+    override fun onUpdateItemSucceed() {
+        val msg = "Item was updated successfully."
+        Log.i(TAG, msg)
+        output?.get()?.afterUpdateItemSucceed(msg)
     }
 
 

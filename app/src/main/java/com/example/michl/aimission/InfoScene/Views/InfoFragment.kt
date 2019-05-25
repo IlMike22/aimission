@@ -71,7 +71,7 @@ class InfoFragment : Fragment(), InfoFragmentInput {
             // todo implement function for loading current user and showing ui change
         }
         else
-            Log.i(TAG, "no result givven.")
+            Log.i(TAG, "no result given.")
     }
 
     override fun onLoginUserClicked(email: String, pswrd: String) {
@@ -91,7 +91,7 @@ class InfoFragment : Fragment(), InfoFragmentInput {
     }
 
     override fun afterUserLoggedInError(errorMessage: String) {
-        progressBar.visibility = View.GONE
+        progressBar?.visibility = View.GONE
         showLoginStatus()
         Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show()
     }
