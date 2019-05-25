@@ -35,7 +35,7 @@ class MainInteractor : MainInteractorInput {
         query.addValueEventListener(object: ValueEventListener
         {
             override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.e(TAG,"Item loading was canceled. ${p0.message}")
             }
 
             override fun onDataChange(data: DataSnapshot) {
