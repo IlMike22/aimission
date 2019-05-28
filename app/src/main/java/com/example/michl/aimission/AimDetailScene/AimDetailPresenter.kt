@@ -12,11 +12,15 @@ interface AimDetailPresenterInput {
     fun onSaveItemFailed()
     fun onUpdateItemSucceed()
     fun onUpdateItemFailed()
+    fun onDeleteItemSucceed()
+    fun onDeleteItemFailed()
     fun onAimReadSuccessfully(item: AimItem)
     fun onErrorMessageCreated(msg: String)
 }
 
 class AimDetailPresenter : AimDetailPresenterInput {
+
+
     var output: WeakReference<AimDetailFragmentInput>? = null
 
     override fun validateFirebaseUser(userID: String) {
@@ -53,6 +57,16 @@ class AimDetailPresenter : AimDetailPresenterInput {
         val msg = "Item was updated successfully."
         Log.i(TAG, msg)
         output?.get()?.afterUpdateItemSucceed(msg)
+    }
+
+    override fun onDeleteItemSucceed() {
+        val msg = "Item was deleted successfully."
+        output?.get()?.afterDeleteItemSucceed(msg)
+    }
+
+    override fun onDeleteItemFailed() {
+       val msg = "An error occured while trying to delete item."
+        output?.get()?.afterDeleteItemFailed(msg)
     }
 
 

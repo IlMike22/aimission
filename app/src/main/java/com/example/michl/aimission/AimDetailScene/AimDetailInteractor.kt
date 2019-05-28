@@ -15,7 +15,7 @@ import com.google.firebase.database.ValueEventListener
 
 interface AimDetailInteractorInput {
     fun createNewAim(userId: String, item: AimItem)
-    fun deleteSingleAim(userId: String)
+    fun deleteSingleAim(userId: String,  itemId:String)
     fun updateAim(userId: String, item: AimItem)
     fun getAndValidateFirebaseUser()
     fun getDetailData(id: String)
@@ -40,8 +40,11 @@ class AimDetailInteractor : AimDetailInteractorInput {
             output?.onUpdateItemFailed()
     }
 
-    override fun deleteSingleAim(userId: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun deleteSingleAim(userId: String, itemId:String) {
+        if (DbHelper.deleteAimItem(userId,itemId))
+            output?.onDeleteItemSucceed()
+        else
+            output?.onDeleteItemFailed()
     }
 
     override fun createNewAim(userId: String, item: AimItem) {

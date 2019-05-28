@@ -1,6 +1,7 @@
 package com.example.michl.aimission.AimDetailScene.Views
 
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -23,16 +24,16 @@ import kotlin.math.absoluteValue
 
 
 interface AimDetailFragmentInput {
-    fun afterDeleteItemSucceed()
+    fun afterDeleteItemSucceed(msg: String)
     fun afterDeleteItemFailed(msg: String)
     fun onFirebaseUserNotExists(msg: String)
     fun onFirebaseUserExists(userId: String)
     fun afterSaveItemSucceed()
-    fun afterSaveItemFailed(msg:String)
-    fun afterUpdateItemSucceed(msg:String)
-    fun afterUpdateItemFailed(msg:String)
+    fun afterSaveItemFailed(msg: String)
+    fun afterUpdateItemSucceed(msg: String)
+    fun afterUpdateItemFailed(msg: String)
     fun showAimDetailData(item: AimItem)
-    fun showErrorMessageToUser(msg:String)
+    fun showErrorMessageToUser(msg: String)
 }
 
 class AimDetailFragment : AimDetailFragmentInput, Fragment() {
@@ -60,18 +61,18 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
 
         if (mode == MODE_SELECTOR.Edit) {
-            if (itemId != null)
-            {
+
+            frg_aimdetail_btn_delete.visibility = View.VISIBLE
+
+            if (itemId != null) {
                 try {
-                    output?.getDetailData(itemId as String)
+                    output?.getDetailData(itemId)
                 } catch (exc: Exception) {
                     Log.e(TAG, "Cannot parse bundle parameter AimId to String. ${exc.message}")
                     output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_unknown_error_edit_mode))
                 }
-            }
-            else
-            {
-                Log.e(TAG,"Cannot read item data for edit mode because item id is null.")
+            } else {
+                Log.e(TAG, "Cannot read item data for edit mode because item id is null.")
                 output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_item_id_null))
             }
 
@@ -105,11 +106,27 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
                 if (mode == MODE_SELECTOR.Create)
                     output?.createNewAim(userID, aimItem)
                 else if (mode == MODE_SELECTOR.Edit)
-                    output?.updateAim(userID,aimItem)
+                    output?.updateAim(userID, aimItem)
 
             } catch (exc: Exception) {
                 Log.e(TAG, "Unable to store new aim item. Reason: ${exc.message}")
                 Toast.makeText(context, "Something went wrong while trying to save your new aim item. Please try again", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        frg_aimdetail_btn_delete.setOnClickListener {
+
+            if (showSimpleDialog("Delete item", "Do you really want to delete this item?", { isDelete ->
+                        if (isDelete) {
+                            //no clicked
+                            itemId?.let { itemId ->
+                                output?.deleteSingleAim(userID, itemId)
+                            }
+                                    ?: Log.e(TAG, "Cannot call delete item function because itemId is null.")
+                        }
+                    })) {
+
             }
         }
     }
@@ -127,12 +144,14 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
     }
 
 
-    override fun afterDeleteItemSucceed() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun afterDeleteItemSucceed(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        activity?.finish()
     }
 
     override fun afterDeleteItemFailed(msg: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        activity?.finish()
     }
 
     override fun afterSaveItemSucceed() {
@@ -140,17 +159,17 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
         activity?.finish()
     }
 
-    override fun afterSaveItemFailed(msg:String) {
+    override fun afterSaveItemFailed(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterUpdateItemSucceed(msg:String) {
-        Toast.makeText(context,msg,Toast.LENGTH_LONG).show()
+    override fun afterUpdateItemSucceed(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
         activity?.finish()
     }
 
     override fun afterUpdateItemFailed(msg: String) {
-        Toast.makeText(context,msg,Toast.LENGTH_LONG).show()
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
 
     override fun showAimDetailData(item: AimItem) {
@@ -180,7 +199,7 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
     }
 
     override fun showErrorMessageToUser(msg: String) {
-        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun getCurrentMonth(): Int {
@@ -204,5 +223,24 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
             R.id.frg_aimdetail_rb_genreFinance -> Genre.FINANCES
             else -> Genre.UNDEFINED
         }
+    }
+
+    private fun showSimpleDialog(title: String, msg: String, onButtonClicked: (Boolean) -> Unit): Boolean {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(title)
+        builder.setMessage(msg)
+        builder.setPositiveButton("Yes")
+        { _, _ ->
+
+            onButtonClicked(true)
+        }
+        builder.setNegativeButton("no")
+        { _, _ ->
+
+            onButtonClicked(false)
+        }
+        builder.show()
+
+        return false
     }
 }
