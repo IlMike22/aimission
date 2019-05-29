@@ -117,7 +117,7 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
         frg_aimdetail_btn_delete.setOnClickListener {
 
-            if (showSimpleDialog("Delete item", "Do you really want to delete this item?", { isDelete ->
+            if (showSimpleDialog("Delete item", "Do you really want to delete this item?") { isDelete ->
                         if (isDelete) {
                             //no clicked
                             itemId?.let { itemId ->
@@ -125,7 +125,7 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
                             }
                                     ?: Log.e(TAG, "Cannot call delete item function because itemId is null.")
                         }
-                    })) {
+                    }) {
 
             }
         }

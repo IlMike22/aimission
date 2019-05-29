@@ -32,9 +32,12 @@ interface AimListFragmentInput {
     fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>)
     fun afterUserItemsLoadedFailed(errorMsg: String)
     fun afterNoUserItemsFound(msg: String)
+    fun afterItemStatusChangeSucceed(item:AimItem)
+    fun afterItemStatusChangeFailed(msg:String)
 }
 
 class AimListFragment : AimListFragmentInput, Fragment() {
+
 
     lateinit var router: AimListRouter
     lateinit var output: AimListInteractorInput
@@ -87,7 +90,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
 
         fltAddAimItem.setOnClickListener {
             activity?.supportFragmentManager?.apply {
-                router.showAimDetailView("", MODE_SELECTOR.Create) //todo 22.05. hier muss ein neues Item erzeugt werden, entsprechende Methode aufrufen
+                router.showAimDetailView("", MODE_SELECTOR.Create)
             }
         }
 
@@ -100,7 +103,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
 
     override fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>) {
 
-        includeEmptyTextView.visibility = View.GONE
+        includeEmptyTextView?.visibility = View.GONE
 
         aimListAdapter = AimListAdapter(items)
         lytManager = LinearLayoutManager(activity?.applicationContext)
@@ -121,5 +124,13 @@ class AimListFragment : AimListFragmentInput, Fragment() {
 
     override fun afterUserItemsLoadedFailed(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun afterItemStatusChangeSucceed(item: AimItem) {
+        aimListAdapter.notifyDataSetChanged()
+    }
+
+    override fun afterItemStatusChangeFailed(msg: String) {
+       Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
     }
 }

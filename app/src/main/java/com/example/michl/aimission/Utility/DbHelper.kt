@@ -51,7 +51,7 @@ class DbHelper {
         }
 
 
-        private fun getAimTableReference(): DatabaseReference {
+        fun getAimTableReference(): DatabaseReference {
             val firebaseDb = FirebaseDatabase.getInstance()
             return firebaseDb.getReference("Aim")
         }

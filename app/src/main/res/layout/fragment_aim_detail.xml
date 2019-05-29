@@ -73,7 +73,7 @@
     <EditText
         android:id="@+id/frg_aimdetail_txt_repeat"
         android:layout_width="38dp"
-        android:layout_height="32dp"
+        android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -85,18 +85,18 @@
         app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toEndOf="@+id/frg_aimdetail_switch_repeat"
         app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_tv_infoAimRepeatAmount"
-        app:layout_constraintVertical_bias="0.245" />
+        app:layout_constraintVertical_bias="0.917" />
 
     <TextView
         android:id="@+id/frg_aimdetail_tv_infoAimRepeatAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:text="@string/frg_aimdetail_tv_repeat_count"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintStart_toEndOf="@+id/frg_aimdetail_txt_repeat"
         app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_tv_infoAimRepeat" />
 
@@ -105,7 +105,7 @@
         android:layout_width="136dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/frg_aimdetail_switch_aaim"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_switch_repeat" />
@@ -114,8 +114,8 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="60dp"
         android:text="@string/frg_aimdetail_tv_aaim"
         app:layout_constraintStart_toEndOf="@+id/frg_aimdetail_switch_aaim"
         app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_tv_infoAimRepeat" />
@@ -125,7 +125,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="296dp"
-        android:layout_marginTop="256dp"
+        android:layout_marginTop="236dp"
         android:text="@string/frg_aimdetail_btn_save"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -135,7 +135,7 @@
         android:layout_width="366dp"
         android:layout_height="197dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:orientation="vertical"
@@ -143,7 +143,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.793"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_switch_aaim">
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <RadioButton
             android:id="@+id/frg_aimdetail_rb_genrePrivate"
@@ -194,14 +194,14 @@
         android:layout_width="118dp"
         android:layout_height="42dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
-        android:text="Löschen"
+        android:text="@string/frg_aimdetail_btn_text_delete"
+        android:visibility="visible"
         app:layout_constraintEnd_toStartOf="@+id/frg_aimdetail_btn_save"
-        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintHorizontal_bias="0.123"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_rbGroup_genre"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_rbGroup_genre" />
 
 
 </android.support.constraint.ConstraintLayout>
