@@ -15,14 +15,14 @@ import com.example.michl.aimission.AimListScene.AimListConfigurator
 import com.example.michl.aimission.AimListScene.AimListInteractorInput
 import com.example.michl.aimission.AimListScene.AimListRouter
 import com.example.michl.aimission.Helper.MODE_SELECTOR
-import com.example.michl.aimission.Helper.getCurrentUserId
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.R
+import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
+import com.example.michl.aimission.Utility.DbHelper.Companion.getCurrentUserId
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_aim_list.*
 
@@ -32,8 +32,12 @@ interface AimListFragmentInput {
     fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>)
     fun afterUserItemsLoadedFailed(errorMsg: String)
     fun afterNoUserItemsFound(msg: String)
-    fun afterItemStatusChangeSucceed(item:AimItem)
-    fun afterItemStatusChangeFailed(msg:String)
+    fun afterItemStatusChangeSucceed(item: AimItem)
+    fun afterItemStatusChangeFailed(msg: String)
+    fun afterIterativeItemsGot(items: ArrayList<AimItem>)
+    fun afterIterativeItemsGotFailed(msg: String)
+    fun afterHighPriorityItemsGot(items: ArrayList<AimItem>)
+    fun afterHighPriorityItemsGotFailed(msg: String)
 }
 
 class AimListFragment : AimListFragmentInput, Fragment() {
@@ -50,10 +54,6 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         var currentMonth: Month? = null
         var currentYear: Int? = null
 
-        val firebaseDb = FirebaseDatabase.getInstance()
-        val databaseRef = firebaseDb.getReference("Aim")
-        val userId = getCurrentUserId()
-
         // get current month and year information via intent
         try {
             currentMonth = activity?.intent?.getSerializableExtra("month") as Month
@@ -65,7 +65,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         }
 
 
-        val query = databaseRef.child(userId)
+        val query = DbHelper.getAimTableReference().child(getCurrentUserId())
         query.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.i(TAG, "A data changed error occured.")
@@ -76,7 +76,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
                 Log.i(TAG, "The data has changed.")
                 currentMonth?.let { month ->
                     currentYear?.apply {
-                        output.getItems(userId, dataSnapshot, currentMonth, currentYear)
+                        output.getItems(getCurrentUserId(), dataSnapshot, currentMonth, currentYear)
                     }
                 }
             }
@@ -113,6 +113,9 @@ class AimListFragment : AimListFragmentInput, Fragment() {
             adapter = aimListAdapter
             layoutManager = lytManager
         }
+
+        output?.getIterativeItems()
+
     }
 
     override fun afterNoUserItemsFound(msg: String) {
@@ -131,6 +134,23 @@ class AimListFragment : AimListFragmentInput, Fragment() {
     }
 
     override fun afterItemStatusChangeFailed(msg: String) {
-       Toast.makeText(context,msg,Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun afterIterativeItemsGot(items: ArrayList<AimItem>) {
+        Log.i(TAG, "Amount of iterative items ${items.size}")
+        Toast.makeText(context, "Amount of iterative items: ${items.size}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun afterIterativeItemsGotFailed(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun afterHighPriorityItemsGot(items: ArrayList<AimItem>) {
+        Toast.makeText(context, "Found ${items.size} high priority items for user.", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun afterHighPriorityItemsGotFailed(msg: String) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 }

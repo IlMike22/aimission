@@ -107,9 +107,7 @@ fun getMonthAsText(month: Month): String {
     }
 }
 
-fun getCurrentUserId(): String {
-    return FirebaseAuth.getInstance().currentUser?.uid ?: ""
-}
+
 
 
 

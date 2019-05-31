@@ -1,13 +1,13 @@
 package com.example.michl.aimission.MainScene
 
 import android.util.Log
-import com.example.michl.aimission.Helper.getCurrentUserId
 import com.example.michl.aimission.Helper.getMonthAsText
 import com.example.michl.aimission.Helper.getMonthItem
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
+import com.example.michl.aimission.Utility.DbHelper.Companion.getCurrentUserId
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -25,11 +25,11 @@ class MainInteractor : MainInteractorInput {
     var output: MainPresenterInput? = null
 
     override fun getUsersMonthList(data: DataSnapshot) {
-        val userId = getCurrentUserId()
+
 
         // get all months with at least one aim
 
-        var query = FirebaseDatabase.getInstance().reference.child("Aim").child(userId).orderByChild("month")
+        var query = FirebaseDatabase.getInstance().reference.child("Aim").child(getCurrentUserId()).orderByChild("month")
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {

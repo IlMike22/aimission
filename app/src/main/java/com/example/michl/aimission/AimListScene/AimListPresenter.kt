@@ -11,9 +11,15 @@ interface AimListPresenterInput {
     fun onNoUserIdExists()
     fun onItemStatusChanged(item: AimItem)
     fun onItemStatusChangeFailed(item: AimItem?)
+    fun onIterativeItemsGot(items:ArrayList<AimItem>)
+    fun onCompletedItemsGot(items:ArrayList<AimItem>)
+    fun onIterativeItemsGotFailed(msg:String)
+    fun onHighPriorityItemsGot(items:ArrayList<AimItem>)
+    fun onHighPriorityItemsGotFailed(msg:String)
 }
 
 class AimListPresenter : AimListPresenterInput {
+
 
 
     var output: WeakReference<AimListFragmentInput>? = null
@@ -44,5 +50,25 @@ class AimListPresenter : AimListPresenterInput {
             Log.e(TAG, msg)
             output?.get()?.afterItemStatusChangeFailed(msg)
         }
+    }
+
+    override fun onIterativeItemsGot(items: ArrayList<AimItem>) {
+        output?.get()?.afterIterativeItemsGot(items)
+    }
+
+    override fun onIterativeItemsGotFailed(msg: String) {
+       output?.get()?.afterIterativeItemsGotFailed(msg)
+    }
+
+    override fun onHighPriorityItemsGot(items: ArrayList<AimItem>) {
+       output?.get()?.afterHighPriorityItemsGot(items)
+    }
+
+    override fun onHighPriorityItemsGotFailed(msg: String) {
+        output?.get()?.afterHighPriorityItemsGotFailed(msg)
+    }
+
+    override fun onCompletedItemsGot(items: ArrayList<AimItem>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

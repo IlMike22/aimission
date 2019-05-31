@@ -2,6 +2,7 @@ package com.example.michl.aimission.Utility
 
 import android.util.Log
 import com.example.michl.aimission.Models.AimItem
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -54,6 +55,10 @@ class DbHelper {
         fun getAimTableReference(): DatabaseReference {
             val firebaseDb = FirebaseDatabase.getInstance()
             return firebaseDb.getReference("Aim")
+        }
+
+        fun getCurrentUserId(): String {
+            return FirebaseAuth.getInstance().currentUser?.uid ?: ""
         }
     }
 
