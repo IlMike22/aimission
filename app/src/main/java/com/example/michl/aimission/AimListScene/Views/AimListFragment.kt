@@ -76,7 +76,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
                 Log.i(TAG, "The data has changed.")
                 currentMonth?.let { month ->
                     currentYear?.apply {
-                        output.getItems(getCurrentUserId(), dataSnapshot, currentMonth, currentYear)
+                        output.getItems(context,getCurrentUserId(), dataSnapshot, currentMonth, currentYear)
                     }
                 }
             }
@@ -113,8 +113,6 @@ class AimListFragment : AimListFragmentInput, Fragment() {
             adapter = aimListAdapter
             layoutManager = lytManager
         }
-
-        output?.getIterativeItems()
 
     }
 

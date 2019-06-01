@@ -1,8 +1,8 @@
 package com.example.michl.aimission.AimListScene
 
+import android.content.Context
 import android.util.Log
 import com.example.michl.aimission.Helper.DateHelper.DateHelper.convertDataInAimItem
-import com.example.michl.aimission.Helper.getIntFromMonth
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Models.Status
@@ -11,31 +11,34 @@ import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getAimTableReference
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.Query
-import com.google.firebase.database.ValueEventListener
 
 interface AimListInteractorInput {
-    fun getItems(userId: String, data: DataSnapshot, month: Month, year: Int)
+    fun getItems(context: Context?, userId: String, data: DataSnapshot, month: Month, year: Int)
     fun changeItemProgress(item: AimItem?)
-    fun getIterativeItems(month: Month? = null, year: Int? = null)
-    fun getCompletedItems(userId: String, data: DataSnapshot, month: Month? = null, year: Int? = null)
-    fun getHighPriorityItems(month:Month?=null, year:Int?=null)
 }
 
 class AimListInteractor : AimListInteractorInput {
 
 
-
     var output: AimListPresenterInput? = null
 
-    override fun getItems(userId: String, data: DataSnapshot, month: Month, year: Int) {
+    override fun getItems(context: Context?, userId: String, data: DataSnapshot, month: Month, year: Int) {
         val userId = getCurrentUserId()
 
         if (userId.isNullOrEmpty())
             output?.onNoUserIdExists()
         else {
             val items = createNewItemListFromDb(userId, data, month, year)
+
+            // get information about the items and store this information in shared prefs.
+            // todo check if this works next time.
+
+            context?.apply {
+                DbHelper.storeInSharedPrefs(this, "itemsCompleted", getAllCompletedItems(items).size)
+                DbHelper.storeInSharedPrefs(this, "amountItemsHighPriority", getHighPriorityItems(items).size)
+                DbHelper.storeInSharedPrefs(this, "amountIterativeItems", getIterativeItems(items).size)
+            }
+
             output?.onItemsLoadedSuccessfully(items)
         }
     }
@@ -58,44 +61,6 @@ class AimListInteractor : AimListInteractorInput {
         } ?: run {
             output?.onItemStatusChangeFailed(null)
         }
-    }
-
-    /*
-        Returns all items that have flag comesBack set.
-        Attention: At the moment it seems that there is no field comesBack in database so the result here will always be 0.
-        First you have to setup the database so in the future an item which was saved has this field stored into the db.
-     */
-    override fun getIterativeItems(month: Month?, year: Int?) {
-
-        try {
-            val query = DbHelper.getAimTableReference().child(getCurrentUserId()).child("repeatCount").equalTo(2.0)
-            query.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(databaseError: DatabaseError) {
-                    val msg = "A data changed error occured. Details: ${databaseError.message}"
-                    Log.i(TAG, msg)
-                    output?.onIterativeItemsGotFailed(msg)
-                }
-
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                    val items = convertDataInAimItem(dataSnapshot)
-                    output?.onIterativeItemsGot(items)
-                }
-            })
-        } catch (exc: IllegalArgumentException) {
-            val msg = "Unable to query database. IllegalArgumentException was thrown. ${exc.message}"
-            Log.e(TAG, msg)
-            output?.onIterativeItemsGotFailed(msg)
-        } catch (exc: Exception) {
-            val msg = "Unable to query database. Unknown exception was thrown. ${exc.message}"
-            Log.e(TAG, msg)
-            output?.onIterativeItemsGotFailed(msg)
-        }
-
-    }
-
-    override fun getCompletedItems(userId: String, data: DataSnapshot, month: Month?, year: Int?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun getCurrentUserId(): String {
@@ -123,37 +88,48 @@ class AimListInteractor : AimListInteractorInput {
         return false
     }
 
-    override fun getHighPriorityItems(month: Month?, year: Int?) {
-        try {
-            var query:Query? = null
-            query = if (month != null && year != null) {
-                //todo get right syntax for query for highPriority true for month and year parameter set
-                DbHelper.getAimTableReference().child(getCurrentUserId()).orderByChild("highPriority").equalTo(true).orderByChild("month").equalTo(getIntFromMonth(month).toDouble())
-            } else
-                DbHelper.getAimTableReference().child(getCurrentUserId()).child("highPriority").equalTo(true)
-
-            query.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(databaseError: DatabaseError) {
-                    val msg = "A data changed error occured. Details: ${databaseError.message}"
-                    Log.i(TAG, msg)
-                    output?.onIterativeItemsGotFailed(msg)
-                }
-
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                    val items = convertDataInAimItem(dataSnapshot)
-                    output?.onHighPriorityItemsGot(items)
-                }
-            })
-        } catch (exc: IllegalArgumentException) {
-            val msg = "Unable to query database. IllegalArgumentException was thrown. ${exc.message}"
-            Log.e(TAG, msg)
-            output?.onHighPriorityItemsGotFailed(msg)
-        } catch (exc: Exception) {
-            val msg = "Unable to query database. Unknown exception was thrown. ${exc.message}"
-            Log.e(TAG, msg)
-            output?.onHighPriorityItemsGotFailed(msg)
+    /*
+      Returns all items that have flag comesBack set in an ArrayList.
+      //todo these three functions have a lot of redundant code. This can be optimized.
+   */
+    private fun getIterativeItems(items: ArrayList<AimItem>): ArrayList<AimItem> {
+        var result = ArrayList<AimItem>()
+        for (item in items) {
+            if (item.comesBack == true)
+                result.add(item)
         }
+
+        return result
     }
+
+    /*
+        Returns all high priority items in an ArrayList.
+        //todo these three functions have a lot of redundant code. This can be optimized.
+     */
+    private fun getHighPriorityItems(items: ArrayList<AimItem>): ArrayList<AimItem> {
+        var result = ArrayList<AimItem>()
+        for (item in items) {
+            if (item.highPriority == true)
+                result.add(item)
+        }
+
+        return result
+    }
+
+    /*
+        Returns all completed items in an ArrayList.
+        //todo these three functions have a lot of redundant code. This can be optimized.
+     */
+    private fun getAllCompletedItems(items: ArrayList<AimItem>): ArrayList<AimItem> {
+        var result = ArrayList<AimItem>()
+        for (item in items) {
+            if (item.status == Status.DONE)
+                result.add(item)
+        }
+
+        return result
+    }
+
+
 }
 

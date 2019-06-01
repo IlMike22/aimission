@@ -97,11 +97,12 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
                 isHighPrio = true
 
             val genre = getGenre(frg_aimdetail_rbGroup_genre.checkedRadioButtonId)
+            val comesBack = frg_aimdetail_switch_comesback.isChecked
 
             try {
                 if (itemId.isNullOrEmpty())
                     itemId = UUID.randomUUID().toString()
-                val aimItem = AimItem(itemId, title, description, repeatCount, isHighPrio, Status.OPEN, genre, getCurrentMonth(), getCurrentYear())
+                val aimItem = AimItem(itemId, title, description, repeatCount, isHighPrio, Status.OPEN, genre, getCurrentMonth(), getCurrentYear(), comesBack)
 
                 if (mode == MODE_SELECTOR.Create)
                     output?.createNewAim(userID, aimItem)
