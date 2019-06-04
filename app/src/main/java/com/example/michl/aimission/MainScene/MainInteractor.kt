@@ -6,6 +6,7 @@ import com.example.michl.aimission.Helper.getMonthItem
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Models.MonthItem
+import com.example.michl.aimission.Models.containsMonthItem
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getCurrentUserId
 import com.google.firebase.database.DataSnapshot
@@ -25,7 +26,6 @@ class MainInteractor : MainInteractorInput {
     var output: MainPresenterInput? = null
 
     override fun getUsersMonthList(data: DataSnapshot) {
-
 
         // get all months with at least one aim
 
@@ -48,16 +48,19 @@ class MainInteractor : MainInteractorInput {
                 if (items.size > 0) {
                     val userMonthList = getMonthItems(items)
                     Log.i(TAG, userMonthList.size.toString())
+
+                    val currentMonthItem = createCurrentMonthItem()
+
+                    if (!userMonthList.containsMonthItem(currentMonthItem.month, currentMonthItem.year)) {
+                        userMonthList.add(currentMonthItem)
+                    }
+
                     output?.onMonthItemsLoadedSuccessfully(items, userMonthList)
+
                 } else {
                     //User does not have any aim defined yet. Create current month item for list so he can add his first aim.
                     //Get current month
-                    val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
-                    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-                    val month = getMonthItem(currentMonth)
-                    val monthAsText = getMonthAsText(month)
-
-                    val firstItem = MonthItem(monthAsText, 0, 0, month, currentYear)
+                    val firstItem = createCurrentMonthItem()
                     output?.onEmptyMonthListLoaded(firstItem)
                 }
             }
@@ -75,7 +78,7 @@ class MainInteractor : MainInteractorInput {
 
         for (item in items) {
             val currentMonth = getMonthItem(item?.month)
-            if (lastMonth == null)
+            if (lastMonth == null) //todo bug! we get the wrong month where items were stored because lastMonth is set to current month
                 lastMonth = currentMonth
 
             if (monthList.contains(currentMonth)) {
@@ -101,5 +104,13 @@ class MainInteractor : MainInteractorInput {
         }
 
         return result
+    }
+
+    private fun createCurrentMonthItem(): MonthItem {
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        val month = getMonthItem(currentMonth)
+        val monthAsText = getMonthAsText(month)
+        return MonthItem(monthAsText, 0, 0, month, currentYear)
     }
 }
