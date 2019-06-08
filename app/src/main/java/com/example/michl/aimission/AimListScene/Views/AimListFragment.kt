@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_aim_list.*
 
 interface AimListFragmentInput {
     fun afterUserIdNotFound(msg: String)
-    fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>)
+    fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month:Month, year:Int)
     fun afterUserItemsLoadedFailed(errorMsg: String)
     fun afterNoUserItemsFound(msg: String)
     fun afterItemStatusChangeSucceed(item: AimItem)
@@ -38,6 +38,8 @@ interface AimListFragmentInput {
     fun afterIterativeItemsGotFailed(msg: String)
     fun afterHighPriorityItemsGot(items: ArrayList<AimItem>)
     fun afterHighPriorityItemsGotFailed(msg: String)
+    fun afterItemInformationFromSharedPrefSucceed(msgItemsCompleted:String,msgItemsHighPrio:String, msgItemsIterative:String)
+    fun afterItemInformationFromSharedPrefFailed(errorMsg:String)
 }
 
 class AimListFragment : AimListFragmentInput, Fragment() {
@@ -101,7 +103,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>) {
+    override fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month:Month, year:Int) {
 
         includeEmptyTextView?.visibility = View.GONE
 
@@ -112,6 +114,13 @@ class AimListFragment : AimListFragmentInput, Fragment() {
             setHasFixedSize(true)
             adapter = aimListAdapter
             layoutManager = lytManager
+        }
+
+        //get current amount of highPrio items, done items and iterative items
+        //todo maybe it's better to get these information via firebase database query on demand?
+
+        context?.apply {
+            output?.getItemInformationFromSharedPrefs(this,month,year)
         }
 
     }
@@ -151,4 +160,21 @@ class AimListFragment : AimListFragmentInput, Fragment() {
     override fun afterHighPriorityItemsGotFailed(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
+
+    override fun afterItemInformationFromSharedPrefSucceed(msgItemsCompleted: String, msgItemsHighPrio: String, msgItemsIterative: String) {
+
+        Toast.makeText(context,msgItemsCompleted,Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,msgItemsHighPrio,Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,msgItemsIterative,Toast.LENGTH_SHORT).show()
+    }
+
+    override fun afterItemInformationFromSharedPrefFailed(errorMsg: String) {
+        Toast.makeText(context,errorMsg,Toast.LENGTH_SHORT).show()
+    }
+
+
+
+
+
+
 }

@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot
 interface AimListInteractorInput {
     fun getItems(context: Context?, userId: String, data: DataSnapshot, month: Month, year: Int)
     fun changeItemProgress(item: AimItem?)
+    fun getItemInformationFromSharedPrefs(context:Context,month:Month, year:Int)
 }
 
 class AimListInteractor : AimListInteractorInput {
@@ -22,6 +23,7 @@ class AimListInteractor : AimListInteractorInput {
 
     var output: AimListPresenterInput? = null
 
+    //todo context should not be available in interactor, find a way to avoid context parameter here
     override fun getItems(context: Context?, userId: String, data: DataSnapshot, month: Month, year: Int) {
         val userId = getCurrentUserId()
 
@@ -31,15 +33,14 @@ class AimListInteractor : AimListInteractorInput {
             val items = createNewItemListFromDb(userId, data, month, year)
 
             // get information about the items and store this information in shared prefs.
-            // todo check if this works next time.
 
             context?.apply {
-                DbHelper.storeInSharedPrefs(this, "itemsCompleted", getAllCompletedItems(items).size)
-                DbHelper.storeInSharedPrefs(this, "amountItemsHighPriority", getHighPriorityItems(items).size)
-                DbHelper.storeInSharedPrefs(this, "amountIterativeItems", getIterativeItems(items).size)
+                DbHelper.storeInSharedPrefs(this, "amountItemsCompleted_$month$year", getAllCompletedItems(items).size)
+                DbHelper.storeInSharedPrefs(this, "amountItemsHighPriority_$month$year", getHighPriorityItems(items).size)
+                DbHelper.storeInSharedPrefs(this, "amountIterativeItems_$month$year", getIterativeItems(items).size)
             }
 
-            output?.onItemsLoadedSuccessfully(items)
+            output?.onItemsLoadedSuccessfully(items, month, year)
         }
     }
 
@@ -61,6 +62,15 @@ class AimListInteractor : AimListInteractorInput {
         } ?: run {
             output?.onItemStatusChangeFailed(null)
         }
+    }
+
+    //todo context should not be available in interactor, find a way to avoid context parameter here
+    override fun getItemInformationFromSharedPrefs(context:Context, month:Month, year:Int) {
+        val itemsDoneAmount = DbHelper.getSharedPrefsValueAsInt(context, "amountItemsCompleted_$month$year")
+        val itemsHighPrioAmount = DbHelper.getSharedPrefsValueAsInt(context,"amountItemsHighPriority_$month$year")
+        val itemsIterativeAmount = DbHelper.getSharedPrefsValueAsInt(context,"amountIterativeItems_$month$year")
+
+        output?.onItemInformationFromSharedPrefSucceed(itemsDoneAmount, itemsHighPrioAmount, itemsIterativeAmount)
     }
 
     private fun getCurrentUserId(): String {
