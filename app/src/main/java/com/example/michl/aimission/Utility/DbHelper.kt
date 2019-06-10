@@ -1,6 +1,7 @@
 package com.example.michl.aimission.Utility
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
@@ -15,8 +16,6 @@ class DbHelper {
     companion object {
 
         const val TAG = "Aimission"
-
-
         /*
         Writes or updates a new item in table Aim.
         */
@@ -55,7 +54,6 @@ class DbHelper {
             }
         }
 
-
         fun getAimTableReference(): DatabaseReference {
             val firebaseDb = FirebaseDatabase.getInstance()
             return firebaseDb.getReference("Aim")
@@ -66,48 +64,59 @@ class DbHelper {
         }
 
         fun getSharedPrefsInstance(context: Context): SharedPreferences {
-            return context.getSharedPreferences("com.example.michl.aimission", Context.MODE_PRIVATE)
+            return context.getSharedPreferences("test", Context.MODE_PRIVATE)
         }
 
         @SuppressLint("CommitPrefEdits")
         fun storeInSharedPrefs(context: Context, key: String, value: Any): Boolean {
-            //todo implement this
-            val sharedPrefs = getSharedPrefsInstance(context)
+            val sharedPref = getSharedPrefsInstance(context)
             when (value) {
                 is Boolean -> {
-                    sharedPrefs.edit().putBoolean(key, value)
-                    return true
+                    with(sharedPref.edit())
+                    {
+                        putBoolean(key, value)
+                        apply()
+                    }
                 }
 
                 is String -> {
-                    sharedPrefs.edit().putString(key, value)
-                    return true
+                    with(sharedPref.edit())
+                    {
+                        sharedPref.edit().putString(key, value)
+                        apply()
+                    }
                 }
 
                 is Int -> {
-                    sharedPrefs.edit().putInt(key, value)
-                    return true
+                    with(sharedPref.edit())
+                    {
+                        sharedPref.edit().putInt(key, value)
+                        apply()
+                    }
                 }
                 else -> {
                     Log.e(TAG, "Unknown data type. Cannot save it into shared prefs.")
                     return false
                 }
             }
+
+            return true
         }
 
         fun getSharedPrefsValueAsInt(context: Context, key: String): Int {
-            val sharedPrefs = getSharedPrefsInstance(context)
-            return sharedPrefs.getInt(key, -1)
+
+            val sharedPref =  getSharedPrefsInstance(context)
+            return sharedPref.getInt(key, -1)
         }
 
         fun getSharedPrefsValueAsString(context: Context, key: String): String {
-            val sharedPrefs = getSharedPrefsInstance(context)
-            return sharedPrefs.getString(key, "")
+            val sharedPref = getSharedPrefsInstance(context)
+            return sharedPref.getString(key, "")
         }
 
         fun getSharedPrefsValueAsBoolean(context: Context, key: String): Boolean {
-            val sharedPrefs = getSharedPrefsInstance(context)
-            return sharedPrefs.getBoolean(key, false)
+            val sharedPref = getSharedPrefsInstance(context)
+            return sharedPref.getBoolean(key, false)
         }
     }
 
