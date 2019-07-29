@@ -73,33 +73,34 @@ class MainInteractor : MainInteractorInput {
         var result = ArrayList<MonthItem>()
         var monthList = ArrayList<Month>()
         var aimAmountPerMonth = 0
-        var lastMonth: Month? = null
+        var previousMonth: Month? = null
 
-
+        //TODO bad naming. what is currentMonth, what is lastMonth? also there are some bugs finding months and naming them right
         for (item in items) {
-            val currentMonth = getMonthItem(item?.month)
-            if (lastMonth == null) //todo bug! we get the wrong month where items were stored because lastMonth is set to current month
-                lastMonth = currentMonth
+            val itemMonth = getMonthItem(item?.month)
+            if (previousMonth == null) //todo bug! we get the wrong month where items were stored because lastMonth is set to current month
+                previousMonth = itemMonth
 
-            if (monthList.contains(currentMonth)) {
-
+            if (monthList.contains(itemMonth)) {
                 aimAmountPerMonth++ // month already in list, increment counter
 
-                if (items.indexOf(item) == items.size - 1) {
-                    // we have reached to last item of array
-                    result.add(MonthItem(getMonthAsText(currentMonth), aimAmountPerMonth, 0, lastMonth, item?.year
-                            ?: 0))
-                }
             } else if (aimAmountPerMonth != 0) {
-                result.add(MonthItem(getMonthAsText(currentMonth), aimAmountPerMonth, 0, lastMonth, item?.year
+                // store previous month information in result and reset.
+                result.add(MonthItem(getMonthAsText(previousMonth), aimAmountPerMonth, 0, previousMonth, item?.year
                         ?: 0))
                 aimAmountPerMonth = 0 //reset counter, new month incoming
-                lastMonth = null // reset last month
+                previousMonth = null // reset last month
                 //todo we still have to add solution percent per month
 
             } else {
                 aimAmountPerMonth++
                 monthList.add(getMonthItem(item?.month))
+            }
+
+            if (items.indexOf(item) == items.size - 1) {
+                // we have reached to last item of array, store current item month and finish.
+                result.add(MonthItem(getMonthAsText(itemMonth), aimAmountPerMonth, 0, itemMonth, item?.year
+                        ?: 0))
             }
         }
 

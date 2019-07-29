@@ -48,6 +48,7 @@
         android:layout_marginTop="188dp"
         android:clickable="true"
         android:src="@android:drawable/radiobutton_on_background"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/includeEmptyTextView"
         app:layout_constraintTop_toBottomOf="@+id/includeEmptyTextView" />
 </android.support.constraint.ConstraintLayout>

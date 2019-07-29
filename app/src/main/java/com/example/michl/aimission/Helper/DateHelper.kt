@@ -54,36 +54,36 @@ enum class MODE_SELECTOR {
 
 fun getMonthItem(month: Int?): Month {
     return when (month) {
-        0 -> Month.JANUARY
-        1 -> Month.FEBRUARY
-        2 -> Month.MARCH
-        3 -> Month.APRIL
-        4 -> Month.MAY
-        5 -> Month.JUNE
-        6 -> Month.JULY
-        7 -> Month.AUGUST
-        8 -> Month.SEPTEMBER
-        9 -> Month.OCTOBER
-        10 -> Month.NOVEMBER
-        11 -> Month.DECEMBER
+        1 -> Month.JANUARY
+        2 -> Month.FEBRUARY
+        3 -> Month.MARCH
+        4 -> Month.APRIL
+        5 -> Month.MAY
+        6 -> Month.JUNE
+        7 -> Month.JULY
+        8 -> Month.AUGUST
+        9 -> Month.SEPTEMBER
+        10 -> Month.OCTOBER
+        11 -> Month.NOVEMBER
+        12 -> Month.DECEMBER
         else -> Month.UNKNOWN
     }
 }
 
 fun getIntFromMonth(month: Month): Int {
     return when (month) {
-        Month.JANUARY -> 0
-        Month.FEBRUARY -> 1
-        Month.MARCH -> 2
-        Month.APRIL -> 3
-        Month.MAY -> 4
-        Month.JUNE -> 5
-        Month.JULY -> 6
-        Month.AUGUST -> 7
-        Month.SEPTEMBER -> 8
-        Month.OCTOBER -> 9
-        Month.NOVEMBER -> 10
-        Month.DECEMBER -> 11
+        Month.JANUARY -> 1
+        Month.FEBRUARY -> 2
+        Month.MARCH -> 3
+        Month.APRIL -> 4
+        Month.MAY -> 5
+        Month.JUNE -> 6
+        Month.JULY -> 7
+        Month.AUGUST -> 8
+        Month.SEPTEMBER -> 9
+        Month.OCTOBER -> 10
+        Month.NOVEMBER -> 11
+        Month.DECEMBER -> 12
         Month.UNKNOWN -> -1
     }
 }

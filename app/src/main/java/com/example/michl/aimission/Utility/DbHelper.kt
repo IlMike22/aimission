@@ -1,7 +1,6 @@
 package com.example.michl.aimission.Utility
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
@@ -16,6 +15,7 @@ class DbHelper {
     companion object {
 
         const val TAG = "Aimission"
+
         /*
         Writes or updates a new item in table Aim.
         */
@@ -64,7 +64,9 @@ class DbHelper {
         }
 
         fun getSharedPrefsInstance(context: Context): SharedPreferences {
-            return context.getSharedPreferences("test", Context.MODE_PRIVATE)
+
+            return context.getSharedPreferences("Aimission", Context.MODE_PRIVATE)
+
         }
 
         @SuppressLint("CommitPrefEdits")
@@ -72,26 +74,32 @@ class DbHelper {
             val sharedPref = getSharedPrefsInstance(context)
             when (value) {
                 is Boolean -> {
-                    with(sharedPref.edit())
-                    {
-                        putBoolean(key, value)
-                        apply()
+                    sharedPref?.apply {
+                        with(this.edit())
+                        {
+                            putBoolean(key, value)
+                            apply()
+                        }
                     }
                 }
 
                 is String -> {
-                    with(sharedPref.edit())
-                    {
-                        sharedPref.edit().putString(key, value)
-                        apply()
+                    sharedPref?.apply {
+                        with(this.edit())
+                        {
+                            sharedPref.edit().putString(key, value)
+                            apply()
+                        }
                     }
                 }
 
                 is Int -> {
-                    with(sharedPref.edit())
-                    {
-                        sharedPref.edit().putInt(key, value)
-                        apply()
+                    sharedPref?.apply {
+                        with(this.edit())
+                        {
+                            sharedPref.edit().putInt(key, value)
+                            apply()
+                        }
                     }
                 }
                 else -> {
@@ -104,8 +112,7 @@ class DbHelper {
         }
 
         fun getSharedPrefsValueAsInt(context: Context, key: String): Int {
-
-            val sharedPref =  getSharedPrefsInstance(context)
+            val sharedPref = getSharedPrefsInstance(context)
             return sharedPref.getInt(key, -1)
         }
 
@@ -119,6 +126,4 @@ class DbHelper {
             return sharedPref.getBoolean(key, false)
         }
     }
-
-
 }

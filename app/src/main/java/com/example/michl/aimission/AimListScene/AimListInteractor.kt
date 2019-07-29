@@ -26,9 +26,9 @@ class AimListInteractor : AimListInteractorInput {
     override fun getItems(context: Context?, userId: String, data: DataSnapshot, month: Month, year: Int) {
         val userId = getCurrentUserId()
 
-        val spKeyItemsCompleted = "amountItemsCompleted"
-        val spKeyItemsHighPrio = "amountItemsHighPriority_${month.toString()}${year.toString()}"
-        val spKeyItemsIterative = "amountIterativeItems_${month.toString()}${year.toString()}"
+        val spKeyItemsCompleted = "amountItemsCompleted_$month$year"
+        val spKeyItemsHighPrio = "amountItemsHighPriority_$month$year"
+        val spKeyItemsIterative = "amountIterativeItems_$month$year"
 
         if (userId.isNullOrEmpty())
             output?.onNoUserIdExists()
@@ -70,10 +70,12 @@ class AimListInteractor : AimListInteractorInput {
     override fun getItemInformationFromSharedPrefs(context: Context, month: Month, year: Int) {
 
         //todo redundant code (see storeSP)
-        val spKeyItemsCompleted = "amountItemsCompleted"
-        val spKeyItemsHighPrio = "amountItemsHighPriority_${month.toString()}${year.toString()}"
-        val spKeyItemsIterative = "amountIterativeItems_${month.toString()}${year.toString()}"
+        val spKeyItemsCompleted = "amountItemsCompleted_$month$year"
+        val spKeyItemsHighPrio = "amountItemsHighPriority_$month$year"
+        val spKeyItemsIterative = "amountIterativeItems_$month$year"
 
+
+        //todo fix this problem. all returned values from shared prefs are -1
         context?.apply {
             val itemsDoneAmount = DbHelper.getSharedPrefsValueAsInt(this, spKeyItemsCompleted)
             val itemsHighPrioAmount = DbHelper.getSharedPrefsValueAsInt(this, spKeyItemsHighPrio)

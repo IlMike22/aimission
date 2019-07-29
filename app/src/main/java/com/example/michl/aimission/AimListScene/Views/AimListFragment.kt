@@ -1,6 +1,7 @@
 package com.example.michl.aimission.AimListScene.Views
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import com.example.michl.aimission.Adapters.AimListAdapter
 import com.example.michl.aimission.AimListScene.AimListConfigurator
 import com.example.michl.aimission.AimListScene.AimListInteractorInput
 import com.example.michl.aimission.AimListScene.AimListRouter
+import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Helper.MODE_SELECTOR
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Month
@@ -25,6 +27,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_aim_list.*
+import java.time.Year
 
 
 interface AimListFragmentInput {
@@ -49,23 +52,24 @@ class AimListFragment : AimListFragmentInput, Fragment() {
     lateinit var output: AimListInteractorInput
     private lateinit var aimListAdapter: RecyclerView.Adapter<*>
     private lateinit var lytManager: RecyclerView.LayoutManager
+    var selectedMonth:Month? = null
+    var selectedYear: Int? = null
 
+    @SuppressLint("RestrictedApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        var currentMonth: Month? = null
-        var currentYear: Int? = null
-
         // get current month and year information via intent
         try {
-            currentMonth = activity?.intent?.getSerializableExtra("month") as Month
-            currentYear = activity?.intent?.getIntExtra("year", 0)
+            selectedMonth = activity?.intent?.getSerializableExtra("month") as Month
+            selectedYear = activity?.intent?.getIntExtra("year", 0)
                     ?: Log.i(TAG, "Cannot get intent data information year. Value is null.")
 
         } catch (exc: Exception) {
             Log.i(TAG, "Cannot get intent data information month.${exc.message}")
         }
 
+        Log.i(TAG,"current month is ${DateHelper.getCurrentMonth()}, selected month is $selectedMonth")
 
         val query = DbHelper.getAimTableReference().child(getCurrentUserId())
         query.addValueEventListener(object : ValueEventListener {
@@ -76,9 +80,9 @@ class AimListFragment : AimListFragmentInput, Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 //todo onDataChange must not be called if you click a list item button such as checkmark or edit button....
                 Log.i(TAG, "The data has changed.")
-                currentMonth?.let { month ->
-                    currentYear?.apply {
-                        output.getItems(context,getCurrentUserId(), dataSnapshot, currentMonth, currentYear)
+                selectedMonth?.let { month ->
+                    selectedYear?.apply {
+                        output.getItems(context,getCurrentUserId(), dataSnapshot, selectedMonth as Month, selectedYear as Int)
                     }
                 }
             }
@@ -87,8 +91,14 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         return inflater.inflate(R.layout.fragment_aim_list, container, false)
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         AimListConfigurator.configure(this)
+
+        if (DateHelper.getCurrentMonth() == selectedMonth)
+            fltAddAimItem.visibility = View.VISIBLE
+        else
+            fltAddAimItem.visibility = View.GONE
 
         fltAddAimItem.setOnClickListener {
             activity?.supportFragmentManager?.apply {
@@ -120,7 +130,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         //todo maybe it's better to get these information via firebase database query on demand?
 
         context?.apply {
-            output?.getItemInformationFromSharedPrefs(this,month,year)
+            output.getItemInformationFromSharedPrefs(this,month,year)
         }
 
     }
@@ -171,10 +181,4 @@ class AimListFragment : AimListFragmentInput, Fragment() {
     override fun afterItemInformationFromSharedPrefFailed(errorMsg: String) {
         Toast.makeText(context,errorMsg,Toast.LENGTH_SHORT).show()
     }
-
-
-
-
-
-
 }
