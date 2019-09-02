@@ -106,6 +106,30 @@ fun getMonthAsText(month: Month): String {
     }
 }
 
+fun convertMonthItem(item:Int):Month
+{
+    /*
+        If we get the current month from calendar(), we get it with range [0..11]
+        Use this funcation to convert the result in range [1..12] which should be used in the whole app.
+     */
+    return when (item)
+    {
+        0 -> Month.JANUARY
+        1 -> Month.FEBRUARY
+        2 -> Month.MARCH
+        3 -> Month.APRIL
+        4 -> Month.MAY
+        5 -> Month.JUNE
+        6 -> Month.JULY
+        7 -> Month.AUGUST
+        8 -> Month.SEPTEMBER
+        9 -> Month.OCTOBER
+        10 -> Month.NOVEMBER
+        11 -> Month.DECEMBER
+        else -> Month.UNKNOWN
+    }
+}
+
 
 
 

@@ -1,12 +1,10 @@
 package com.example.michl.aimission.MainScene
 
 import android.util.Log
+import com.example.michl.aimission.Helper.convertMonthItem
 import com.example.michl.aimission.Helper.getMonthAsText
 import com.example.michl.aimission.Helper.getMonthItem
-import com.example.michl.aimission.Models.AimItem
-import com.example.michl.aimission.Models.Month
-import com.example.michl.aimission.Models.MonthItem
-import com.example.michl.aimission.Models.containsMonthItem
+import com.example.michl.aimission.Models.*
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getCurrentUserId
 import com.google.firebase.database.DataSnapshot
@@ -72,35 +70,37 @@ class MainInteractor : MainInteractorInput {
     private fun getMonthItems(items: ArrayList<AimItem?>): ArrayList<MonthItem> {
         var result = ArrayList<MonthItem>()
         var monthList = ArrayList<Month>()
-        var aimAmountPerMonth = 0
+        var aimAmount = 1
+        var aimsSucceeded = 0
+        var year = 0
         var previousMonth: Month? = null
+        var month: Month? = null
 
-        //TODO bad naming. what is currentMonth, what is lastMonth? also there are some bugs finding months and naming them right
         for (item in items) {
-            val itemMonth = getMonthItem(item?.month)
-            if (previousMonth == null) //todo bug! we get the wrong month where items were stored because lastMonth is set to current month
-                previousMonth = itemMonth
 
-            if (monthList.contains(itemMonth)) {
-                aimAmountPerMonth++ // month already in list, increment counter
+            if (month == null) {
+                month = getMonthItem(item?.month)
+                year = item?.year ?: 0
+                if (item?.status == Status.DONE)
+                    aimsSucceeded++
 
-            } else if (aimAmountPerMonth != 0) {
-                // store previous month information in result and reset.
-                result.add(MonthItem(getMonthAsText(previousMonth), aimAmountPerMonth, 0, previousMonth, item?.year
-                        ?: 0))
-                aimAmountPerMonth = 0 //reset counter, new month incoming
-                previousMonth = null // reset last month
-                //todo we still have to add solution percent per month
-
+            } else if (month == getMonthItem(item?.month)) {
+                aimAmount++
+                if (item?.status == Status.DONE)
+                    aimsSucceeded++
             } else {
-                aimAmountPerMonth++
-                monthList.add(getMonthItem(item?.month))
-            }
+                result.add(MonthItem(month.name, aimAmount, aimsSucceeded, month, year))
+                // a new month is there..
+                //todo save the new month, dont lose it
 
-            if (items.indexOf(item) == items.size - 1) {
-                // we have reached to last item of array, store current item month and finish.
-                result.add(MonthItem(getMonthAsText(itemMonth), aimAmountPerMonth, 0, itemMonth, item?.year
-                        ?: 0))
+                month = getMonthItem(item?.month)
+                aimAmount = 1
+                aimsSucceeded = 0
+
+                if (item == items.get(items.size - 1)) {
+                    //we've reached the end of the array. add the last month item to list and finish..
+                    result.add(MonthItem(month?.name ?: "", aimAmount, aimsSucceeded, month, year))
+                }
             }
         }
 
@@ -108,10 +108,11 @@ class MainInteractor : MainInteractorInput {
     }
 
     private fun createCurrentMonthItem(): MonthItem {
-        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+        // Calender functions month range is [0..11] not [1..12] so we have to convert it later
+        val currentMonthDate = Calendar.getInstance().get(Calendar.MONTH)
+        val currentMonth = convertMonthItem(currentMonthDate)
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        val month = getMonthItem(currentMonth)
-        val monthAsText = getMonthAsText(month)
-        return MonthItem(monthAsText, 0, 0, month, currentYear)
+        val monthAsText = getMonthAsText(currentMonth)
+        return MonthItem(monthAsText, 0, 0, currentMonth, currentYear)
     }
 }
