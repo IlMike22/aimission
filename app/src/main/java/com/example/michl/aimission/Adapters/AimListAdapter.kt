@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.michl.aimission.AimListScene.AimListInteractor
+import com.example.michl.aimission.AimListScene.AimListInteractorInput
 import com.example.michl.aimission.AimListScene.AimListRouter
 import com.example.michl.aimission.Helper.MODE_SELECTOR
 import com.example.michl.aimission.Models.AimItem
@@ -13,10 +14,11 @@ import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.cv_item_aim.view.*
 
-class AimListAdapter(private val data: ArrayList<AimItem>) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
+class AimListAdapter(private val data: ArrayList<AimItem>, interactor: AimListInteractorInput) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
 
     val router = AimListRouter()
-    private val interactor = AimListInteractor()
+
+    private val interactor = interactor
 
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderAimItem {

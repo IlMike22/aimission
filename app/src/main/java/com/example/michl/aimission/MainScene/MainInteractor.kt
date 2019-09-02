@@ -65,41 +65,46 @@ class MainInteractor : MainInteractorInput {
         })
     }
 
-
     // Get all month items from all user's items.
     private fun getMonthItems(items: ArrayList<AimItem?>): ArrayList<MonthItem> {
         var result = ArrayList<MonthItem>()
-        var monthList = ArrayList<Month>()
         var aimAmount = 1
         var aimsSucceeded = 0
         var year = 0
-        var previousMonth: Month? = null
         var month: Month? = null
 
         for (item in items) {
 
-            if (month == null) {
-                month = getMonthItem(item?.month)
-                year = item?.year ?: 0
-                if (item?.status == Status.DONE)
-                    aimsSucceeded++
+            when (month) {
+                null -> {
+                    month = getMonthItem(item?.month)
+                    year = item?.year ?: 0
+                    if (item?.status == Status.DONE)
+                        aimsSucceeded++
+                }
+                getMonthItem(item?.month) -> {
+                    aimAmount++
+                    if (item?.status == Status.DONE)
+                        aimsSucceeded++
 
-            } else if (month == getMonthItem(item?.month)) {
-                aimAmount++
-                if (item?.status == Status.DONE)
-                    aimsSucceeded++
-            } else {
-                result.add(MonthItem(month.name, aimAmount, aimsSucceeded, month, year))
-                // a new month is there..
-                //todo save the new month, dont lose it
+                    if (item == items.get(items.size - 1)) {
+                        result.add(MonthItem(month?.name, aimAmount, getPercentOfSucceededAims(aimsSucceeded, aimAmount), month, year))
+                    }
+                }
+                else -> {
+                    result.add(MonthItem(month.name, aimAmount, getPercentOfSucceededAims(aimsSucceeded, aimAmount), month, year))
 
-                month = getMonthItem(item?.month)
-                aimAmount = 1
-                aimsSucceeded = 0
+                    month = getMonthItem(item?.month)
+                    aimAmount = 1
 
-                if (item == items.get(items.size - 1)) {
-                    //we've reached the end of the array. add the last month item to list and finish..
-                    result.add(MonthItem(month?.name ?: "", aimAmount, aimsSucceeded, month, year))
+                    if (item?.status == Status.DONE)
+                        aimsSucceeded = 1
+                    else
+                        aimsSucceeded = 0
+
+                    if (item == items.get(items.size - 1)) {
+                        result.add(MonthItem(month?.name, aimAmount, getPercentOfSucceededAims(aimsSucceeded, aimAmount), month, year))
+                    }
                 }
             }
         }
@@ -115,4 +120,6 @@ class MainInteractor : MainInteractorInput {
         val monthAsText = getMonthAsText(currentMonth)
         return MonthItem(monthAsText, 0, 0, currentMonth, currentYear)
     }
+
+    private fun getPercentOfSucceededAims(aimSucceeded: Int, aimAmount: Int) = aimSucceeded * 100 / aimAmount
 }

@@ -117,7 +117,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
 
         includeEmptyTextView?.visibility = View.GONE
 
-        aimListAdapter = AimListAdapter(items)
+        aimListAdapter = AimListAdapter(items, output)
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
         aimListRV?.apply {

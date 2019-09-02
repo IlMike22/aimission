@@ -152,7 +152,5 @@ class AimListInteractor : AimListInteractorInput {
 
         return result
     }
-
-
 }
 
