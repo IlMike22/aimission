@@ -14,7 +14,7 @@ import com.google.firebase.database.DataSnapshot
 
 interface AimListInteractorInput {
     fun getItems(context: Context?, userId: String, data: DataSnapshot, month: Month, year: Int)
-    fun changeItemProgress(item: AimItem?)
+    fun changeItemProgress(item: AimItem?, position:Int)
     fun getItemInformationFromSharedPrefs(context: Context, month: Month, year: Int)
 }
 
@@ -46,7 +46,7 @@ class AimListInteractor : AimListInteractorInput {
         }
     }
 
-    override fun changeItemProgress(item: AimItem?) {
+    override fun changeItemProgress(item: AimItem?, position:Int) {
         //First we send an update to database and change the progress status either in "done" if it was "open" previously or into "subaim + 1"
         //if it has several sub aims in it. Then we go back to list adapter and update the ui.
 
@@ -57,12 +57,14 @@ class AimListInteractor : AimListInteractorInput {
             else if (item?.status == Status.OPEN)
                 item?.status = Status.DONE
 
+            //todo updateAimItemInDb is responsable for scrolling the view on top after item status was changed. fix this next time
+            //todo it isn't very clear why the db update leads to this scoll behaviour
             if (updateAimItemInDb(item))
-                output?.onItemStatusChanged(item)
+                output?.onItemStatusChanged(item, position)
             else
-                output?.onItemStatusChangeFailed(item)
+                output?.onItemStatusChangeFailed(item, position)
         } ?: run {
-            output?.onItemStatusChangeFailed(null)
+            output?.onItemStatusChangeFailed(null, position)
         }
     }
 

@@ -35,7 +35,7 @@ interface AimListFragmentInput {
     fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month:Month, year:Int)
     fun afterUserItemsLoadedFailed(errorMsg: String)
     fun afterNoUserItemsFound(msg: String)
-    fun afterItemStatusChangeSucceed(item: AimItem)
+    fun afterItemStatusChangeSucceed(item: AimItem, position:Int)
     fun afterItemStatusChangeFailed(msg: String)
     fun afterIterativeItemsGot(items: ArrayList<AimItem>)
     fun afterIterativeItemsGotFailed(msg: String)
@@ -146,8 +146,9 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterItemStatusChangeSucceed(item: AimItem) {
-        aimListAdapter.notifyDataSetChanged()
+    override fun afterItemStatusChangeSucceed(item: AimItem, position:Int) {
+        aimListAdapter.notifyItemChanged(position)
+        Log.i(TAG,"Item ${item.title} successfully updated on position $position in list.")
     }
 
     override fun afterItemStatusChangeFailed(msg: String) {
@@ -173,9 +174,10 @@ class AimListFragment : AimListFragmentInput, Fragment() {
 
     override fun afterItemInformationFromSharedPrefSucceed(msgItemsCompleted: String, msgItemsHighPrio: String, msgItemsIterative: String) {
 
-        Toast.makeText(context,msgItemsCompleted,Toast.LENGTH_SHORT).show()
-        Toast.makeText(context,msgItemsHighPrio,Toast.LENGTH_SHORT).show()
-        Toast.makeText(context,msgItemsIterative,Toast.LENGTH_SHORT).show()
+        //todo not working at the moment, deactivated
+//        Toast.makeText(context,msgItemsCompleted,Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context,msgItemsHighPrio,Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context,msgItemsIterative,Toast.LENGTH_SHORT).show()
     }
 
     override fun afterItemInformationFromSharedPrefFailed(errorMsg: String) {

@@ -10,8 +10,8 @@ import java.lang.ref.WeakReference
 interface AimListPresenterInput {
     fun onItemsLoadedSuccessfully(items: ArrayList<AimItem>,month: Month, year:Int)
     fun onNoUserIdExists()
-    fun onItemStatusChanged(item: AimItem)
-    fun onItemStatusChangeFailed(item: AimItem?)
+    fun onItemStatusChanged(item: AimItem, position:Int)
+    fun onItemStatusChangeFailed(item: AimItem?, position:Int)
     fun onIterativeItemsGot(items:ArrayList<AimItem>)
     fun onCompletedItemsGot(items:ArrayList<AimItem>)
     fun onIterativeItemsGotFailed(msg:String)
@@ -37,18 +37,18 @@ class AimListPresenter : AimListPresenterInput {
         output?.get()?.afterUserItemsLoadedSuccessfully(items, month, year)
     }
 
-    override fun onItemStatusChanged(item: AimItem) {
-        output?.get()?.afterItemStatusChangeSucceed(item)
+    override fun onItemStatusChanged(item: AimItem, position:Int) {
+        output?.get()?.afterItemStatusChangeSucceed(item, position)
     }
 
-    override fun onItemStatusChangeFailed(item: AimItem?) {
+    override fun onItemStatusChangeFailed(item: AimItem?, position:Int) {
 
         item?.let { item ->
-            val msg = "Unable to update status from item ${item.title}. Please try it again in a few minutes."
-            Log.e(TAG, msg)
+            val msg = "Unable to update status from item ${item.title} on position $position."
+            Log.e(TAG, msg + " Please try in a few minutes again.")
             output?.get()?.afterItemStatusChangeFailed(msg)
         } ?: run {
-            val msg = "Unable to update status from item. Item is null."
+            val msg = "Unable to update status from item. Item is null. Position is $position"
             Log.e(TAG, msg)
             output?.get()?.afterItemStatusChangeFailed(msg)
         }

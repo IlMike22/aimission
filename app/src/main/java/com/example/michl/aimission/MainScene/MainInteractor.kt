@@ -16,7 +16,6 @@ import kotlin.collections.ArrayList
 
 interface MainInteractorInput {
     fun getUsersMonthList(data: DataSnapshot)
-
 }
 
 class MainInteractor : MainInteractorInput {
@@ -69,7 +68,7 @@ class MainInteractor : MainInteractorInput {
     private fun getMonthItems(items: ArrayList<AimItem?>): ArrayList<MonthItem> {
         var result = ArrayList<MonthItem>()
         var aimAmount = 1
-        var aimsSucceeded = 0
+        var aimSucceeded = 0
         var year = 0
         var month: Month? = null
 
@@ -80,30 +79,30 @@ class MainInteractor : MainInteractorInput {
                     month = getMonthItem(item?.month)
                     year = item?.year ?: 0
                     if (item?.status == Status.DONE)
-                        aimsSucceeded++
+                        aimSucceeded++
                 }
                 getMonthItem(item?.month) -> {
                     aimAmount++
                     if (item?.status == Status.DONE)
-                        aimsSucceeded++
+                        aimSucceeded++
 
                     if (item == items.get(items.size - 1)) {
-                        result.add(MonthItem(month?.name, aimAmount, getPercentOfSucceededAims(aimsSucceeded, aimAmount), month, year))
+                        result.add(MonthItem(month?.name, aimAmount, getPercentOfSucceededAims(aimSucceeded, aimAmount), month, year))
                     }
                 }
                 else -> {
-                    result.add(MonthItem(month.name, aimAmount, getPercentOfSucceededAims(aimsSucceeded, aimAmount), month, year))
+                    result.add(MonthItem(month.name, aimAmount, getPercentOfSucceededAims(aimSucceeded, aimAmount), month, year))
 
                     month = getMonthItem(item?.month)
                     aimAmount = 1
 
                     if (item?.status == Status.DONE)
-                        aimsSucceeded = 1
+                        aimSucceeded = 1
                     else
-                        aimsSucceeded = 0
+                        aimSucceeded = 0
 
                     if (item == items.get(items.size - 1)) {
-                        result.add(MonthItem(month?.name, aimAmount, getPercentOfSucceededAims(aimsSucceeded, aimAmount), month, year))
+                        result.add(MonthItem(month?.name, aimAmount, getPercentOfSucceededAims(aimSucceeded, aimAmount), month, year))
                     }
                 }
             }

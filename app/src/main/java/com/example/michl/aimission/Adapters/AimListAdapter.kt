@@ -4,7 +4,6 @@ import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.example.michl.aimission.AimListScene.AimListInteractor
 import com.example.michl.aimission.AimListScene.AimListInteractorInput
 import com.example.michl.aimission.AimListScene.AimListRouter
 import com.example.michl.aimission.Helper.MODE_SELECTOR
@@ -12,6 +11,7 @@ import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.R
+import com.example.michl.aimission.Utility.Aimission
 import kotlinx.android.synthetic.main.cv_item_aim.view.*
 
 class AimListAdapter(private val data: ArrayList<AimItem>, interactor: AimListInteractorInput) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
@@ -41,12 +41,8 @@ class AimListAdapter(private val data: ArrayList<AimItem>, interactor: AimListIn
 
                 // For this we connect to database. After that we change also the icon color (grey = open, yellow = progress, green = done)
                 // the yellow status appears the whole time, the item has already subaims opened.
-                interactor.changeItemProgress(data[position])
 
-                if (data[position].status == Status.OPEN)
-                    aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_black_24dp)
-                else if (data[position].status == Status.DONE)
-                    aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_green_24dp)
+                interactor.changeItemProgress(data[position], position)
             }
 
             aimItemCV.btnEditItem.setOnClickListener {
@@ -65,46 +61,49 @@ class AimListAdapter(private val data: ArrayList<AimItem>, interactor: AimListIn
     private fun getPriorityText(isHighPriority: Boolean?): String {
         isHighPriority?.apply {
 
+            val context = Aimission.getAppContext()?:return ""
             if (this)
-                return "A-Ziel"
+                return context.getString(R.string.priority_item_text)
         } ?: return ""
 
         return ""
     }
 
     private fun getGenreAsText(genre: Genre): String {
+        val context = Aimission.getAppContext() ?: return ""
+
         return when (genre) {
-            Genre.PRIVATE -> "privat"
-            Genre.EDUCATION -> "Weiterbildung privat"
-            Genre.FUN -> "Spaß und Freizeit"
-            Genre.WORK -> "Arbeit und berufliche Weiterbildung"
-            Genre.HEALTH -> "Gesundheit und Fittness"
-            Genre.FINANCES -> "Finanzen und Sparen"
-            Genre.UNDEFINED -> "nicht definiertes Genre"
+            Genre.PRIVATE -> context.getString(R.string.genre_item_private)
+            Genre.EDUCATION -> context.getString(R.string.genre_item_progress_private)
+            Genre.FUN -> context.getString(R.string.genre_item_fun)
+            Genre.WORK -> context.getString(R.string.genre_item_work)
+            Genre.HEALTH -> context.getString(R.string.genre_item_health)
+            Genre.FINANCES -> context.getString(R.string.genre_item_finances)
+            Genre.UNDEFINED -> context.getString(R.string.genre_item_undefined)
         }
     }
 
     private fun getAimStatus(status: Status?): String {
 
+        val context = Aimission.getAppContext() ?: return ""
+
         status?.apply {
             return when (status) {
                 Status.OPEN -> {
-                    "Status: offen"
+                    context.getString(R.string.status_item_open)
                 }
                 Status.PROGRESS -> {
-                    "Status: teilweise erledigt"
+                    context.getString(R.string.status_item_progress)
                 }
                 Status.DONE -> {
-                    "Status: erledigt"
+                    context.getString(R.string.status_item_done)
                 }
                 Status.UNDEFINED -> {
-                    "Status: undefiniert"
+                    context.getString(R.string.status_item_undefined)
                 }
             }
         }
 
         return ""
     }
-
-
 }

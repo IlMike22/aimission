@@ -36,4 +36,16 @@
     <string name="frg_aimdetail_error_msg_item_id_null">An error occured while trying to read out item information for editing. Please try again later.</string>
     <string name="frg_aimdetail_error_msg_unknown_error_edit_mode">An unknown error occured while trying to read out item information for editing. Please try again later.</string>
     <string name="frg_aimdetail_btn_text_delete">Löschen</string>
+    <string name="genre_item_private">privat</string>
+    <string name="genre_item_progress_private">Weiterbildung privat</string>
+    <string name="genre_item_fun">Spaß und Freizeit</string>
+    <string name="genre_item_work">Arbeit und berufliche Weiterbildung</string>
+    <string name="genre_item_health">Gesundheit und Fittness</string>
+    <string name="genre_item_finances">Finanzen und Sparen</string>
+    <string name="genre_item_undefined">nicht definiertes Genre</string>
+    <string name="status_item_open">Status: offen</string>
+    <string name="status_item_progress">Status: teilweise erledigt</string>
+    <string name="status_item_done">Status: erledigt</string>
+    <string name="status_item_undefined">Status: undefiniert</string>
+    <string name="priority_item_text">A-Ziel</string>
 </resources>

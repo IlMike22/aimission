@@ -10,13 +10,13 @@ class Aimission : Application() {
 
         fun getAppContext():Context?
         {
-            return Aimission.context
+            return context
         }
     }
 
     override fun onCreate() {
         super.onCreate()
-        Aimission.context = applicationContext
+        context = applicationContext
     }
 }
 
