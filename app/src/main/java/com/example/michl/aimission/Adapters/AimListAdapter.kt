@@ -61,7 +61,7 @@ class AimListAdapter(private val data: ArrayList<AimItem>, interactor: AimListIn
     private fun getPriorityText(isHighPriority: Boolean?): String {
         isHighPriority?.apply {
 
-            val context = Aimission.getAppContext()?:return ""
+            val context = Aimission.getAppContext() ?: return ""
             if (this)
                 return context.getString(R.string.priority_item_text)
         } ?: return ""

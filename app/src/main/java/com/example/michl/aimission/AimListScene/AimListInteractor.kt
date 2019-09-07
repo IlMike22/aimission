@@ -1,11 +1,11 @@
 package com.example.michl.aimission.AimListScene
 
-import android.content.Context
 import android.util.Log
 import com.example.michl.aimission.Helper.DateHelper.DateHelper.convertDataInAimItem
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Models.Status
+import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getAimTableReference
@@ -13,17 +13,22 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 
 interface AimListInteractorInput {
-    fun getItems(context: Context?, userId: String, data: DataSnapshot, month: Month, year: Int)
-    fun changeItemProgress(item: AimItem?, position:Int)
-    fun getItemInformationFromSharedPrefs(context: Context, month: Month, year: Int)
+    fun getItems(userId: String, data: DataSnapshot, month: Month, year: Int)
+    fun changeItemProgress(item: AimItem?, position: Int)
+    fun getItemInformationFromSharedPrefs(month: Month, year: Int)
+    fun updateItemList()
 }
 
 class AimListInteractor : AimListInteractorInput {
 
     var output: AimListPresenterInput? = null
+    var items = ArrayList<AimItem>()
 
     //todo context should not be available in interactor, find a way to avoid context parameter here
-    override fun getItems(context: Context?, userId: String, data: DataSnapshot, month: Month, year: Int) {
+    override fun getItems(userId: String, data: DataSnapshot, month: Month, year: Int) {
+
+        val context = Aimission.getAppContext()
+
         val userId = getCurrentUserId()
 
         val spKeyItemsCompleted = "amountItemsCompleted_$month$year"
@@ -33,7 +38,7 @@ class AimListInteractor : AimListInteractorInput {
         if (userId.isNullOrEmpty())
             output?.onNoUserIdExists()
         else {
-            val items = createNewItemListFromDb(userId, data, month, year)
+            items = createNewItemListFromDb(userId, data, month, year)
 
             // get information about the items and store this information in shared prefs.
             context?.apply {
@@ -46,9 +51,7 @@ class AimListInteractor : AimListInteractorInput {
         }
     }
 
-    override fun changeItemProgress(item: AimItem?, position:Int) {
-        //First we send an update to database and change the progress status either in "done" if it was "open" previously or into "subaim + 1"
-        //if it has several sub aims in it. Then we go back to list adapter and update the ui.
+    override fun changeItemProgress(item: AimItem?, position: Int) {
 
         item?.apply {
             // change progress status
@@ -57,19 +60,18 @@ class AimListInteractor : AimListInteractorInput {
             else if (item?.status == Status.OPEN)
                 item?.status = Status.DONE
 
-            //todo updateAimItemInDb is responsable for scrolling the view on top after item status was changed. fix this next time
-            //todo it isn't very clear why the db update leads to this scoll behaviour
-            if (updateAimItemInDb(item))
-                output?.onItemStatusChanged(item, position)
-            else
-                output?.onItemStatusChangeFailed(item, position)
+            // update item list
+            items.get(position).status = item.status
+            output?.onItemStatusChanged(item, position)
+
         } ?: run {
             output?.onItemStatusChangeFailed(null, position)
         }
     }
 
-    //todo context should not be available in interactor, find a way to avoid context parameter here
-    override fun getItemInformationFromSharedPrefs(context: Context, month: Month, year: Int) {
+    override fun getItemInformationFromSharedPrefs(month: Month, year: Int) {
+
+        val context = Aimission.getAppContext()
 
         //todo redundant code (see storeSP)
         val spKeyItemsCompleted = "amountItemsCompleted_$month$year"
@@ -84,8 +86,12 @@ class AimListInteractor : AimListInteractorInput {
             val itemsIterativeAmount = DbHelper.getSharedPrefsValueAsInt(this, spKeyItemsIterative)
             output?.onItemInformationFromSharedPrefSucceed(itemsDoneAmount, itemsHighPrioAmount, itemsIterativeAmount)
         }
+    }
 
-
+    override fun updateItemList() {
+        for (item in items) {
+            updateAimItemInDb(item)
+        }
     }
 
     private fun getCurrentUserId(): String {

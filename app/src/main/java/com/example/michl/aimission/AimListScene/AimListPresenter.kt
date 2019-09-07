@@ -8,17 +8,17 @@ import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
 
 interface AimListPresenterInput {
-    fun onItemsLoadedSuccessfully(items: ArrayList<AimItem>,month: Month, year:Int)
+    fun onItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Month, year: Int)
     fun onNoUserIdExists()
-    fun onItemStatusChanged(item: AimItem, position:Int)
-    fun onItemStatusChangeFailed(item: AimItem?, position:Int)
-    fun onIterativeItemsGot(items:ArrayList<AimItem>)
-    fun onCompletedItemsGot(items:ArrayList<AimItem>)
-    fun onIterativeItemsGotFailed(msg:String)
-    fun onHighPriorityItemsGot(items:ArrayList<AimItem>)
-    fun onHighPriorityItemsGotFailed(msg:String)
-    fun onItemInformationFromSharedPrefSucceed(completedItems:Int,highPrioItems:Int,iterativeItems:Int)
-    fun onItemInformationFromSharedPrefFailed(msg:String)
+    fun onItemStatusChanged(item: AimItem, position: Int)
+    fun onItemStatusChangeFailed(item: AimItem?, position: Int)
+    fun onIterativeItemsGot(items: ArrayList<AimItem>)
+    fun onCompletedItemsGot(items: ArrayList<AimItem>)
+    fun onIterativeItemsGotFailed(msg: String)
+    fun onHighPriorityItemsGot(items: ArrayList<AimItem>)
+    fun onHighPriorityItemsGotFailed(msg: String)
+    fun onItemInformationFromSharedPrefSucceed(completedItems: Int, highPrioItems: Int, iterativeItems: Int)
+    fun onItemInformationFromSharedPrefFailed(msg: String)
 
 }
 
@@ -31,17 +31,17 @@ class AimListPresenter : AimListPresenterInput {
         output?.get()?.afterUserIdNotFound(msgUserNotFound)
     }
 
-    override fun onItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Month, year:Int) {
+    override fun onItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Month, year: Int) {
         if (items.size == 0)
             output?.get()?.afterNoUserItemsFound("You have no items defined for this month")
         output?.get()?.afterUserItemsLoadedSuccessfully(items, month, year)
     }
 
-    override fun onItemStatusChanged(item: AimItem, position:Int) {
+    override fun onItemStatusChanged(item: AimItem, position: Int) {
         output?.get()?.afterItemStatusChangeSucceed(item, position)
     }
 
-    override fun onItemStatusChangeFailed(item: AimItem?, position:Int) {
+    override fun onItemStatusChangeFailed(item: AimItem?, position: Int) {
 
         item?.let { item ->
             val msg = "Unable to update status from item ${item.title} on position $position."
@@ -59,11 +59,11 @@ class AimListPresenter : AimListPresenterInput {
     }
 
     override fun onIterativeItemsGotFailed(msg: String) {
-       output?.get()?.afterIterativeItemsGotFailed(msg)
+        output?.get()?.afterIterativeItemsGotFailed(msg)
     }
 
     override fun onHighPriorityItemsGot(items: ArrayList<AimItem>) {
-       output?.get()?.afterHighPriorityItemsGot(items)
+        output?.get()?.afterHighPriorityItemsGot(items)
     }
 
     override fun onHighPriorityItemsGotFailed(msg: String) {
@@ -73,6 +73,7 @@ class AimListPresenter : AimListPresenterInput {
     override fun onCompletedItemsGot(items: ArrayList<AimItem>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
     override fun onItemInformationFromSharedPrefSucceed(completedItems: Int, highPrioItems: Int, iterativeItems: Int) {
         val msgCompletedItems = "Currently you have $completedItems items completed successfully. Congrats!"
         val msgHighPrioItemAmount = "In this month you have actually $highPrioItems high priority items."
@@ -85,8 +86,6 @@ class AimListPresenter : AimListPresenterInput {
         val message = "An error occured while trying to get all the item information from shared pref. Details: $msg"
         output?.get()?.afterItemInformationFromSharedPrefFailed(message)
     }
-
-
 
 
 }

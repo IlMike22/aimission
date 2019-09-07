@@ -15,6 +15,7 @@ import com.example.michl.aimission.Adapters.AimListAdapter
 import com.example.michl.aimission.AimListScene.AimListConfigurator
 import com.example.michl.aimission.AimListScene.AimListInteractorInput
 import com.example.michl.aimission.AimListScene.AimListRouter
+import com.example.michl.aimission.AimListScene.IOnBackPressed
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Helper.MODE_SELECTOR
 import com.example.michl.aimission.Models.AimItem
@@ -27,32 +28,30 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_aim_list.*
-import java.time.Year
 
 
 interface AimListFragmentInput {
     fun afterUserIdNotFound(msg: String)
-    fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month:Month, year:Int)
+    fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Month, year: Int)
     fun afterUserItemsLoadedFailed(errorMsg: String)
     fun afterNoUserItemsFound(msg: String)
-    fun afterItemStatusChangeSucceed(item: AimItem, position:Int)
+    fun afterItemStatusChangeSucceed(item: AimItem, position: Int)
     fun afterItemStatusChangeFailed(msg: String)
     fun afterIterativeItemsGot(items: ArrayList<AimItem>)
     fun afterIterativeItemsGotFailed(msg: String)
     fun afterHighPriorityItemsGot(items: ArrayList<AimItem>)
     fun afterHighPriorityItemsGotFailed(msg: String)
-    fun afterItemInformationFromSharedPrefSucceed(msgItemsCompleted:String,msgItemsHighPrio:String, msgItemsIterative:String)
-    fun afterItemInformationFromSharedPrefFailed(errorMsg:String)
+    fun afterItemInformationFromSharedPrefSucceed(msgItemsCompleted: String, msgItemsHighPrio: String, msgItemsIterative: String)
+    fun afterItemInformationFromSharedPrefFailed(errorMsg: String)
 }
 
-class AimListFragment : AimListFragmentInput, Fragment() {
-
+class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
 
     lateinit var router: AimListRouter
     lateinit var output: AimListInteractorInput
     private lateinit var aimListAdapter: RecyclerView.Adapter<*>
     private lateinit var lytManager: RecyclerView.LayoutManager
-    var selectedMonth:Month? = null
+    var selectedMonth: Month? = null
     var selectedYear: Int? = null
 
     @SuppressLint("RestrictedApi")
@@ -69,7 +68,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
             Log.i(TAG, "Cannot get intent data information month.${exc.message}")
         }
 
-        Log.i(TAG,"current month is ${DateHelper.getCurrentMonth()}, selected month is $selectedMonth")
+        Log.i(TAG, "current month is ${DateHelper.getCurrentMonth()}, selected month is $selectedMonth")
 
         val query = DbHelper.getAimTableReference().child(getCurrentUserId())
         query.addValueEventListener(object : ValueEventListener {
@@ -82,7 +81,7 @@ class AimListFragment : AimListFragmentInput, Fragment() {
                 Log.i(TAG, "The data has changed.")
                 selectedMonth?.let { month ->
                     selectedYear?.apply {
-                        output.getItems(context,getCurrentUserId(), dataSnapshot, selectedMonth as Month, selectedYear as Int)
+                        output.getItems(getCurrentUserId(), dataSnapshot, selectedMonth as Month, selectedYear as Int)
                     }
                 }
             }
@@ -109,11 +108,17 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun onBackPressed(): Boolean {
+        output.updateItemList()
+        return false
+    }
+
+
     override fun afterUserIdNotFound(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month:Month, year:Int) {
+    override fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Month, year: Int) {
 
         includeEmptyTextView?.visibility = View.GONE
 
@@ -129,9 +134,8 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         //get current amount of highPrio items, done items and iterative items
         //todo maybe it's better to get these information via firebase database query on demand?
 
-        context?.apply {
-            output.getItemInformationFromSharedPrefs(this,month,year)
-        }
+        output.getItemInformationFromSharedPrefs(month, year)
+
 
     }
 
@@ -146,9 +150,9 @@ class AimListFragment : AimListFragmentInput, Fragment() {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterItemStatusChangeSucceed(item: AimItem, position:Int) {
+    override fun afterItemStatusChangeSucceed(item: AimItem, position: Int) {
         aimListAdapter.notifyItemChanged(position)
-        Log.i(TAG,"Item ${item.title} successfully updated on position $position in list.")
+        Log.i(TAG, "Item ${item.title} successfully updated on position $position in list.")
     }
 
     override fun afterItemStatusChangeFailed(msg: String) {
@@ -181,6 +185,6 @@ class AimListFragment : AimListFragmentInput, Fragment() {
     }
 
     override fun afterItemInformationFromSharedPrefFailed(errorMsg: String) {
-        Toast.makeText(context,errorMsg,Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 }
