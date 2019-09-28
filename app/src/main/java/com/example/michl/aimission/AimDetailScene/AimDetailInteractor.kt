@@ -15,12 +15,11 @@ import com.google.firebase.database.ValueEventListener
 
 interface AimDetailInteractorInput {
     fun createNewAim(userId: String, item: AimItem)
-    fun deleteSingleAim(userId: String,  itemId:String)
+    fun deleteSingleAim(userId: String, itemId: String)
     fun updateAim(userId: String, item: AimItem)
     fun getAndValidateFirebaseUser()
     fun getDetailData(id: String)
-    fun createErrorMessageIfItemIdIsNull(msg:String)
-
+    fun createErrorMessageIfItemIdIsNull(msg: String)
 }
 
 class AimDetailInteractor : AimDetailInteractorInput {
@@ -34,14 +33,13 @@ class AimDetailInteractor : AimDetailInteractorInput {
 
     override fun updateAim(userId: String, item: AimItem) {
         if (DbHelper.createOrUpdateAimItem(userId, item))
-            //todo
-             output?.onUpdateItemSucceed()
+            output?.onUpdateItemSucceed()
         else
             output?.onUpdateItemFailed()
     }
 
-    override fun deleteSingleAim(userId: String, itemId:String) {
-        if (DbHelper.deleteAimItem(userId,itemId))
+    override fun deleteSingleAim(userId: String, itemId: String) {
+        if (DbHelper.deleteAimItem(userId, itemId))
             output?.onDeleteItemSucceed()
         else
             output?.onDeleteItemFailed()
@@ -64,7 +62,7 @@ class AimDetailInteractor : AimDetailInteractorInput {
         val query = FirebaseDatabase.getInstance().reference.child("Aim").child(getFireBaseUser()).child(id)
         query.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
-                Log.e(TAG,"An error occured while trying to read item detail data. ${p0.message}")
+                Log.e(TAG, "An error occured while trying to read item detail data. ${p0.message}")
             }
 
             override fun onDataChange(data: DataSnapshot) {
@@ -80,7 +78,7 @@ class AimDetailInteractor : AimDetailInteractorInput {
 
     }
 
-    override fun createErrorMessageIfItemIdIsNull(msg:String) {
+    override fun createErrorMessageIfItemIdIsNull(msg: String) {
         output?.onErrorMessageCreated(msg)
     }
 

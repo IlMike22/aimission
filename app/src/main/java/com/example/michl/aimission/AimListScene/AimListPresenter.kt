@@ -17,7 +17,9 @@ interface AimListPresenterInput {
     fun onIterativeItemsGotFailed(msg: String)
     fun onHighPriorityItemsGot(items: ArrayList<AimItem>)
     fun onHighPriorityItemsGotFailed(msg: String)
-    fun onItemInformationFromSharedPrefSucceed(completedItems: Int, highPrioItems: Int, iterativeItems: Int)
+    fun onItemInformationFromSharedPrefSucceed(itemsDone: Int, itemsHighPrio: Int, itemsIterative: Int)
+    fun onSPStoreSucceed(result: Map<String, Int>)
+    fun onSPStoreFailed(errorMsg: String)
     fun onItemInformationFromSharedPrefFailed(msg: String)
 
 }
@@ -85,6 +87,19 @@ class AimListPresenter : AimListPresenterInput {
     override fun onItemInformationFromSharedPrefFailed(msg: String) {
         val message = "An error occured while trying to get all the item information from shared pref. Details: $msg"
         output?.get()?.afterItemInformationFromSharedPrefFailed(message)
+    }
+
+    override fun onSPStoreSucceed(result: Map<String, Int>) {
+        val itemsDoneMsg = "Currently you have ${result["itemsDone"]} items completed for this month."
+        val itemsHighPrioMsg = "There are ${result["itemsHighPrio"]} items with high priority this month."
+        val itemsIterativeMsg = "${result["itemsIterative"]} items are iterative."
+
+        output?.get()?.afterSPStoredSucceed(itemsDoneMsg, itemsHighPrioMsg, itemsIterativeMsg)
+    }
+
+    override fun onSPStoreFailed(errorMsg: String) {
+        val message = "Something went wrong while trying to store current item status in sp. Details: $errorMsg"
+        output?.get()?.afterSPStoredFailed(message)
     }
 
 

@@ -43,6 +43,8 @@ interface AimListFragmentInput {
     fun afterHighPriorityItemsGotFailed(msg: String)
     fun afterItemInformationFromSharedPrefSucceed(msgItemsCompleted: String, msgItemsHighPrio: String, msgItemsIterative: String)
     fun afterItemInformationFromSharedPrefFailed(errorMsg: String)
+    fun afterSPStoredSucceed(itemsDoneMsg: String, itemsHighPrioMsg: String, itemsIterativeMsg: String)
+    fun afterSPStoredFailed(message: String)
 }
 
 class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
@@ -134,7 +136,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
         //get current amount of highPrio items, done items and iterative items
         //todo maybe it's better to get these information via firebase database query on demand?
 
-        output.getItemInformationFromSharedPrefs(month, year)
+        output.storeItemInformationInSharedPref(items)
 
 
     }
@@ -178,13 +180,23 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
 
     override fun afterItemInformationFromSharedPrefSucceed(msgItemsCompleted: String, msgItemsHighPrio: String, msgItemsIterative: String) {
 
-        //todo not working at the moment, deactivated
-//        Toast.makeText(context,msgItemsCompleted,Toast.LENGTH_SHORT).show()
-//        Toast.makeText(context,msgItemsHighPrio,Toast.LENGTH_SHORT).show()
-//        Toast.makeText(context,msgItemsIterative,Toast.LENGTH_SHORT).show()
+        //todo not working at the moment
+        Log.i(TAG, msgItemsCompleted)
+        Log.i(TAG, msgItemsHighPrio)
+        Log.i(TAG, msgItemsIterative)
     }
 
     override fun afterItemInformationFromSharedPrefFailed(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun afterSPStoredSucceed(itemsDoneMsg: String, itemsHighPrioMsg: String, itemsIterativeMsg: String) {
+        Log.i(TAG, "items done: $itemsDoneMsg")
+        Log.i(TAG, "items high prio: $itemsHighPrioMsg")
+        Log.i(TAG, "items iterative $itemsIterativeMsg")
+    }
+
+    override fun afterSPStoredFailed(message: String) {
+        Log.e(TAG, message)
     }
 }

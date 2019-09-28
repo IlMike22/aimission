@@ -15,7 +15,8 @@ import com.google.firebase.database.DataSnapshot
 interface AimListInteractorInput {
     fun getItems(userId: String, data: DataSnapshot, month: Month, year: Int)
     fun changeItemProgress(item: AimItem?, position: Int)
-    fun getItemInformationFromSharedPrefs(month: Month, year: Int)
+    fun storeItemInformationInSharedPref(items: ArrayList<AimItem>)
+    fun getItemInformationFromSharedPrefs(month: Int, year: Int)
     fun updateItemList()
 }
 
@@ -26,33 +27,18 @@ class AimListInteractor : AimListInteractorInput {
 
     //todo context should not be available in interactor, find a way to avoid context parameter here
     override fun getItems(userId: String, data: DataSnapshot, month: Month, year: Int) {
-
-        val context = Aimission.getAppContext()
-
         val userId = getCurrentUserId()
-
-        val spKeyItemsCompleted = "amountItemsCompleted_$month$year"
-        val spKeyItemsHighPrio = "amountItemsHighPriority_$month$year"
-        val spKeyItemsIterative = "amountIterativeItems_$month$year"
 
         if (userId.isNullOrEmpty())
             output?.onNoUserIdExists()
         else {
             items = createNewItemListFromDb(userId, data, month, year)
 
-            // get information about the items and store this information in shared prefs.
-            context?.apply {
-                DbHelper.storeInSharedPrefs(this, spKeyItemsCompleted, getAllCompletedItems(items).size)
-                DbHelper.storeInSharedPrefs(this, spKeyItemsHighPrio, getHighPriorityItems(items).size)
-                DbHelper.storeInSharedPrefs(this, spKeyItemsIterative, getIterativeItems(items).size)
-            }
-
             output?.onItemsLoadedSuccessfully(items, month, year)
         }
     }
 
     override fun changeItemProgress(item: AimItem?, position: Int) {
-
         item?.apply {
             // change progress status
             if (item?.status == Status.DONE)
@@ -69,22 +55,41 @@ class AimListInteractor : AimListInteractorInput {
         }
     }
 
-    override fun getItemInformationFromSharedPrefs(month: Month, year: Int) {
+
+    override fun storeItemInformationInSharedPref(items: ArrayList<AimItem>) {
+        // stores current state of item information for this month in sp and returns the result in a dict
+        if (items.size == 0)
+            output?.onSPStoreFailed("No items found.")
 
         val context = Aimission.getAppContext()
+        val month = items[0].month
+        val year = items[0].year
+        val spEntries = getCurrentSPEntry(month, year)
 
-        //todo redundant code (see storeSP)
-        val spKeyItemsCompleted = "amountItemsCompleted_$month$year"
-        val spKeyItemsHighPrio = "amountItemsHighPriority_$month$year"
-        val spKeyItemsIterative = "amountIterativeItems_$month$year"
+        val itemsCompleted = getAllCompletedItems(items).size
+        val itemsHighPrio = getHighPriorityItems(items).size
+        val itemsIterative = getIterativeItems(items).size
 
-
-        //todo fix this problem. all returned values from shared prefs are -1
+        // get information about the items and store this information in shared prefs.
         context?.apply {
-            val itemsDoneAmount = DbHelper.getSharedPrefsValueAsInt(this, spKeyItemsCompleted)
-            val itemsHighPrioAmount = DbHelper.getSharedPrefsValueAsInt(this, spKeyItemsHighPrio)
-            val itemsIterativeAmount = DbHelper.getSharedPrefsValueAsInt(this, spKeyItemsIterative)
-            output?.onItemInformationFromSharedPrefSucceed(itemsDoneAmount, itemsHighPrioAmount, itemsIterativeAmount)
+            DbHelper.storeInSharedPrefs(this, spEntries[0], itemsCompleted)
+            DbHelper.storeInSharedPrefs(this, spEntries[1], itemsHighPrio)
+            DbHelper.storeInSharedPrefs(this, spEntries[2], itemsIterative)
+        }
+
+        output?.onSPStoreSucceed(mapOf("itemsCompleted" to itemsCompleted, "itemsHighPrio" to itemsHighPrio, "itemsIterative" to itemsIterative))
+
+    }
+
+    override fun getItemInformationFromSharedPrefs(month: Int, year: Int) {
+        val context = Aimission.getAppContext()
+        val spEntry = getCurrentSPEntry(month, year)
+
+        context?.apply {
+            val itemsDone = DbHelper.getSharedPrefsValueAsInt(this, spEntry[0])
+            val itemsHighPrio = DbHelper.getSharedPrefsValueAsInt(this, spEntry[1])
+            val itemsIterative = DbHelper.getSharedPrefsValueAsInt(this, spEntry[2])
+            output?.onItemInformationFromSharedPrefSucceed(itemsDone, itemsHighPrio, itemsIterative)
         }
     }
 
@@ -156,6 +161,20 @@ class AimListInteractor : AimListInteractorInput {
         for (item in items) {
             if (item.status == Status.DONE)
                 result.add(item)
+        }
+
+        return result
+    }
+
+    private fun getCurrentSPEntry(month: Int?, year: Int?): Array<String> {
+        var result = Array<String>(3) { "" }
+
+        month?.let { month ->
+            year?.let { year ->
+                result[0] = "amountItemsCompleted_$month$year"
+                result[1] = "amountItemsHighPriority_$month$year"
+                result[3] = "amountIterativeItems_$month$year"
+            }
         }
 
         return result
