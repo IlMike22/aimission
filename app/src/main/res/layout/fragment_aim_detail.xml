@@ -197,7 +197,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:text="@string/frg_aimdetail_btn_text_delete"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/frg_aimdetail_btn_save"
         app:layout_constraintHorizontal_bias="0.123"
         app:layout_constraintStart_toStartOf="parent"

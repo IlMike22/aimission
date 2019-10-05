@@ -36,7 +36,8 @@ class AimListPresenter : AimListPresenterInput {
     override fun onItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Month, year: Int) {
         if (items.size == 0)
             output?.get()?.afterNoUserItemsFound("You have no items defined for this month")
-        output?.get()?.afterUserItemsLoadedSuccessfully(items, month, year)
+        else
+            output?.get()?.afterUserItemsLoadedSuccessfully(items, month, year)
     }
 
     override fun onItemStatusChanged(item: AimItem, position: Int) {

@@ -2,6 +2,7 @@ package com.example.michl.aimission.AimListScene.Views
 
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -55,6 +56,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
     private lateinit var lytManager: RecyclerView.LayoutManager
     var selectedMonth: Month? = null
     var selectedYear: Int? = null
+    val REQUEST_RELOAD_LIST = 101
 
     @SuppressLint("RestrictedApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -103,11 +105,18 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
 
         fltAddAimItem.setOnClickListener {
             activity?.supportFragmentManager?.apply {
-                router.showAimDetailView("", MODE_SELECTOR.Create)
+                router.showAimDetailView("", MODE_SELECTOR.Create, activity)
             }
         }
 
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_RELOAD_LIST)
+            aimListAdapter.notifyDataSetChanged()
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onBackPressed(): Boolean {
@@ -124,7 +133,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
 
         includeEmptyTextView?.visibility = View.GONE
 
-        aimListAdapter = AimListAdapter(items, output)
+        aimListAdapter = AimListAdapter(items, output, activity)
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
         aimListRV?.apply {
@@ -144,8 +153,10 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
     override fun afterNoUserItemsFound(msg: String) {
 
         includeEmptyTextView?.visibility = View.VISIBLE
-        scrvAimList.visibility = View.GONE
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        scrvAimList?.apply {
+            visibility = View.GONE
+            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun afterUserItemsLoadedFailed(errorMsg: String) {

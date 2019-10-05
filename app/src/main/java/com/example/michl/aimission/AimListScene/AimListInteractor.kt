@@ -59,7 +59,10 @@ class AimListInteractor : AimListInteractorInput {
     override fun storeItemInformationInSharedPref(items: ArrayList<AimItem>) {
         // stores current state of item information for this month in sp and returns the result in a dict
         if (items.size == 0)
+        {
             output?.onSPStoreFailed("No items found.")
+            return
+        }
 
         val context = Aimission.getAppContext()
         val month = items[0].month
@@ -173,7 +176,7 @@ class AimListInteractor : AimListInteractorInput {
             year?.let { year ->
                 result[0] = "amountItemsCompleted_$month$year"
                 result[1] = "amountItemsHighPriority_$month$year"
-                result[3] = "amountIterativeItems_$month$year"
+                result[2] = "amountIterativeItems_$month$year"
             }
         }
 

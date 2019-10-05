@@ -1,5 +1,6 @@
 package com.example.michl.aimission.Adapters
 
+import android.app.Activity
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,11 +15,12 @@ import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.Aimission
 import kotlinx.android.synthetic.main.cv_item_aim.view.*
 
-class AimListAdapter(private val data: ArrayList<AimItem>, interactor: AimListInteractorInput) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
+class AimListAdapter(private val data: ArrayList<AimItem>, interactor: AimListInteractorInput, activity: Activity?=null) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
 
     val router = AimListRouter()
 
     private val interactor = interactor
+    private val activity = activity?:null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderAimItem {
@@ -46,7 +48,7 @@ class AimListAdapter(private val data: ArrayList<AimItem>, interactor: AimListIn
             }
 
             aimItemCV.btnEditItem.setOnClickListener {
-                router.showAimDetailView(data[position].id ?: "", MODE_SELECTOR.Edit)
+                router.showAimDetailView(data[position].id ?: "", MODE_SELECTOR.Edit, activity)
             }
 
             if (data[position].status == Status.OPEN)

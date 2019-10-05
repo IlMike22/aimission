@@ -1,6 +1,8 @@
 package com.example.michl.aimission.AimListScene
 
+import android.app.Activity
 import android.content.Intent
+import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.util.Log
 import com.example.michl.aimission.AimDetailScene.Views.AimDetailActivity
 import com.example.michl.aimission.AimListScene.Views.AimListFragment
@@ -11,13 +13,14 @@ import java.lang.ref.WeakReference
 
 
 interface AimListRouterInput {
-    fun showAimDetailView(aimId: String, mode: MODE_SELECTOR)
+    fun showAimDetailView(aimId: String, mode: MODE_SELECTOR, sourceActivity: Activity?=null)
 }
 
 class AimListRouter : AimListRouterInput {
     var fragment: WeakReference<AimListFragment>? = null
+    val REQUEST_UPDATE_LIST = 101
 
-    override fun showAimDetailView(aimId: String, mode: MODE_SELECTOR) {
+    override fun showAimDetailView(aimId: String, mode: MODE_SELECTOR, sourceActivity:Activity?) {
         var intent = Intent(Aimission.getAppContext(), AimDetailActivity::class.java)
 
         if (aimId.isEmpty() && mode != MODE_SELECTOR.Create)
@@ -29,8 +32,9 @@ class AimListRouter : AimListRouterInput {
         intent.putExtra("AimId", aimId)
         intent.putExtra("Mode", mode)
         Aimission.getAppContext()?.apply {
-            startActivity(intent)
+            sourceActivity?.apply {
+                startActivityForResult(this,intent, REQUEST_UPDATE_LIST,null)
+            }?:Log.i(TAG,"Activity is null. Cannot call startActivityForResult in AimListRouter")
         }
-
     }
 }
