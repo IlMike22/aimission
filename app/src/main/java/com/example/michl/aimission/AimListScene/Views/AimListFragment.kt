@@ -112,13 +112,6 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_RELOAD_LIST)
-            aimListAdapter.notifyDataSetChanged()
-
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     override fun onBackPressed(): Boolean {
         output.updateItemList()
         return false
@@ -131,8 +124,6 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
 
     override fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Month, year: Int) {
 
-        includeEmptyTextView?.visibility = View.GONE
-
         aimListAdapter = AimListAdapter(items, output, activity)
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
@@ -142,21 +133,16 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
             layoutManager = lytManager
         }
 
+        showItemView()
+
         //get current amount of highPrio items, done items and iterative items
         //todo maybe it's better to get these information via firebase database query on demand?
 
         output.storeItemInformationInSharedPref(items)
-
-
     }
 
     override fun afterNoUserItemsFound(msg: String) {
-
-        includeEmptyTextView?.visibility = View.VISIBLE
-        scrvAimList?.apply {
-            visibility = View.GONE
-            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-        }
+        showEmptyTextView()
     }
 
     override fun afterUserItemsLoadedFailed(errorMsg: String) {
@@ -210,4 +196,19 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
     override fun afterSPStoredFailed(message: String) {
         Log.e(TAG, message)
     }
+
+    private fun showEmptyTextView() {
+        includeEmptyTextView?.visibility = View.VISIBLE
+        scrvAimList?.apply {
+            visibility = View.GONE
+        }
+    }
+
+    private fun showItemView() {
+        includeEmptyTextView?.visibility = View.GONE
+        scrvAimList?.apply {
+            visibility = View.VISIBLE
+        }
+    }
+
 }
