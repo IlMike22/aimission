@@ -1,9 +1,6 @@
 package com.example.michl.aimission.MainScene
 
 import android.util.Log
-import com.example.michl.aimission.Helper.convertMonthItem
-import com.example.michl.aimission.Helper.getMonthAsText
-import com.example.michl.aimission.Helper.getMonthItem
 import com.example.michl.aimission.Models.*
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getCurrentUserId
@@ -64,61 +61,76 @@ class MainInteractor : MainInteractorInput {
         })
     }
 
-    // Get all month items from all user's items.
-    private fun getMonthItems(items: ArrayList<AimItem?>): ArrayList<MonthItem> {
+    // Get all month aims from all user's aims.
+    private fun getMonthItems(aims: ArrayList<AimItem?>): ArrayList<MonthItem> {
+
+        // we want to return all months with their specific properties like amount of aims, percentage (can be calculated),
+        // aimsSucceed
+
         var result = ArrayList<MonthItem>()
-        var aimAmount = 1
+        var aimAmount = 0
         var aimSucceeded = 0
-        var year = 0
-        var month: Month? = null
+        var currentMonth = 0
+        var currentYear = 0
 
-        for (item in items) {
+        //only for testing month function
 
-            when (month) {
-                null -> {
-                    month = getMonthItem(item?.month)
-                    year = item?.year ?: 0
-                    if (item?.status == Status.DONE)
-                        aimSucceeded++
-                }
-                getMonthItem(item?.month) -> {
-                    aimAmount++
-                    if (item?.status == Status.DONE)
-                        aimSucceeded++
+        /*
+        aims.add(AimItem("1", "b", "desc", 2, true, Status.OPEN, Genre.EDUCATION, 10, 2019, false))
+        aims.add(AimItem("2", "a", "desc", 0, false, Status.OPEN, Genre.EDUCATION, 10, 2019, false))
+        aims.add(AimItem("3", "v", "desc", 0, true, Status.OPEN, Genre.EDUCATION, 9, 2019, false))
+        aims.add(AimItem("4", "e", "desc", 0, true, Status.DONE, Genre.EDUCATION, 8, 2019, false))
+        aims.add(AimItem("5", "zh", "desc", 5, false, Status.DONE, Genre.EDUCATION, 8, 2019, false))
+        aims.add(AimItem("6", "z", "desc", 0, false, Status.OPEN, Genre.EDUCATION, 8, 2019, false))
+        aims.add(AimItem("7", "b", "desc", 2, true, Status.OPEN, Genre.EDUCATION, 8, 2019, false))
+        aims.add(AimItem("8", "a", "desc", 0, false, Status.DONE, Genre.EDUCATION, 7, 2019, false))
+        aims.add(AimItem("9", "v", "desc", 0, true, Status.OPEN, Genre.EDUCATION, 7, 2019, false))
+        */
 
-                    if (item == items.get(items.size - 1)) {
-                        result.add(MonthItem(month?.name, aimAmount, getPercentOfSucceededAims(aimSucceeded, aimAmount), month, year))
-                    }
-                }
-                else -> {
-                    result.add(MonthItem(month.name, aimAmount, getPercentOfSucceededAims(aimSucceeded, aimAmount), month, year))
 
-                    month = getMonthItem(item?.month)
+        for (aim in aims) {
+
+            if (currentMonth == 0) {
+                currentMonth = aim?.month ?: -1
+                currentYear = aim?.year ?: -1
+                aimAmount++
+                if (aim?.status == Status.DONE)
+                    aimSucceeded++
+
+            } else {
+                if (currentMonth != aim?.month ?: -1) {
+                    // new month in item available
+                    // store previous month and reset values
+                    result.add(MonthItem(getMonthName(currentMonth), aimAmount, aimSucceeded, currentMonth, currentYear))
                     aimAmount = 1
-
-                    if (item?.status == Status.DONE)
+                    if (aim?.status == Status.DONE)
                         aimSucceeded = 1
-                    else
-                        aimSucceeded = 0
+                    else aimSucceeded = 0
 
-                    if (item == items.get(items.size - 1)) {
-                        result.add(MonthItem(month?.name, aimAmount, getPercentOfSucceededAims(aimSucceeded, aimAmount), month, year))
-                    }
+                    currentMonth = aim?.month ?: -1
+                    currentYear = aim?.year ?: -1
+                } else {
+                    // just another item for current month
+                    aimAmount++
+                    if (aim?.status == Status.DONE)
+                        aimSucceeded++
+                }
+
+
+                if (aim == aims.get(aims.size - 1)) { // we reached last item of list
+                    result.add(MonthItem(getMonthName(aim?.month
+                            ?: -1), aimAmount, aimSucceeded, aim?.month
+                            ?: -1, aim?.year ?: -1))
                 }
             }
         }
-
         return result
     }
 
     private fun createCurrentMonthItem(): MonthItem {
         // Calender functions month range is [0..11] not [1..12] so we have to convert it later
-        val currentMonthDate = Calendar.getInstance().get(Calendar.MONTH)
-        val currentMonth = convertMonthItem(currentMonthDate)
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        val monthAsText = getMonthAsText(currentMonth)
-        return MonthItem(monthAsText, 0, 0, currentMonth, currentYear)
+        return MonthItem(getMonthName(currentMonth), 0, 0, currentMonth, currentYear)
     }
-
-    private fun getPercentOfSucceededAims(aimSucceeded: Int, aimAmount: Int) = aimSucceeded * 100 / aimAmount
 }

@@ -88,7 +88,9 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
             val description = frg_aimdetail_txt_description.text.toString()
 
             try {
-                repeatCount = frg_aimdetail_txt_repeat.text.toString().toInt()
+                val userInputRepeatTime = frg_aimdetail_txt_repeat.text.toString()
+                if (userInputRepeatTime.isNotEmpty())
+                    repeatCount = userInputRepeatTime.toInt()
             } catch (exc: Exception) {
                 Log.e(TAG, "Could not convert String into Int (repeatCount). Repeat count remains 0 as initially given.")
             }

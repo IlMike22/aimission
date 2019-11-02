@@ -2,7 +2,6 @@ package com.example.michl.aimission.Helper
 
 import android.util.Log
 import com.example.michl.aimission.Models.AimItem
-import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -14,15 +13,15 @@ class DateHelper {
 
         var currentDate = LocalDate.now()
 
-        fun getCurrentMonth(): Month {
-            return getMonthItem(currentDate.month.value)
+        fun getCurrentMonth(): Int {
+            return currentDate.month.value
         }
 
         fun getCurrentYear(): Int {
             return currentDate.year
         }
 
-        fun convertDataInAimItem(data: DataSnapshot, queryMonth: Month? = null, queryYear: Int? = null): ArrayList<AimItem> {
+        fun convertDataInAimItem(data: DataSnapshot, queryMonth: Int? = null, queryYear: Int? = null): ArrayList<AimItem> {
             var aimList = ArrayList<AimItem>()
 
             try {
@@ -30,7 +29,7 @@ class DateHelper {
                     singleDataSet.getValue(AimItem::class.java)?.apply {
                         queryYear?.let { year ->
                             queryMonth?.let { month ->
-                                if (this.year == year && this.month == getIntFromMonth(month))
+                                if (this.year == year && this.month == month)
                                     aimList.add(this)
 
                             }
@@ -52,83 +51,83 @@ enum class MODE_SELECTOR {
     Create
 }
 
-fun getMonthItem(month: Int?): Month {
-    return when (month) {
-        1 -> Month.JANUARY
-        2 -> Month.FEBRUARY
-        3 -> Month.MARCH
-        4 -> Month.APRIL
-        5 -> Month.MAY
-        6 -> Month.JUNE
-        7 -> Month.JULY
-        8 -> Month.AUGUST
-        9 -> Month.SEPTEMBER
-        10 -> Month.OCTOBER
-        11 -> Month.NOVEMBER
-        12 -> Month.DECEMBER
-        else -> Month.UNKNOWN
-    }
-}
+//fun getMonthItem(month: Int?): Month {
+//    return when (month) {
+//        1 -> Month.JANUARY
+//        2 -> Month.FEBRUARY
+//        3 -> Month.MARCH
+//        4 -> Month.APRIL
+//        5 -> Month.MAY
+//        6 -> Month.JUNE
+//        7 -> Month.JULY
+//        8 -> Month.AUGUST
+//        9 -> Month.SEPTEMBER
+//        10 -> Month.OCTOBER
+//        11 -> Month.NOVEMBER
+//        12 -> Month.DECEMBER
+//        else -> Month.UNKNOWN
+//    }
+//}
 
-fun getIntFromMonth(month: Month): Int {
-    return when (month) {
-        Month.JANUARY -> 1
-        Month.FEBRUARY -> 2
-        Month.MARCH -> 3
-        Month.APRIL -> 4
-        Month.MAY -> 5
-        Month.JUNE -> 6
-        Month.JULY -> 7
-        Month.AUGUST -> 8
-        Month.SEPTEMBER -> 9
-        Month.OCTOBER -> 10
-        Month.NOVEMBER -> 11
-        Month.DECEMBER -> 12
-        Month.UNKNOWN -> -1
-    }
-}
+//fun getIntFromMonth(month: Month): Int {
+//    return when (month) {
+//        Month.JANUARY -> 1
+//        Month.FEBRUARY -> 2
+//        Month.MARCH -> 3
+//        Month.APRIL -> 4
+//        Month.MAY -> 5
+//        Month.JUNE -> 6
+//        Month.JULY -> 7
+//        Month.AUGUST -> 8
+//        Month.SEPTEMBER -> 9
+//        Month.OCTOBER -> 10
+//        Month.NOVEMBER -> 11
+//        Month.DECEMBER -> 12
+//        Month.UNKNOWN -> -1
+//    }
+//}
 
-fun getMonthAsText(month: Month): String {
-    return when (month) {
-        Month.UNKNOWN -> "Unbekannt"
-        Month.JANUARY -> "Januar"
-        Month.FEBRUARY -> "Februar"
-        Month.MARCH -> "März"
-        Month.APRIL -> "April"
-        Month.MAY -> "Mai"
-        Month.JUNE -> "Juni"
-        Month.JULY -> "Juli"
-        Month.AUGUST -> "August"
-        Month.SEPTEMBER -> "September"
-        Month.OCTOBER -> "Oktober"
-        Month.NOVEMBER -> "November"
-        Month.DECEMBER -> "Dezember"
-    }
-}
+//fun getMonthAsText(month: Month): String {
+//    return when (month) {
+//        Month.UNKNOWN -> "Unbekannt"
+//        Month.JANUARY -> "Januar"
+//        Month.FEBRUARY -> "Februar"
+//        Month.MARCH -> "März"
+//        Month.APRIL -> "April"
+//        Month.MAY -> "Mai"
+//        Month.JUNE -> "Juni"
+//        Month.JULY -> "Juli"
+//        Month.AUGUST -> "August"
+//        Month.SEPTEMBER -> "September"
+//        Month.OCTOBER -> "Oktober"
+//        Month.NOVEMBER -> "November"
+//        Month.DECEMBER -> "Dezember"
+//    }
+//}
 
-fun convertMonthItem(item:Int):Month
-{
-    /*
-        If we get the current month from calendar(), we get it with range [0..11]
-        Use this funcation to convert the result in range [1..12] which should be used in the whole app.
-     */
-    return when (item)
-    {
-        0 -> Month.JANUARY
-        1 -> Month.FEBRUARY
-        2 -> Month.MARCH
-        3 -> Month.APRIL
-        4 -> Month.MAY
-        5 -> Month.JUNE
-        6 -> Month.JULY
-        7 -> Month.AUGUST
-        8 -> Month.SEPTEMBER
-        9 -> Month.OCTOBER
-        10 -> Month.NOVEMBER
-        11 -> Month.DECEMBER
-        else -> Month.UNKNOWN
-    }
-}
+//fun convertMonthItem(item:Int):Month
+//{
+//    /*
+//        If we get the current month from calendar(), we get it with range [0..11]
+//        Use this funcation to convert the result in range [1..12] which should be used in the whole app.
+//     */
+//    return when (item)
+//    {
+//        0 -> Month.JANUARY
+//        1 -> Month.FEBRUARY
+//        2 -> Month.MARCH
+//        3 -> Month.APRIL
+//        4 -> Month.MAY
+//        5 -> Month.JUNE
+//        6 -> Month.JULY
+//        7 -> Month.AUGUST
+//        8 -> Month.SEPTEMBER
+//        9 -> Month.OCTOBER
+//        10 -> Month.NOVEMBER
+//        11 -> Month.DECEMBER
+//        else -> Month.UNKNOWN
+//    }
+//}
 
 
 

@@ -2,7 +2,6 @@ package com.example.michl.aimission.AimDetailScene
 
 import android.util.Log
 import com.example.michl.aimission.Helper.DateHelper
-import com.example.michl.aimission.Helper.getIntFromMonth
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
@@ -49,7 +48,7 @@ class AimDetailInteractor : AimDetailInteractorInput {
 
         // add current month and year.
 
-        item.month = getIntFromMonth(DateHelper.getCurrentMonth())
+        item.month = DateHelper.getCurrentMonth()
         item.year = DateHelper.getCurrentYear()
 
         if (DbHelper.createOrUpdateAimItem(userId, item))

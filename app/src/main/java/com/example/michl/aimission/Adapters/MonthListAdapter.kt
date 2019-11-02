@@ -27,7 +27,7 @@ class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>) : RecyclerVie
         holder.monthItem.apply {
             monthItemCV.monthNameTV.text = "${mDataSet[position].name} ${mDataSet[position].year}"
             monthItemCV.aimAmountTV.text = "${mDataSet[position].aimsAmount} Ziele insgesamt"
-            monthItemCV.aimSucceededTV.text = "${mDataSet[position].aimsSucceeded} % erreicht"
+            monthItemCV.aimSucceededTV.text = "${getPercentOfSucceededAims(mDataSet[position].aimsSucceeded, mDataSet[position].aimsAmount)} % erreicht"
         }
 
         holder.monthItem.setOnClickListener {
@@ -37,5 +37,6 @@ class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>) : RecyclerVie
 
     override fun getItemCount() = mDataSet.size
 
+    private fun getPercentOfSucceededAims(aimSucceeded: Int, aimAmount: Int) = aimSucceeded * 100 / aimAmount
 
 }

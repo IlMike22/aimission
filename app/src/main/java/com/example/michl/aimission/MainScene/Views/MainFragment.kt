@@ -114,5 +114,4 @@ class MainFragment : MainFragmentInput, Fragment() {
             layoutManager = lytManager
         }
     }
-
 }

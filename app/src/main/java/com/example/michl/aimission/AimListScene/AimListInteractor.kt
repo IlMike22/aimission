@@ -3,7 +3,6 @@ package com.example.michl.aimission.AimListScene
 import android.util.Log
 import com.example.michl.aimission.Helper.DateHelper.DateHelper.convertDataInAimItem
 import com.example.michl.aimission.Models.AimItem
-import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper
@@ -13,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 
 interface AimListInteractorInput {
-    fun getItems(userId: String, data: DataSnapshot, month: Month, year: Int)
+    fun getItems(userId: String, data: DataSnapshot, month: Int, year: Int)
     fun changeItemProgress(item: AimItem?, position: Int)
     fun storeItemInformationInSharedPref(items: ArrayList<AimItem>)
     fun getItemInformationFromSharedPrefs(month: Int, year: Int)
@@ -26,7 +25,7 @@ class AimListInteractor : AimListInteractorInput {
     var items = ArrayList<AimItem>()
 
     //todo context should not be available in interactor, find a way to avoid context parameter here
-    override fun getItems(userId: String, data: DataSnapshot, month: Month, year: Int) {
+    override fun getItems(userId: String, data: DataSnapshot, month: Int, year: Int) {
         val userId = getCurrentUserId()
 
         if (userId.isNullOrEmpty())
@@ -106,7 +105,7 @@ class AimListInteractor : AimListInteractorInput {
         return FirebaseAuth.getInstance().currentUser?.uid ?: ""
     }
 
-    private fun createNewItemListFromDb(userId: String, data: DataSnapshot, currentMonth: Month, currentYear: Int): ArrayList<AimItem> {
+    private fun createNewItemListFromDb(userId: String, data: DataSnapshot, currentMonth: Int, currentYear: Int): ArrayList<AimItem> {
         userId?.apply {
 
             return convertDataInAimItem(data, currentMonth, currentYear)

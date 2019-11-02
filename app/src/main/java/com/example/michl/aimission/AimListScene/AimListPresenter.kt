@@ -3,12 +3,11 @@ package com.example.michl.aimission.AimListScene
 import android.util.Log
 import com.example.michl.aimission.AimListScene.Views.AimListFragmentInput
 import com.example.michl.aimission.Models.AimItem
-import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
 
 interface AimListPresenterInput {
-    fun onItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Month, year: Int)
+    fun onItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Int, year: Int)
     fun onNoUserIdExists()
     fun onItemStatusChanged(item: AimItem, position: Int)
     fun onItemStatusChangeFailed(item: AimItem?, position: Int)
@@ -33,7 +32,7 @@ class AimListPresenter : AimListPresenterInput {
         output?.get()?.afterUserIdNotFound(msgUserNotFound)
     }
 
-    override fun onItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Month, year: Int) {
+    override fun onItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Int, year: Int) {
         if (items.size == 0)
             output?.get()?.afterNoUserItemsFound("You have no items defined for this month")
         else

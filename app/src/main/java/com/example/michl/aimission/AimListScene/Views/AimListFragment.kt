@@ -20,7 +20,6 @@ import com.example.michl.aimission.AimListScene.IOnBackPressed
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Helper.MODE_SELECTOR
 import com.example.michl.aimission.Models.AimItem
-import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
@@ -33,7 +32,7 @@ import kotlinx.android.synthetic.main.fragment_aim_list.*
 
 interface AimListFragmentInput {
     fun afterUserIdNotFound(msg: String)
-    fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Month, year: Int)
+    fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Int, year: Int)
     fun afterUserItemsLoadedFailed(errorMsg: String)
     fun afterNoUserItemsFound(msg: String)
     fun afterItemStatusChangeSucceed(item: AimItem, position: Int)
@@ -54,7 +53,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
     lateinit var output: AimListInteractorInput
     private lateinit var aimListAdapter: RecyclerView.Adapter<*>
     private lateinit var lytManager: RecyclerView.LayoutManager
-    var selectedMonth: Month? = null
+    var selectedMonth: Int? = 0
     var selectedYear: Int? = null
     val REQUEST_RELOAD_LIST = 101
 
@@ -64,7 +63,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
 
         // get current month and year information via intent
         try {
-            selectedMonth = activity?.intent?.getSerializableExtra("month") as Month
+            selectedMonth = activity?.intent?.getSerializableExtra("month") as Int
             selectedYear = activity?.intent?.getIntExtra("year", 0)
                     ?: Log.i(TAG, "Cannot get intent data information year. Value is null.")
 
@@ -85,7 +84,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
                 Log.i(TAG, "The data has changed.")
                 selectedMonth?.let { month ->
                     selectedYear?.apply {
-                        output.getItems(getCurrentUserId(), dataSnapshot, selectedMonth as Month, selectedYear as Int)
+                        output.getItems(getCurrentUserId(), dataSnapshot, selectedMonth as Int, selectedYear as Int)
                     }
                 }
             }
@@ -122,7 +121,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Month, year: Int) {
+    override fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Int, year: Int) {
 
         aimListAdapter = AimListAdapter(items, output, activity)
         lytManager = LinearLayoutManager(activity?.applicationContext)
