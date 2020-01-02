@@ -90,7 +90,7 @@ class MainFragment : MainFragmentInput, Fragment() {
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
 
-        monthListRV.apply {
+        monthListRV?.apply {
             setHasFixedSize(true)
             adapter = monthItemAdapter
             layoutManager = lytManager

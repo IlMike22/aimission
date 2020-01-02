@@ -10,15 +10,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 class DbHelper {
-
-
     companion object {
-
         const val TAG = "Aimission"
 
-        /*
-        Writes or updates a new item in table Aim.
-        */
         fun createOrUpdateAimItem(userId: String, item: AimItem): Boolean {
             return try {
                 getAimTableReference().child(userId).child(item.id ?: "").setValue(item)
@@ -29,9 +23,6 @@ class DbHelper {
             }
         }
 
-        /*
-        Deletes a specific aim item from table Aim.
-         */
         fun deleteAimItem(userId: String, itemId: String): Boolean {
             return try {
                 getAimTableReference().child(userId).child(itemId).setValue(null)
@@ -43,7 +34,6 @@ class DbHelper {
             }
         }
 
-        // Creates a new person id reference on aim table if not exists.
         fun createNewPersonReference(userId: String): Boolean {
             return try {
                 getAimTableReference().child(userId).setValue(null)

@@ -37,6 +37,9 @@ class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>) : RecyclerVie
 
     override fun getItemCount() = mDataSet.size
 
-    private fun getPercentOfSucceededAims(aimSucceeded: Int, aimAmount: Int) = aimSucceeded * 100 / aimAmount
-
+    private fun getPercentOfSucceededAims(aimSucceeded: Int, aimAmount: Int):Int {
+        if (aimAmount == 0)
+            return 100
+        return aimSucceeded * 100 / aimAmount
+    }
 }
