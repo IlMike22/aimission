@@ -1,5 +1,6 @@
 package com.example.michl.aimission.Adapters
 
+import android.content.Context
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,7 +10,7 @@ import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.cv_item_month.view.*
 
-class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>) : RecyclerView.Adapter<MonthListAdapter.ViewHolderMonthItem>() {
+class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>, private val context: Context) : RecyclerView.Adapter<MonthListAdapter.ViewHolderMonthItem>() {
 
     private val router = MainRouter()
 
@@ -31,7 +32,7 @@ class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>) : RecyclerVie
         }
 
         holder.monthItem.setOnClickListener {
-            router.openAimListView(mDataSet[position].month, mDataSet[position].year)
+            router.openAimListView(context,mDataSet[position].month, mDataSet[position].year)
         }
     }
 

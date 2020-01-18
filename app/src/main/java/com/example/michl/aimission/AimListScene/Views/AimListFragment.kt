@@ -2,6 +2,8 @@ package com.example.michl.aimission.AimListScene.Views
 
 
 import android.annotation.SuppressLint
+import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -21,9 +23,11 @@ import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Helper.MODE_SELECTOR
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.R
+import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getCurrentUserId
+import com.example.michl.aimission.Utility.SettingHelper
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -48,7 +52,6 @@ interface AimListFragmentInput {
 }
 
 class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
-
     lateinit var router: AimListRouter
     lateinit var output: AimListInteractorInput
     private lateinit var aimListAdapter: RecyclerView.Adapter<*>
@@ -97,7 +100,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         AimListConfigurator.configure(this)
 
-        if (DateHelper.getCurrentMonth() == selectedMonth)
+        if (isActualMonth())
             fltAddAimItem.visibility = View.VISIBLE
         else
             fltAddAimItem.visibility = View.GONE
@@ -122,8 +125,8 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
     }
 
     override fun afterUserItemsLoadedSuccessfully(items: ArrayList<AimItem>, month: Int, year: Int) {
-
-        aimListAdapter = AimListAdapter(items, output, activity)
+        val userSettings = getUserSettings()
+        aimListAdapter = AimListAdapter(items, userSettings, isActualMonth(), output, activity)
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
         aimListRV?.apply {
@@ -210,4 +213,14 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
         }
     }
 
+    private fun getUserSettings(): Boolean {
+        context?.apply {
+            return SettingHelper.getEditItemInPastSetting(this)
+        }
+        return false
+    }
+
+    private fun isActualMonth():Boolean {
+        return (DateHelper.getCurrentMonth() == selectedMonth && DateHelper.getCurrentYear() == selectedYear)
+    }
 }

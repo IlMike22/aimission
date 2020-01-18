@@ -1,15 +1,16 @@
 package com.example.michl.aimission.MainScene
 
 
+import android.content.Context
 import com.example.michl.aimission.MainScene.Views.MainFragment
 import java.lang.ref.WeakReference
 
 
-object MainConfigurator {
+object MainConfigurator{
     /*
        Initialize all clean code components for info scene
         */
-    fun configure(fragment: MainFragment) {
+    fun configure(fragment: MainFragment, context: Context) {
 
         val router = MainRouter()
         router.fragment = WeakReference(fragment)

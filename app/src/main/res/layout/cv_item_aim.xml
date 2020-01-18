@@ -87,6 +87,7 @@
                     android:id="@+id/btnEditItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_gravity="right"
                     android:layout_weight="1"
                     android:src="@drawable/ic_edit_black_24dp" />

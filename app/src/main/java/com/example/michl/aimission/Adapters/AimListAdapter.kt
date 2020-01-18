@@ -4,7 +4,9 @@ import android.app.Activity
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.michl.aimission.AimListScene.AimListInteractorInput
 import com.example.michl.aimission.AimListScene.AimListRouter
 import com.example.michl.aimission.Helper.MODE_SELECTOR
@@ -15,12 +17,18 @@ import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.Aimission
 import kotlinx.android.synthetic.main.cv_item_aim.view.*
 
-class AimListAdapter(private val data: ArrayList<AimItem>, interactor: AimListInteractorInput, activity: Activity?=null) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
+class AimListAdapter(
+        private val data: ArrayList<AimItem>,
+        private val settingEditPastItems: Boolean, // todo remove this boolean and get list of user settings with all the values or better especially only for adapter
+        private val isActualMonth: Boolean,
+        interactor: AimListInteractorInput,
+        activity: Activity? = null
+) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
 
     val router = AimListRouter()
 
     private val interactor = interactor
-    private val activity = activity?:null
+    private val activity = activity ?: null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderAimItem {
@@ -39,22 +47,28 @@ class AimListAdapter(private val data: ArrayList<AimItem>, interactor: AimListIn
             aimItemCV.aimTypeTV.text = getPriorityText(data[position].highPriority)
             aimItemCV.genreTV.text = getGenreAsText(data[position].genre ?: Genre.UNDEFINED)
 
-            aimItemCV.btnFinishAim.setOnClickListener {
-
-                // For this we connect to database. After that we change also the icon color (grey = open, yellow = progress, green = done)
-                // the yellow status appears the whole time, the item has already subaims opened.
-
-                interactor.changeItemProgress(data[position], position)
-            }
-
-            aimItemCV.btnEditItem.setOnClickListener {
-                router.showAimDetailView(data[position].id ?: "", MODE_SELECTOR.Edit, activity)
-            }
-
             if (data[position].status == Status.OPEN)
                 aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_black_24dp)
             else if (data[position].status == Status.DONE)
                 aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_green_24dp)
+
+            if (settingEditPastItems == false && !isActualMonth) {
+                aimItemCV.btnFinishAim.setOnClickListener {
+                    Toast.makeText(
+                            context,
+                            context.getString(R.string.list_adapter_toast_no_edit_in_past),
+                            Toast.LENGTH_LONG
+                    ).show()
+                }
+                return@apply
+            }
+            aimItemCV.btnFinishAim.setOnClickListener {
+                interactor.changeItemProgress(data[position], position)
+            }
+            aimItemCV.btnEditItem.visibility = View.VISIBLE
+            aimItemCV.btnEditItem.setOnClickListener {
+                router.showAimDetailView(data[position].id ?: "", MODE_SELECTOR.Edit, activity)
+            }
         }
     }
 
