@@ -5,7 +5,8 @@ data class MonthItem(
         var aimsAmount: Int,
         var aimsSucceeded: Int,
         var month: Int,
-        var year: Int)
+        var year: Int,
+        var isFirstStart:Boolean)
 
 
 fun ArrayList<MonthItem>.containsMonthItem(month: Int, year: Int): Boolean {

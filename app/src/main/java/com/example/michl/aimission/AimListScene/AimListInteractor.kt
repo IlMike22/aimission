@@ -3,6 +3,7 @@ package com.example.michl.aimission.AimListScene
 import android.util.Log
 import com.example.michl.aimission.Helper.DateHelper.DateHelper.convertDataInAimItem
 import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper
@@ -12,29 +13,35 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 
 interface AimListInteractorInput {
-    fun getItems(userId: String, data: DataSnapshot, month: Int, year: Int)
+    fun getItems(userId: String, data: DataSnapshot)
     fun changeItemProgress(item: AimItem?, position: Int)
     fun storeItemInformationInSharedPref(items: ArrayList<AimItem>)
     fun getItemInformationFromSharedPrefs(month: Int, year: Int)
     fun updateItemList()
 }
 
-class AimListInteractor : AimListInteractorInput {
+class AimListInteractor(
+        val monthItem: MonthItem
+) : AimListInteractorInput {
 
     var output: AimListPresenterInput? = null
     var items = ArrayList<AimItem>()
 
     //todo context should not be available in interactor, find a way to avoid context parameter here
-    override fun getItems(userId: String, data: DataSnapshot, month: Int, year: Int) {
+    override fun getItems(userId: String, data: DataSnapshot) {
         val userId = getCurrentUserId()
 
-        if (userId.isNullOrEmpty())
+        if (userId.isNullOrEmpty()) {
             output?.onNoUserIdExists()
-        else {
-            items = createNewItemListFromDb(userId, data, month, year)
-
-            output?.onItemsLoadedSuccessfully(items, month, year)
+            return
         }
+        if (monthItem.isFirstStart) {
+            // get all default goals and create them for new month, set isFirstStart then to false and save this in firebase
+        }
+        items = createNewItemListFromDb(userId, data, monthItem.month, monthItem.year)
+
+        output?.onItemsLoadedSuccessfully(items, monthItem.month, monthItem.year)
+
     }
 
     override fun changeItemProgress(item: AimItem?, position: Int) {
@@ -57,8 +64,7 @@ class AimListInteractor : AimListInteractorInput {
 
     override fun storeItemInformationInSharedPref(items: ArrayList<AimItem>) {
         // stores current state of item information for this month in sp and returns the result in a dict
-        if (items.size == 0)
-        {
+        if (items.size == 0) {
             output?.onSPStoreFailed("No items found.")
             return
         }

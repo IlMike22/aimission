@@ -82,12 +82,13 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
                 Log.i(TAG, "A data changed error occured.")
             }
 
+
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 //todo onDataChange must not be called if you click a list item button such as checkmark or edit button....
                 Log.i(TAG, "The data has changed.")
                 selectedMonth?.let { month ->
                     selectedYear?.apply {
-                        output.getItems(getCurrentUserId(), dataSnapshot, selectedMonth as Int, selectedYear as Int)
+                        output.getItems(getCurrentUserId(), dataSnapshot)
                     }
                 }
             }
