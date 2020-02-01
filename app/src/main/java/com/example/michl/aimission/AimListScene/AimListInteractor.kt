@@ -133,7 +133,7 @@ class AimListInteractor : AimListInteractorInput {
     private fun getIterativeItems(items: ArrayList<AimItem>): ArrayList<AimItem> {
         var result = ArrayList<AimItem>()
         for (item in items) {
-            if (item.comesBack == true)
+            if (item.isComingBack == true)
                 result.add(item)
         }
 
@@ -147,7 +147,7 @@ class AimListInteractor : AimListInteractorInput {
     private fun getHighPriorityItems(items: ArrayList<AimItem>): ArrayList<AimItem> {
         var result = ArrayList<AimItem>()
         for (item in items) {
-            if (item.highPriority == true)
+            if (item.isHighPriority == true)
                 result.add(item)
         }
 

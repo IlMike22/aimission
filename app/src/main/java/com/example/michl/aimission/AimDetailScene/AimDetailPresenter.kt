@@ -16,6 +16,7 @@ interface AimDetailPresenterInput {
     fun onDeleteItemFailed()
     fun onAimReadSuccessfully(item: AimItem)
     fun onErrorMessageCreated(msg: String)
+    fun showValidationError(result:ValidationResult)
 }
 
 class AimDetailPresenter : AimDetailPresenterInput {
@@ -45,6 +46,17 @@ class AimDetailPresenter : AimDetailPresenterInput {
 
     override fun onErrorMessageCreated(msg: String) {
         output?.get()?.showErrorMessageToUser(msg)
+    }
+
+    override fun showValidationError(result: ValidationResult) {
+       val message = when (result){
+           ValidationResult.NO_STATUS_DEFINED_ERROR -> "Item cannot be stored since there is a no status defined."
+           ValidationResult.NO_GENRE_DEFINED_ERROR -> "Please define a genre before you save this goal."
+           ValidationResult.ERROR_REQUIRED_FIELD_IS_EMPTY_ERROR -> "Please define title and description for this goal."
+           ValidationResult.NO_AMOUNT_OF_REPEATS_ERROR -> "Your goal is repeatable. Please set the amount of repeats for this goal."
+           else -> "Oha an unknown validation error occured. Cannot store this item. Please try again later."
+       }
+        output?.get()?.afterValidationFailed(message)
     }
 
     override fun onUpdateItemFailed() {

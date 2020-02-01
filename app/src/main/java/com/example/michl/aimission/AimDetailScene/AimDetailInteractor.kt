@@ -3,6 +3,7 @@ package com.example.michl.aimission.AimDetailScene
 import android.util.Log
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
@@ -19,6 +20,14 @@ interface AimDetailInteractorInput {
     fun getAndValidateFirebaseUser()
     fun getDetailData(id: String)
     fun createErrorMessageIfItemIdIsNull(msg: String)
+}
+
+enum class ValidationResult{
+    NO_GENRE_DEFINED_ERROR,
+    ERROR_REQUIRED_FIELD_IS_EMPTY_ERROR,
+    NO_STATUS_DEFINED_ERROR,
+    NO_AMOUNT_OF_REPEATS_ERROR,
+    VALIDATION_SUCCESS
 }
 
 class AimDetailInteractor : AimDetailInteractorInput {
@@ -51,10 +60,20 @@ class AimDetailInteractor : AimDetailInteractorInput {
         item.month = DateHelper.getCurrentMonth()
         item.year = DateHelper.getCurrentYear()
 
-        if (DbHelper.createOrUpdateAimItem(userId, item))
-            output?.onSaveItemSucceed()
-        else
-            output?.onSaveItemFailed()
+        item?.apply {
+            val validationResult = validateUserInput(this)
+            if (validationResult == ValidationResult.VALIDATION_SUCCESS) {
+                if (DbHelper.createOrUpdateAimItem(userId, item)) {
+                    output?.onSaveItemSucceed()
+                    return
+                }
+                output?.onSaveItemFailed()
+            }
+            else { // validation error occured
+                output?.showValidationError(validationResult)
+            }
+
+        }
     }
 
     override fun getDetailData(id: String) {
@@ -83,6 +102,22 @@ class AimDetailInteractor : AimDetailInteractorInput {
 
     private fun getFireBaseUser(): String {
         return FirebaseAuth.getInstance().currentUser?.uid ?: ""
+    }
+
+    private fun validateUserInput(aim: AimItem):ValidationResult {
+        if (aim.title.isEmpty() || aim.description.isEmpty()) {
+            return ValidationResult.ERROR_REQUIRED_FIELD_IS_EMPTY_ERROR
+        }
+        if (aim.genre == Genre.UNDEFINED) {
+            return ValidationResult.NO_GENRE_DEFINED_ERROR
+        }
+        if (aim.status == Genre.UNDEFINED) {
+            return ValidationResult.NO_STATUS_DEFINED_ERROR
+        }
+        if (aim.isRepetitive && aim.repeatCount == 0)
+            return ValidationResult.NO_AMOUNT_OF_REPEATS_ERROR
+
+        return ValidationResult.VALIDATION_SUCCESS
     }
 }
 

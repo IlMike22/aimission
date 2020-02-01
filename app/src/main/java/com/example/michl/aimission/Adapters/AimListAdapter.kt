@@ -44,7 +44,7 @@ class AimListAdapter(
         holder.aimItem.apply {
             aimItemCV.titleTV.text = data[position].title
             aimItemCV.statusTV.text = getAimStatus(data[position].status)
-            aimItemCV.aimTypeTV.text = getPriorityText(data[position].highPriority)
+            aimItemCV.aimTypeTV.text = getPriorityText(data[position].isHighPriority)
             aimItemCV.genreTV.text = getGenreAsText(data[position].genre ?: Genre.UNDEFINED)
 
             if (data[position].status == Status.OPEN)

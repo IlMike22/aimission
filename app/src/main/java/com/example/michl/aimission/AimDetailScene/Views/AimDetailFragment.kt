@@ -34,6 +34,7 @@ interface AimDetailFragmentInput {
     fun afterUpdateItemFailed(msg: String)
     fun showAimDetailData(item: AimItem)
     fun showErrorMessageToUser(msg: String)
+    fun afterValidationFailed(message:String)
 }
 
 class AimDetailFragment : AimDetailFragmentInput, Fragment() {
@@ -57,7 +58,7 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
         val bundle = activity?.intent?.extras
 
         val mode = bundle?.get("Mode")
-        var itemId = bundle?.getString("AimId")
+        var itemId = bundle?.getString("AimId")?:""
 
 
         if (mode == MODE_SELECTOR.Edit) {
@@ -82,7 +83,6 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
         output?.getAndValidateFirebaseUser()
 
         frg_aimdetail_btn_save.setOnClickListener {
-            var isHighPrio = false
             var repeatCount = 0
             val title = frg_aimdetail_txt_title.text.toString()
             val description = frg_aimdetail_txt_description.text.toString()
@@ -95,16 +95,27 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
                 Log.e(TAG, "Could not convert String into Int (repeatCount). Repeat count remains 0 as initially given.")
             }
 
-            if (frg_aimdetail_switch_aaim.isChecked)
-                isHighPrio = true
-
+            val isHighPrio = frg_aimdetail_switch_aaim.isChecked
             val genre = getGenre(frg_aimdetail_rbGroup_genre.checkedRadioButtonId)
             val comesBack = frg_aimdetail_switch_comesback.isChecked
+            val isRepetitive = frg_aimdetail_switch_repeat.isChecked
 
             try {
-                if (itemId.isNullOrEmpty())
+                if (itemId.isEmpty())
                     itemId = UUID.randomUUID().toString()
-                val aimItem = AimItem(itemId, title, description, repeatCount, isHighPrio, Status.OPEN, genre, getCurrentMonth(), getCurrentYear(), comesBack)
+                val aimItem = AimItem(
+                        id = itemId,
+                        title = title,
+                        description = description,
+                        isRepetitive = isRepetitive,
+                        repeatCount = repeatCount,
+                        isHighPriority = isHighPrio,
+                        status = Status.OPEN,
+                        genre = genre,
+                        month = getCurrentMonth(),
+                        year = getCurrentYear(),
+                        isComingBack = comesBack
+                )
 
                 if (mode == MODE_SELECTOR.Create)
                     output?.createNewAim(userID, aimItem)
@@ -119,7 +130,6 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
 
         frg_aimdetail_btn_delete.setOnClickListener {
-
             if (showSimpleDialog("Delete item", "Do you really want to delete this item?") { isDelete ->
                         if (isDelete) {
                             //no clicked
@@ -183,10 +193,10 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
             frg_aimdetail_switch_repeat.isChecked = true
         }
 
-        if (item.comesBack == true)
+        if (item.isComingBack == true)
             frg_aimdetail_switch_comesback.isChecked = true
 
-        if (item.highPriority == true)
+        if (item.isHighPriority == true)
             frg_aimdetail_switch_aaim.isChecked = true
         frg_aimdetail_txt_repeat.setText(item.repeatCount.toString())
 
@@ -203,6 +213,10 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
     override fun showErrorMessageToUser(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun afterValidationFailed(message: String) {
+        Toast.makeText(context,message,Toast.LENGTH_SHORT).show()
     }
 
     private fun getCurrentMonth(): Int {
