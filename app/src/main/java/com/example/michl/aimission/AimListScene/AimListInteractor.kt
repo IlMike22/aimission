@@ -21,7 +21,7 @@ interface AimListInteractorInput {
 }
 
 class AimListInteractor(
-        val monthItem: MonthItem
+        val currentMonth: MonthItem
 ) : AimListInteractorInput {
 
     var output: AimListPresenterInput? = null
@@ -35,12 +35,12 @@ class AimListInteractor(
             output?.onNoUserIdExists()
             return
         }
-        if (monthItem.isFirstStart) {
+        if (isFirstStart) {
             // get all default goals and create them for new month, set isFirstStart then to false and save this in firebase
         }
-        items = createNewItemListFromDb(userId, data, monthItem.month, monthItem.year)
+        items = createNewItemListFromDb(userId, data, currentMonth.month, currentMonth.year)
 
-        output?.onItemsLoadedSuccessfully(items, monthItem.month, monthItem.year)
+        output?.onItemsLoadedSuccessfully(items, currentMonth.month, currentMonth.year)
 
     }
 

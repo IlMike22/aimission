@@ -38,8 +38,6 @@ interface AimDetailFragmentInput {
 }
 
 class AimDetailFragment : AimDetailFragmentInput, Fragment() {
-
-
     var output: AimDetailInteractorInput? = null
     private var userID: String = ""
 
@@ -56,10 +54,8 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
         AimDetailConfigurator.configure(this)
 
         val bundle = activity?.intent?.extras
-
         val mode = bundle?.get("Mode")
         var itemId = bundle?.getString("AimId")?:""
-
 
         if (mode == MODE_SELECTOR.Edit) {
 

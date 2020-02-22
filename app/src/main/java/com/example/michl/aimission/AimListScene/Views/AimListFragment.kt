@@ -6,6 +6,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.constraint.solver.widgets.Helper
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -22,6 +23,7 @@ import com.example.michl.aimission.AimListScene.IOnBackPressed
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Helper.MODE_SELECTOR
 import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper
@@ -99,7 +101,10 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
 
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        AimListConfigurator.configure(this)
+
+        //22.02. getting current month item
+
+        AimListConfigurator.configure(this, currentMonth)
 
         if (isActualMonth())
             fltAddAimItem.visibility = View.VISIBLE
@@ -221,7 +226,12 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
         return false
     }
 
-    private fun isActualMonth():Boolean {
+    private fun isActualMonth(): Boolean {
         return (DateHelper.getCurrentMonth() == selectedMonth && DateHelper.getCurrentYear() == selectedYear)
     }
+
+    private fun Int.getMonthItem():MonthItem {
+        MonthItem()
+    }
+
 }

@@ -50,7 +50,7 @@ class MainFragment : MainFragmentInput, Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         activity?.let { activity ->
-            MainConfigurator.configure(this, activity.applicationContext)
+            MainConfigurator.configure(this)
         }
 
         // writing a sample data to db (users name)

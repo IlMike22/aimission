@@ -16,15 +16,12 @@ interface MainInteractorInput {
 }
 
 class MainInteractor : MainInteractorInput {
-
     var output: MainPresenterInput? = null
-    private lateinit var goals: ArrayList<AimItem?>
+    private val goals = ArrayList<AimItem?>()
 
     override fun getUsersMonthList(data: DataSnapshot) {
-
         // get all months with at least one aim
-
-        var query = FirebaseDatabase.getInstance().reference.child("Aim").child(getCurrentUserId()).orderByChild("month")
+        val query = FirebaseDatabase.getInstance().reference.child("Aim").child(getCurrentUserId()).orderByChild("month")
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -34,15 +31,14 @@ class MainInteractor : MainInteractorInput {
             override fun onDataChange(data: DataSnapshot) {
                 for (dataset in data.children) {
                     goals.add(dataset.getValue(AimItem::class.java))
-                    Log.i(TAG, "Found item ${dataset.getValue(AimItem::class.java)}")
                 }
 
                 if (goals.size > 0) {
-                    val userMonthList = getMonthItems(goals)
-                    val currentMonthItem = createCurrentMonthItem()
+                    val monthItems = getMonthItems(goals)
+                    val currentMonthItem = createNewMonth()
 
-                    if (!userMonthList.containsMonthItem(currentMonthItem.month, currentMonthItem.year)) {
-                        userMonthList.add(currentMonthItem)
+                    if (!monthItems.containsMonthItem(currentMonthItem.month, currentMonthItem.year)) {
+                        monthItems.add(currentMonthItem)
 
                         //todo move it to aim list
 //                        val defaultGoals = getDefaultGoals(goals)
@@ -52,12 +48,12 @@ class MainInteractor : MainInteractorInput {
 
                     }
 
-                    output?.onMonthItemsLoadedSuccessfully(goals, userMonthList)
+                    output?.onMonthItemsLoadedSuccessfully(goals, monthItems)
 
                 } else {
                     //User does not have any aim defined yet. Create current month item for list so he can add his first aim.
                     //Get current month
-                    val firstItem = createCurrentMonthItem()
+                    val firstItem = createNewMonth()
                     output?.onEmptyMonthListLoaded(firstItem)
                 }
             }
@@ -66,7 +62,7 @@ class MainInteractor : MainInteractorInput {
 
     // Get all month aims from all user's aims.
     private fun getMonthItems(aims: ArrayList<AimItem?>): ArrayList<MonthItem> {
-        var result = ArrayList<MonthItem>()
+        val result = ArrayList<MonthItem>()
         var aimAmount = 0
         var aimSucceeded = 0
         var currentMonth = 0
@@ -118,7 +114,7 @@ class MainInteractor : MainInteractorInput {
         return result
     }
 
-    private fun createCurrentMonthItem(): MonthItem {
+    private fun createNewMonth(): MonthItem {
         // Calender functions month range is [0..11] not [1..12] so we have to convert it later
         val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)

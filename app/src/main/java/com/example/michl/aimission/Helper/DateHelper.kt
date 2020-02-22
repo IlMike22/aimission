@@ -2,6 +2,8 @@ package com.example.michl.aimission.Helper
 
 import android.util.Log
 import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.MonthItem
+import com.example.michl.aimission.Models.getMonthName
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -44,6 +46,10 @@ class DateHelper {
             return aimList
         }
     }
+}
+
+fun getMonthItem(month:Int, year:Int):MonthItem {
+
 }
 
 enum class MODE_SELECTOR {

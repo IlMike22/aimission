@@ -10,7 +10,7 @@ object MainConfigurator{
     /*
        Initialize all clean code components for info scene
         */
-    fun configure(fragment: MainFragment, context: Context) {
+    fun configure(fragment: MainFragment) {
 
         val router = MainRouter()
         router.fragment = WeakReference(fragment)
