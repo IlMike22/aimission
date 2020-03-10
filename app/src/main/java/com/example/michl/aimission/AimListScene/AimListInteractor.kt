@@ -13,34 +13,32 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 
 interface AimListInteractorInput {
-    fun getItems(userId: String, data: DataSnapshot)
+    fun getItems(userId: String, data: DataSnapshot, selectedMonth:Int, selectedYear:Int)
     fun changeItemProgress(item: AimItem?, position: Int)
     fun storeItemInformationInSharedPref(items: ArrayList<AimItem>)
     fun getItemInformationFromSharedPrefs(month: Int, year: Int)
     fun updateItemList()
 }
 
-class AimListInteractor(
-        val currentMonth: MonthItem
-) : AimListInteractorInput {
+class AimListInteractor: AimListInteractorInput {
 
     var output: AimListPresenterInput? = null
     var items = ArrayList<AimItem>()
 
     //todo context should not be available in interactor, find a way to avoid context parameter here
-    override fun getItems(userId: String, data: DataSnapshot) {
+    override fun getItems(userId: String, data: DataSnapshot, selectedMonth:Int, selectedYear:Int) {
         val userId = getCurrentUserId()
 
         if (userId.isNullOrEmpty()) {
             output?.onNoUserIdExists()
             return
         }
-        if (isFirstStart) {
-            // get all default goals and create them for new month, set isFirstStart then to false and save this in firebase
-        }
-        items = createNewItemListFromDb(userId, data, currentMonth.month, currentMonth.year)
+//        if (isFirstStart) {
+//            // get all default goals and create them for new month, set isFirstStart then to false and save this in firebase
+//        }
+        items = createNewItemListFromDb(userId, data, selectedMonth, selectedYear)
 
-        output?.onItemsLoadedSuccessfully(items, currentMonth.month, currentMonth.year)
+        output?.onItemsLoadedSuccessfully(items, selectedMonth, selectedYear)
 
     }
 

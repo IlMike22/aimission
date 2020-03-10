@@ -89,8 +89,8 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
                 //todo onDataChange must not be called if you click a list item button such as checkmark or edit button....
                 Log.i(TAG, "The data has changed.")
                 selectedMonth?.let { month ->
-                    selectedYear?.apply {
-                        output.getItems(getCurrentUserId(), dataSnapshot)
+                    selectedYear?.let { year ->
+                        output.getItems(getCurrentUserId(), dataSnapshot, month, year)
                     }
                 }
             }
@@ -101,11 +101,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
 
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        //22.02. getting current month item
-
-        AimListConfigurator.configure(this, currentMonth)
-
+        AimListConfigurator.configure(this)
         if (isActualMonth())
             fltAddAimItem.visibility = View.VISIBLE
         else
@@ -230,8 +226,8 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
         return (DateHelper.getCurrentMonth() == selectedMonth && DateHelper.getCurrentYear() == selectedYear)
     }
 
-    private fun Int.getMonthItem():MonthItem {
-        MonthItem()
-    }
+//    private fun Int.getMonthItem():MonthItem {
+//        MonthItem()
+//    }
 
 }

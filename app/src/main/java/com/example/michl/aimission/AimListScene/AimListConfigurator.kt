@@ -10,8 +10,7 @@ object AimListConfigurator {
     /*
       Initialize all clean code components for aim list scene
        */
-    fun configure(fragment: AimListFragment,
-                  currentMonth:MonthItem) {
+    fun configure(fragment: AimListFragment) {
 
         val router = AimListRouter()
         router.fragment = WeakReference(fragment)
@@ -19,7 +18,7 @@ object AimListConfigurator {
         val presenter = AimListPresenter()
         presenter.output = WeakReference(fragment)
 
-        val interactor = AimListInteractor(currentMonth)
+        val interactor = AimListInteractor()
         interactor.output = presenter
 
         fragment.output = interactor
