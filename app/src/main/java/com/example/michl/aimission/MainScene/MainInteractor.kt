@@ -29,6 +29,8 @@ class MainInteractor : MainInteractorInput {
             }
 
             override fun onDataChange(data: DataSnapshot) {
+                clearDeprecatedGoals(goals)
+
                 for (dataset in data.children) {
                     goals.add(dataset.getValue(AimItem::class.java))
                 }
@@ -51,8 +53,6 @@ class MainInteractor : MainInteractorInput {
                     output?.onMonthItemsLoadedSuccessfully(goals, monthItems)
 
                 } else {
-                    //User does not have any aim defined yet. Create current month item for list so he can add his first aim.
-                    //Get current month
                     val firstItem = createNewMonth()
                     output?.onEmptyMonthListLoaded(firstItem)
                 }
@@ -124,6 +124,10 @@ class MainInteractor : MainInteractorInput {
                 month = currentMonth,
                 year = currentYear,
                 isFirstStart = true)
+    }
+
+    private fun clearDeprecatedGoals(goalds: ArrayList<AimItem?>): Unit {
+        goals.clear()
     }
 
     //todo 01.02. this method needs to remain here because only here we have access to all months and items

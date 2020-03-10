@@ -56,7 +56,6 @@ class AimDetailInteractor : AimDetailInteractorInput {
     override fun createNewAim(userId: String, item: AimItem) {
 
         // add current month and year.
-
         item.month = DateHelper.getCurrentMonth()
         item.year = DateHelper.getCurrentYear()
 

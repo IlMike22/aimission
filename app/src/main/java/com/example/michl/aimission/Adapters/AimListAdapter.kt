@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.michl.aimission.AimListScene.AimListInteractorInput
 import com.example.michl.aimission.AimListScene.AimListRouter
-import com.example.michl.aimission.Helper.MODE_SELECTOR
+import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
@@ -67,7 +67,7 @@ class AimListAdapter(
             }
             aimItemCV.btnEditItem.visibility = View.VISIBLE
             aimItemCV.btnEditItem.setOnClickListener {
-                router.showAimDetailView(data[position].id ?: "", MODE_SELECTOR.Edit, activity)
+                router.showAimDetailView(data[position].id ?: "", DateHelper.MODE_SELECTOR.Edit, activity)
             }
         }
     }

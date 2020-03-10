@@ -12,7 +12,6 @@ import java.time.LocalDate
 class DateHelper {
 
     companion object DateHelper {
-
         var currentDate = LocalDate.now()
 
         fun getCurrentMonth(): Int {
@@ -45,17 +44,16 @@ class DateHelper {
 
             return aimList
         }
+
+    }
+
+    enum class MODE_SELECTOR {
+        Edit,
+        Create
     }
 }
 
-//fun getMonthItem(month:Int, year:Int):MonthItem {
-//
-//}
 
-enum class MODE_SELECTOR {
-    Edit,
-    Create
-}
 
 
 

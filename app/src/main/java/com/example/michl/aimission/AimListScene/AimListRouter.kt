@@ -6,24 +6,24 @@ import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.util.Log
 import com.example.michl.aimission.AimDetailScene.Views.AimDetailActivity
 import com.example.michl.aimission.AimListScene.Views.AimListFragment
-import com.example.michl.aimission.Helper.MODE_SELECTOR
+import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
 
 
 interface AimListRouterInput {
-    fun showAimDetailView(aimId: String, mode: MODE_SELECTOR, sourceActivity: Activity?=null)
+    fun showAimDetailView(aimId: String, mode: DateHelper.MODE_SELECTOR, sourceActivity: Activity?=null)
 }
 
 class AimListRouter : AimListRouterInput {
     var fragment: WeakReference<AimListFragment>? = null
     val REQUEST_UPDATE_LIST = 101
 
-    override fun showAimDetailView(aimId: String, mode: MODE_SELECTOR, sourceActivity:Activity?) {
+    override fun showAimDetailView(aimId: String, mode: DateHelper.MODE_SELECTOR, sourceActivity:Activity?) {
         var intent = Intent(Aimission.getAppContext(), AimDetailActivity::class.java)
 
-        if (aimId.isEmpty() && mode != MODE_SELECTOR.Create)
+        if (aimId.isEmpty() && mode != DateHelper.MODE_SELECTOR.Create)
         {
             Log.e(TAG, "Couldn't open aim detail view. Id from list is empty.")
             return

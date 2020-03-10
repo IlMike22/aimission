@@ -21,7 +21,6 @@ import com.example.michl.aimission.AimListScene.AimListInteractorInput
 import com.example.michl.aimission.AimListScene.AimListRouter
 import com.example.michl.aimission.AimListScene.IOnBackPressed
 import com.example.michl.aimission.Helper.DateHelper
-import com.example.michl.aimission.Helper.MODE_SELECTOR
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.R
@@ -84,7 +83,6 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
                 Log.i(TAG, "A data changed error occured.")
             }
 
-
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 //todo onDataChange must not be called if you click a list item button such as checkmark or edit button....
                 Log.i(TAG, "The data has changed.")
@@ -109,7 +107,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
 
         fltAddAimItem.setOnClickListener {
             activity?.supportFragmentManager?.apply {
-                router.showAimDetailView("", MODE_SELECTOR.Create, activity)
+                router.showAimDetailView("", DateHelper.MODE_SELECTOR.Create, activity)
             }
         }
 
@@ -225,9 +223,4 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
     private fun isActualMonth(): Boolean {
         return (DateHelper.getCurrentMonth() == selectedMonth && DateHelper.getCurrentYear() == selectedYear)
     }
-
-//    private fun Int.getMonthItem():MonthItem {
-//        MonthItem()
-//    }
-
 }

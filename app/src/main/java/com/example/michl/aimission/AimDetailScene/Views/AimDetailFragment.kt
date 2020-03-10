@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.michl.aimission.AimDetailScene.AimDetailConfigurator
 import com.example.michl.aimission.AimDetailScene.AimDetailInteractorInput
-import com.example.michl.aimission.Helper.MODE_SELECTOR
+import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.AimItem
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
@@ -56,7 +56,7 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
         val mode = bundle?.get("Mode")
         var itemId = bundle?.getString("AimId")?:""
 
-        if (mode == MODE_SELECTOR.Edit) {
+        if (mode == DateHelper.MODE_SELECTOR.Edit) {
 
             frg_aimdetail_btn_delete.visibility = View.VISIBLE
 
@@ -73,8 +73,6 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
             }
 
         }
-
-        // first of all we verify that user is logged in on firebase
         output?.getAndValidateFirebaseUser()
 
         frg_aimdetail_btn_save.setOnClickListener {
@@ -112,9 +110,9 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
                         isComingBack = comesBack
                 )
 
-                if (mode == MODE_SELECTOR.Create)
+                if (mode == DateHelper.MODE_SELECTOR.Create)
                     output?.createNewAim(userID, aimItem)
-                else if (mode == MODE_SELECTOR.Edit)
+                else if (mode == DateHelper.MODE_SELECTOR.Edit)
                     output?.updateAim(userID, aimItem)
 
             } catch (exc: Exception) {
@@ -122,7 +120,6 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
                 Toast.makeText(context, "Something went wrong while trying to save your new aim item. Please try again", Toast.LENGTH_SHORT).show()
             }
         }
-
 
         frg_aimdetail_btn_delete.setOnClickListener {
             if (showSimpleDialog("Delete item", "Do you really want to delete this item?") { isDelete ->
