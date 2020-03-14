@@ -8,6 +8,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -17,7 +18,7 @@ interface MainInteractorInput {
 
 class MainInteractor : MainInteractorInput {
     var output: MainPresenterInput? = null
-    private val goals = ArrayList<AimItem?>()
+    private val goals = ArrayList<Goal?>()
 
     override fun getUsersMonthList(data: DataSnapshot) {
         // get all months with at least one aim
@@ -32,7 +33,13 @@ class MainInteractor : MainInteractorInput {
                 clearDeprecatedGoals(goals)
 
                 for (dataset in data.children) {
-                    goals.add(dataset.getValue(AimItem::class.java))
+                    try {
+                        goals.add(dataset.getValue(Goal::class.java))
+                    }
+                    catch(exception:Exception) {
+                        Log.e(TAG,"Error while converting goals from dataset. Details: ${exception.message}")
+                        break
+                    }
                 }
 
                 if (goals.size > 0) {
@@ -50,18 +57,18 @@ class MainInteractor : MainInteractorInput {
 
                     }
 
-                    output?.onMonthItemsLoadedSuccessfully(goals, monthItems)
+                    output?.onMonthsLoaded(goals, monthItems)
 
                 } else {
                     val firstItem = createNewMonth()
-                    output?.onEmptyMonthListLoaded(firstItem)
+                    output?.onEmptyMonthsLoaded(firstItem)
                 }
             }
         })
     }
 
     // Get all month aims from all user's aims.
-    private fun getMonthItems(aims: ArrayList<AimItem?>): ArrayList<MonthItem> {
+    private fun getMonthItems(aims: ArrayList<Goal?>): ArrayList<MonthItem> {
         val result = ArrayList<MonthItem>()
         var aimAmount = 0
         var aimSucceeded = 0
@@ -126,7 +133,7 @@ class MainInteractor : MainInteractorInput {
                 isFirstStart = true)
     }
 
-    private fun clearDeprecatedGoals(goalds: ArrayList<AimItem?>): Unit {
+    private fun clearDeprecatedGoals(goalds: ArrayList<Goal?>): Unit {
         goals.clear()
     }
 
@@ -134,8 +141,8 @@ class MainInteractor : MainInteractorInput {
     // in AimList we have only access to selected month.
     // maybe we store the value here in sp and get them back in aim list scene or you should think about how
     // you can transfer this information to aimlist scene in an other way..
-    private fun getDefaultGoals(goals: List<AimItem?>): ArrayList<AimItem> {
-        val defaultGoals = ArrayList<AimItem>()
+    private fun getDefaultGoals(goals: List<Goal?>): ArrayList<Goal> {
+        val defaultGoals = ArrayList<Goal>()
         goals.forEach { goal ->
             goal?.apply {
                 if (goal.isComingBack) {

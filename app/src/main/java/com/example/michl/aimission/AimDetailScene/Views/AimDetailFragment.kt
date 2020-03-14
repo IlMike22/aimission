@@ -12,13 +12,14 @@ import android.widget.Toast
 import com.example.michl.aimission.AimDetailScene.AimDetailConfigurator
 import com.example.michl.aimission.AimDetailScene.AimDetailInteractorInput
 import com.example.michl.aimission.Helper.DateHelper
-import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import kotlinx.android.synthetic.main.fragment_aim_detail.*
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.math.absoluteValue
 
@@ -32,7 +33,7 @@ interface AimDetailFragmentInput {
     fun afterSaveItemFailed(msg: String)
     fun afterUpdateItemSucceed(msg: String)
     fun afterUpdateItemFailed(msg: String)
-    fun showAimDetailData(item: AimItem)
+    fun showAimDetailData(item: Goal)
     fun showErrorMessageToUser(msg: String)
     fun afterValidationFailed(message:String)
 }
@@ -54,15 +55,15 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
 
         val bundle = activity?.intent?.extras
         val mode = bundle?.get("Mode")
-        var itemId = bundle?.getString("AimId")?:""
+        var id = bundle?.getString("AimId")?:""
 
         if (mode == DateHelper.MODE_SELECTOR.Edit) {
 
             frg_aimdetail_btn_delete.visibility = View.VISIBLE
 
-            if (itemId != null) {
+            if (id != null) {
                 try {
-                    output?.getDetailData(itemId)
+                    output?.getDetailData(id)
                 } catch (exc: Exception) {
                     Log.e(TAG, "Cannot parse bundle parameter AimId to String. ${exc.message}")
                     output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_unknown_error_edit_mode))
@@ -94,10 +95,11 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
             val isRepetitive = frg_aimdetail_switch_repeat.isChecked
 
             try {
-                if (itemId.isEmpty())
-                    itemId = UUID.randomUUID().toString()
-                val aimItem = AimItem(
-                        id = itemId,
+                if (id.isEmpty())
+                    id = UUID.randomUUID().toString()
+                val goal = Goal(
+                        id = id,
+                        creationDate = LocalDateTime.now().toString(),
                         title = title,
                         description = description,
                         isRepetitive = isRepetitive,
@@ -111,9 +113,9 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
                 )
 
                 if (mode == DateHelper.MODE_SELECTOR.Create)
-                    output?.createNewAim(userID, aimItem)
+                    output?.createNewAim(userID, goal)
                 else if (mode == DateHelper.MODE_SELECTOR.Edit)
-                    output?.updateAim(userID, aimItem)
+                    output?.updateAim(userID, goal)
 
             } catch (exc: Exception) {
                 Log.e(TAG, "Unable to store new aim item. Reason: ${exc.message}")
@@ -125,7 +127,7 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
             if (showSimpleDialog("Delete item", "Do you really want to delete this item?") { isDelete ->
                         if (isDelete) {
                             //no clicked
-                            itemId?.let { itemId ->
+                            id?.let { itemId ->
                                 output?.deleteSingleAim(userID, itemId)
                             }
                                     ?: Log.e(TAG, "Cannot call delete item function because itemId is null.")
@@ -177,10 +179,10 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
 
-    override fun showAimDetailData(item: AimItem) {
+    override fun showAimDetailData(item: Goal) {
         frg_aimdetail_txt_title.setText(item.title)
         frg_aimdetail_txt_description.setText(item.description)
-        if (item.repeatCount ?: 0 > 0) {
+        if (item.repeatCount > 0) {
 
             frg_aimdetail_switch_repeat.isChecked = true
         }

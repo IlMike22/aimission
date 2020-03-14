@@ -1,15 +1,15 @@
 package com.example.michl.aimission.MainScene
 
 import com.example.michl.aimission.MainScene.Views.MainFragmentInput
-import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.MonthItem
 import java.lang.ref.WeakReference
 
 interface MainPresenterInput {
     fun onNoUserIdExists()
-    fun onMonthItemsLoadedSuccessfully(aimItems:ArrayList<AimItem?>,monthItems: ArrayList<MonthItem>)
-    fun onMonthItemsLoadedFailed(errorMsg: String)
-    fun onEmptyMonthListLoaded(firstItem:MonthItem)
+    fun onMonthsLoaded(goals:ArrayList<Goal?>, monthItems: ArrayList<MonthItem>)
+    fun onMonthsLoadedFailed(errorMsg: String)
+    fun onEmptyMonthsLoaded(firstItem:MonthItem)
 }
 
 class MainPresenter : MainPresenterInput {
@@ -21,18 +21,27 @@ class MainPresenter : MainPresenterInput {
         output?.get()?.afterUserIdNotFound(errorMsg)
     }
 
-    override fun onMonthItemsLoadedSuccessfully(aimItems:ArrayList<AimItem?>, monthItems: ArrayList<MonthItem>) {
-        output?.get()?.afterMonthItemsLoadedSuccessfully(monthItems)
+    override fun onMonthsLoaded(aims:ArrayList<Goal?>, months: ArrayList<MonthItem>) {
+        output?.get()?.afterMonthItemsLoadedSuccessfully(sortMonths(months))
     }
 
-    override fun onMonthItemsLoadedFailed(errorMsg: String) {
+    override fun onMonthsLoadedFailed(errorMsg: String) {
         output?.get()?.afterMonthItemsLoadedFailed(errorMsg)
     }
 
-    override fun onEmptyMonthListLoaded(firstItem:MonthItem) {
+    override fun onEmptyMonthsLoaded(firstItem:MonthItem) {
         val msg = "At the moment there are no aims defined by you. Create now your first aim."
         output?.get()?.afterEmptyMonthListLoaded(msg, firstItem)
     }
 
+    private fun sortMonths(months:ArrayList<MonthItem>):ArrayList<MonthItem> {
+        months.sortByDescending { month ->
+            month.month
+        }
+        months.sortByDescending {month ->
+            month.year
+        }
 
+        return months
+    }
 }

@@ -2,7 +2,7 @@ package com.example.michl.aimission.AimDetailScene
 
 import android.util.Log
 import com.example.michl.aimission.AimDetailScene.Views.AimDetailFragmentInput
-import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
 
@@ -14,7 +14,7 @@ interface AimDetailPresenterInput {
     fun onUpdateItemFailed()
     fun onDeleteItemSucceed()
     fun onDeleteItemFailed()
-    fun onAimReadSuccessfully(item: AimItem)
+    fun onAimReadSuccessfully(item: Goal)
     fun onErrorMessageCreated(msg: String)
     fun showValidationError(result:ValidationResult)
 }
@@ -40,7 +40,7 @@ class AimDetailPresenter : AimDetailPresenterInput {
         output?.get()?.afterSaveItemFailed(msg)
     }
 
-    override fun onAimReadSuccessfully(item: AimItem) {
+    override fun onAimReadSuccessfully(item: Goal) {
         output?.get()?.showAimDetailData(item)
     }
 

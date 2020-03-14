@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.Goal
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -13,9 +13,9 @@ class DbHelper {
     companion object {
         const val TAG = "Aimission"
 
-        fun createOrUpdateAimItem(userId: String, item: AimItem): Boolean {
+        fun createOrUpdateAimItem(userId: String, item: Goal): Boolean {
             return try {
-                getAimTableReference().child(userId).child(item.id ?: "").setValue(item)
+                getGoalTableReference().child(userId).child(item.id ?: "").setValue(item)
                 true
             } catch (exception: Exception) {
                 Log.e("Aimission", "Failed writing new item in table Aim. Details: ${exception.message}")
@@ -25,7 +25,7 @@ class DbHelper {
 
         fun deleteAimItem(userId: String, itemId: String): Boolean {
             return try {
-                getAimTableReference().child(userId).child(itemId).setValue(null)
+                getGoalTableReference().child(userId).child(itemId).setValue(null)
                 Log.i("Aimission", "Item was successfully deleted.")
                 true
             } catch (exception: java.lang.Exception) {
@@ -36,7 +36,7 @@ class DbHelper {
 
         fun createNewPersonReference(userId: String): Boolean {
             return try {
-                getAimTableReference().child(userId).setValue(null)
+                getGoalTableReference().child(userId).setValue(null)
                 true
             } catch (exc: java.lang.Exception) {
                 Log.e(TAG, "An error occured while trying to add new user id dataset on aim table. Details: ${exc.message}")
@@ -44,7 +44,7 @@ class DbHelper {
             }
         }
 
-        fun getAimTableReference(): DatabaseReference {
+        fun getGoalTableReference(): DatabaseReference {
             val firebaseDb = FirebaseDatabase.getInstance()
             return firebaseDb.getReference("Aim")
         }

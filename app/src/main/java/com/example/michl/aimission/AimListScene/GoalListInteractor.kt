@@ -1,32 +1,31 @@
 package com.example.michl.aimission.AimListScene
 
 import android.util.Log
-import com.example.michl.aimission.Helper.DateHelper.DateHelper.convertDataInAimItem
-import com.example.michl.aimission.Models.AimItem
-import com.example.michl.aimission.Models.MonthItem
+import com.example.michl.aimission.Helper.DateHelper.DateHelper.convertDataInGoals
+import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
-import com.example.michl.aimission.Utility.DbHelper.Companion.getAimTableReference
+import com.example.michl.aimission.Utility.DbHelper.Companion.getGoalTableReference
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 
-interface AimListInteractorInput {
-    fun getItems(userId: String, data: DataSnapshot, selectedMonth:Int, selectedYear:Int)
-    fun changeItemProgress(item: AimItem?, position: Int)
-    fun storeItemInformationInSharedPref(items: ArrayList<AimItem>)
-    fun getItemInformationFromSharedPrefs(month: Int, year: Int)
-    fun updateItemList()
+interface GoalListInteractorInput {
+    fun getGoals(userId: String, data: DataSnapshot, selectedMonth:Int, selectedYear:Int)
+    fun changeGoalProgress(item: Goal?, position: Int)
+    fun storeGoalInformationInSharedPrefs(items: ArrayList<Goal>)
+    fun getGoalInformationFromSharedPrefs(month: Int, year: Int)
+    fun updateGoals()
 }
 
-class AimListInteractor: AimListInteractorInput {
+class GoalListInteractor: GoalListInteractorInput {
 
     var output: AimListPresenterInput? = null
-    var items = ArrayList<AimItem>()
+    var items = ArrayList<Goal>()
 
     //todo context should not be available in interactor, find a way to avoid context parameter here
-    override fun getItems(userId: String, data: DataSnapshot, selectedMonth:Int, selectedYear:Int) {
+    override fun getGoals(userId: String, data: DataSnapshot, selectedMonth:Int, selectedYear:Int) {
         val userId = getCurrentUserId()
 
         if (userId.isNullOrEmpty()) {
@@ -38,21 +37,21 @@ class AimListInteractor: AimListInteractorInput {
 //        }
         items = createNewItemListFromDb(userId, data, selectedMonth, selectedYear)
 
-        output?.onItemsLoadedSuccessfully(items, selectedMonth, selectedYear)
+        output?.onItemsLoaded(items, selectedMonth, selectedYear)
 
     }
 
-    override fun changeItemProgress(item: AimItem?, position: Int) {
-        item?.apply {
+    override fun changeGoalProgress(goal: Goal?, position: Int) {
+        goal?.apply {
             // change progress status
-            if (item?.status == Status.DONE)
-                item.status = Status.OPEN
-            else if (item?.status == Status.OPEN)
-                item?.status = Status.DONE
+            if (status == Status.DONE)
+                status = Status.OPEN
+            else if (status == Status.OPEN)
+                status = Status.DONE
 
             // update item list
-            items.get(position).status = item.status
-            output?.onItemStatusChanged(item, position)
+            items.get(position).status = status
+            output?.onItemStatusChanged(goal, position)
 
         } ?: run {
             output?.onItemStatusChangeFailed(null, position)
@@ -60,7 +59,7 @@ class AimListInteractor: AimListInteractorInput {
     }
 
 
-    override fun storeItemInformationInSharedPref(items: ArrayList<AimItem>) {
+    override fun storeGoalInformationInSharedPrefs(items: ArrayList<Goal>) {
         // stores current state of item information for this month in sp and returns the result in a dict
         if (items.size == 0) {
             output?.onSPStoreFailed("No items found.")
@@ -72,7 +71,7 @@ class AimListInteractor: AimListInteractorInput {
         val year = items[0].year
         val spEntries = getCurrentSPEntry(month, year)
 
-        val itemsCompleted = getAllCompletedItems(items).size
+        val itemsCompleted = getGoalsCompleted(items).size
         val itemsHighPrio = getHighPriorityItems(items).size
         val itemsIterative = getIterativeItems(items).size
 
@@ -87,7 +86,7 @@ class AimListInteractor: AimListInteractorInput {
 
     }
 
-    override fun getItemInformationFromSharedPrefs(month: Int, year: Int) {
+    override fun getGoalInformationFromSharedPrefs(month: Int, year: Int) {
         val context = Aimission.getAppContext()
         val spEntry = getCurrentSPEntry(month, year)
 
@@ -99,9 +98,9 @@ class AimListInteractor: AimListInteractorInput {
         }
     }
 
-    override fun updateItemList() {
+    override fun updateGoals() {
         for (item in items) {
-            updateAimItemInDb(item)
+            updateGoalsInDb(item)
         }
     }
 
@@ -109,19 +108,19 @@ class AimListInteractor: AimListInteractorInput {
         return FirebaseAuth.getInstance().currentUser?.uid ?: ""
     }
 
-    private fun createNewItemListFromDb(userId: String, data: DataSnapshot, currentMonth: Int, currentYear: Int): ArrayList<AimItem> {
+    private fun createNewItemListFromDb(userId: String, data: DataSnapshot, currentMonth: Int, currentYear: Int): ArrayList<Goal> {
         userId?.apply {
 
-            return convertDataInAimItem(data, currentMonth, currentYear)
+            return convertDataInGoals(data, currentMonth, currentYear)
         }
         Log.e(TAG, "Couldn't get current user id and so was unable to read aim items from user.")
         return ArrayList()
     }
 
-    private fun updateAimItemInDb(updatedItem: AimItem): Boolean {
+    private fun updateGoalsInDb(updatedItem: Goal): Boolean {
         updatedItem?.id?.apply {
 
-            var key = getAimTableReference().child(getCurrentUserId())
+            var key = getGoalTableReference().child(getCurrentUserId())
             key.child(this).setValue(updatedItem)
 
             Log.i(TAG, "key is $key")
@@ -134,11 +133,11 @@ class AimListInteractor: AimListInteractorInput {
       Returns all items that have flag comesBack set in an ArrayList.
       //todo these three functions have a lot of redundant code. This can be optimized.
    */
-    private fun getIterativeItems(items: ArrayList<AimItem>): ArrayList<AimItem> {
-        var result = ArrayList<AimItem>()
-        for (item in items) {
-            if (item.isComingBack == true)
-                result.add(item)
+    private fun getIterativeItems(goals: ArrayList<Goal>): ArrayList<Goal> {
+        var result = ArrayList<Goal>()
+        for (goal in goals) {
+            if (goal.isComingBack == true)
+                result.add(goal)
         }
 
         return result
@@ -148,25 +147,21 @@ class AimListInteractor: AimListInteractorInput {
         Returns all high priority items in an ArrayList.
         //todo these three functions have a lot of redundant code. This can be optimized.
      */
-    private fun getHighPriorityItems(items: ArrayList<AimItem>): ArrayList<AimItem> {
-        var result = ArrayList<AimItem>()
-        for (item in items) {
-            if (item.isHighPriority == true)
-                result.add(item)
+    private fun getHighPriorityItems(goals: ArrayList<Goal>): ArrayList<Goal> {
+        var result = ArrayList<Goal>()
+        for (goal in goals) {
+            if (goal.isHighPriority == true)
+                result.add(goal)
         }
 
         return result
     }
 
-    /*
-        Returns all completed items in an ArrayList.
-        //todo these three functions have a lot of redundant code. This can be optimized.
-     */
-    private fun getAllCompletedItems(items: ArrayList<AimItem>): ArrayList<AimItem> {
-        var result = ArrayList<AimItem>()
-        for (item in items) {
-            if (item.status == Status.DONE)
-                result.add(item)
+    private fun getGoalsCompleted(goals: ArrayList<Goal>): ArrayList<Goal> {
+        var result = ArrayList<Goal>()
+        for (goal in goals) {
+            if (goal.status == Status.DONE)
+                result.add(goal)
         }
 
         return result

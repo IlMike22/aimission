@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.michl.aimission.AimListScene.AimListInteractorInput
+import com.example.michl.aimission.AimListScene.GoalListInteractorInput
 import com.example.michl.aimission.AimListScene.AimListRouter
 import com.example.michl.aimission.Helper.DateHelper
-import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.R
@@ -18,10 +18,10 @@ import com.example.michl.aimission.Utility.Aimission
 import kotlinx.android.synthetic.main.cv_item_aim.view.*
 
 class AimListAdapter(
-        private val data: ArrayList<AimItem>,
+        private val data: ArrayList<Goal>,
         private val settingEditPastItems: Boolean, // todo remove this boolean and get list of user settings with all the values or better especially only for adapter
         private val isActualMonth: Boolean,
-        interactor: AimListInteractorInput,
+        interactor: GoalListInteractorInput,
         activity: Activity? = null
 ) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
 
@@ -63,7 +63,7 @@ class AimListAdapter(
                 return@apply
             }
             aimItemCV.btnFinishAim.setOnClickListener {
-                interactor.changeItemProgress(data[position], position)
+                interactor.changeGoalProgress(data[position], position)
             }
             aimItemCV.btnEditItem.visibility = View.VISIBLE
             aimItemCV.btnEditItem.setOnClickListener {

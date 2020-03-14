@@ -2,7 +2,7 @@ package com.example.michl.aimission.AimDetailScene
 
 import android.util.Log
 import com.example.michl.aimission.Helper.DateHelper
-import com.example.michl.aimission.Models.AimItem
+import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
@@ -14,9 +14,9 @@ import com.google.firebase.database.ValueEventListener
 
 
 interface AimDetailInteractorInput {
-    fun createNewAim(userId: String, item: AimItem)
+    fun createNewAim(userId: String, item: Goal)
     fun deleteSingleAim(userId: String, itemId: String)
-    fun updateAim(userId: String, item: AimItem)
+    fun updateAim(userId: String, item: Goal)
     fun getAndValidateFirebaseUser()
     fun getDetailData(id: String)
     fun createErrorMessageIfItemIdIsNull(msg: String)
@@ -39,7 +39,7 @@ class AimDetailInteractor : AimDetailInteractorInput {
         output?.validateFirebaseUser(getFireBaseUser())
     }
 
-    override fun updateAim(userId: String, item: AimItem) {
+    override fun updateAim(userId: String, item: Goal) {
         if (DbHelper.createOrUpdateAimItem(userId, item))
             output?.onUpdateItemSucceed()
         else
@@ -53,7 +53,7 @@ class AimDetailInteractor : AimDetailInteractorInput {
             output?.onDeleteItemFailed()
     }
 
-    override fun createNewAim(userId: String, item: AimItem) {
+    override fun createNewAim(userId: String, item: Goal) {
 
         // add current month and year.
         item.month = DateHelper.getCurrentMonth()
@@ -83,7 +83,7 @@ class AimDetailInteractor : AimDetailInteractorInput {
             }
 
             override fun onDataChange(data: DataSnapshot) {
-                val item = data.getValue(AimItem::class.java)
+                val item = data.getValue(Goal::class.java)
                 Log.i(TAG, "Item is $item")
 
                 //now open presenter with aimitem data
@@ -103,7 +103,7 @@ class AimDetailInteractor : AimDetailInteractorInput {
         return FirebaseAuth.getInstance().currentUser?.uid ?: ""
     }
 
-    private fun validateUserInput(aim: AimItem):ValidationResult {
+    private fun validateUserInput(aim: Goal):ValidationResult {
         if (aim.title.isEmpty() || aim.description.isEmpty()) {
             return ValidationResult.ERROR_REQUIRED_FIELD_IS_EMPTY_ERROR
         }

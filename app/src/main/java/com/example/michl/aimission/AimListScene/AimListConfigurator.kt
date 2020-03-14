@@ -1,9 +1,7 @@
 package com.example.michl.aimission.AimListScene
 
 import com.example.michl.aimission.AimListScene.Views.AimListFragment
-import com.example.michl.aimission.Models.MonthItem
 import java.lang.ref.WeakReference
-import java.time.Month
 
 
 object AimListConfigurator {
@@ -18,7 +16,7 @@ object AimListConfigurator {
         val presenter = AimListPresenter()
         presenter.output = WeakReference(fragment)
 
-        val interactor = AimListInteractor()
+        val interactor = GoalListInteractor()
         interactor.output = presenter
 
         fragment.output = interactor

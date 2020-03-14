@@ -1,11 +1,8 @@
 package com.example.michl.aimission.Helper
 
 import android.util.Log
-import com.example.michl.aimission.Models.AimItem
-import com.example.michl.aimission.Models.MonthItem
-import com.example.michl.aimission.Models.getMonthName
+import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import java.time.LocalDate
 
@@ -22,12 +19,12 @@ class DateHelper {
             return currentDate.year
         }
 
-        fun convertDataInAimItem(data: DataSnapshot, queryMonth: Int? = null, queryYear: Int? = null): ArrayList<AimItem> {
-            var aimList = ArrayList<AimItem>()
+        fun convertDataInGoals(data: DataSnapshot, queryMonth: Int? = null, queryYear: Int? = null): ArrayList<Goal> {
+            var aimList = ArrayList<Goal>()
 
             try {
                 for (singleDataSet in data.children) {
-                    singleDataSet.getValue(AimItem::class.java)?.apply {
+                    singleDataSet.getValue(Goal::class.java)?.apply {
                         queryYear?.let { year ->
                             queryMonth?.let { month ->
                                 if (this.year == year && this.month == month)
