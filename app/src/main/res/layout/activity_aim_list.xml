@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/frg_aimlist"
-        android:name="com.example.michl.aimission.AimListScene.Views.AimListFragment"
+        android:name="com.example.michl.aimission.AimListScene.Views.GoalsFragment"
         android:layout_width="408dp"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"

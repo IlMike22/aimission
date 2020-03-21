@@ -50,4 +50,7 @@
     <string name="priority_item_text">A-Ziel</string>
     <string name="list_adapter_toast_no_edit_in_past">You cannot edit items in the past since you do not enabled this option in the settings.</string>
     <string name="goal_list_msg_no_items_for_this_month">You have no items defined for this month</string>
+    <string name="menu_item_sorting_priority">Sortierung: Priority</string>
+    <string name="menu_item_sorting_creation_date">Sortierung: Creation Date</string>
+    <string name="menu_item_sorting_done">Sortierung: Items done</string>
 </resources>

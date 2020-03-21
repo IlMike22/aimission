@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.michl.aimission.AimListScene.GoalListInteractorInput
-import com.example.michl.aimission.AimListScene.AimListRouter
+import com.example.michl.aimission.AimListScene.IGoalsInteractor
+import com.example.michl.aimission.AimListScene.GoalsRouter
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
@@ -21,11 +21,11 @@ class AimListAdapter(
         private val data: ArrayList<Goal>,
         private val settingEditPastItems: Boolean, // todo remove this boolean and get list of user settings with all the values or better especially only for adapter
         private val isActualMonth: Boolean,
-        interactor: GoalListInteractorInput,
+        interactor: IGoalsInteractor,
         activity: Activity? = null
 ) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
 
-    val router = AimListRouter()
+    val router = GoalsRouter()
 
     private val interactor = interactor
     private val activity = activity ?: null

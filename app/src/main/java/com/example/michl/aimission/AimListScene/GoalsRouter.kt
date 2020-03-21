@@ -5,7 +5,7 @@ import android.content.Intent
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.util.Log
 import com.example.michl.aimission.AimDetailScene.Views.AimDetailActivity
-import com.example.michl.aimission.AimListScene.Views.AimListFragment
+import com.example.michl.aimission.AimListScene.Views.GoalsFragment
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
@@ -16,8 +16,8 @@ interface AimListRouterInput {
     fun showAimDetailView(aimId: String, mode: DateHelper.MODE_SELECTOR, sourceActivity: Activity?=null)
 }
 
-class AimListRouter : AimListRouterInput {
-    var fragment: WeakReference<AimListFragment>? = null
+class GoalsRouter : AimListRouterInput {
+    var fragment: WeakReference<GoalsFragment>? = null
     val REQUEST_UPDATE_LIST = 101
 
     override fun showAimDetailView(aimId: String, mode: DateHelper.MODE_SELECTOR, sourceActivity:Activity?) {

@@ -1,8 +1,6 @@
 package com.example.michl.aimission.AimListScene
 
-import android.app.Application
 import android.util.Log
-import com.example.michl.aimission.AimListScene.Views.AimListFragmentInput
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.Aimission
@@ -27,7 +25,7 @@ interface AimListPresenterInput {
 }
 
 class AimListPresenter : AimListPresenterInput {
-    var output: WeakReference<AimListFragmentInput>? = null
+    var output: WeakReference<IGoalsFragment>? = null
 
     override fun onNoUserIdExists() {
         val msgUserNotFound = "Cannot authenticate current user. Are you already logged in?"
@@ -37,44 +35,43 @@ class AimListPresenter : AimListPresenterInput {
     override fun onItemsLoaded(goals: ArrayList<Goal>, month: Int, year: Int) {
         Aimission.getAppContext()?.apply {
             if (goals.isEmpty())
-                output?.get()?.afterNoUserItemsFound(getString(R.string.goal_list_msg_no_items_for_this_month))
+                output?.get()?.afterNoGoalsFound(getString(R.string.goal_list_msg_no_items_for_this_month))
             else
-                output?.get()?.afterItemsLoaded(sortGoals(goals), month, year)
+                output?.get()?.afterGoalsLoaded(sortGoals(goals), month, year)
         } ?: Log.e(TAG, "No app context available")
 
     }
 
     override fun onItemStatusChanged(item: Goal, position: Int) {
-        output?.get()?.afterItemStatusChangeSucceed(item, position)
+        output?.get()?.afterGoalStatusChange(item, position)
     }
 
     override fun onItemStatusChangeFailed(item: Goal?, position: Int) {
-
         item?.let { item ->
             val msg = "Unable to update status from item ${item.title} on position $position."
             Log.e(TAG, msg + " Please try in a few minutes again.")
-            output?.get()?.afterItemStatusChangeFailed(msg)
+            output?.get()?.afterGoalStatusChangeFailed(msg)
         } ?: run {
             val msg = "Unable to update status from item. Item is null. Position is $position"
             Log.e(TAG, msg)
-            output?.get()?.afterItemStatusChangeFailed(msg)
+            output?.get()?.afterGoalStatusChangeFailed(msg)
         }
     }
 
     override fun onIterativeItemsGot(items: ArrayList<Goal>) {
-        output?.get()?.afterIterativeItemsGot(items)
+        output?.get()?.afterIterativeGoalsLoaded(items)
     }
 
     override fun onIterativeItemsGotFailed(msg: String) {
-        output?.get()?.afterIterativeItemsGotFailed(msg)
+        output?.get()?.afterIterativeGoalsLoadedFailed(msg)
     }
 
     override fun onHighPriorityItemsGot(items: ArrayList<Goal>) {
-        output?.get()?.afterHighPriorityItemsGot(items)
+        output?.get()?.afterHighPriorityGoalsLoaded(items)
     }
 
     override fun onHighPriorityItemsGotFailed(msg: String) {
-        output?.get()?.afterHighPriorityItemsGotFailed(msg)
+        output?.get()?.afterHighPriorityGoalsLoadedFailed(msg)
     }
 
     override fun onCompletedItemsGot(items: ArrayList<Goal>) {
@@ -86,12 +83,12 @@ class AimListPresenter : AimListPresenterInput {
         val msgHighPrioItemAmount = "In this month you have actually $highPrioItems high priority items."
         val msgIterativeItemAmount = "You have $iterativeItems iterative items in this month."
 
-        output?.get()?.afterItemInformationFromSharedPrefSucceed(msgCompletedItems, msgHighPrioItemAmount, msgIterativeItemAmount)
+        output?.get()?.afterGoalInformationLoaded(msgCompletedItems, msgHighPrioItemAmount, msgIterativeItemAmount)
     }
 
     override fun onItemInformationFromSharedPrefFailed(msg: String) {
         val message = "An error occured while trying to get all the item information from shared pref. Details: $msg"
-        output?.get()?.afterItemInformationFromSharedPrefFailed(message)
+        output?.get()?.afterGoalInformationLoadedFailed(message)
     }
 
     override fun onSPStoreSucceed(result: Map<String, Int>) {

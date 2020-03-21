@@ -11,7 +11,7 @@ import com.example.michl.aimission.Utility.DbHelper.Companion.getGoalTableRefere
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 
-interface GoalListInteractorInput {
+interface IGoalsInteractor {
     fun getGoals(userId: String, data: DataSnapshot, selectedMonth:Int, selectedYear:Int)
     fun changeGoalProgress(item: Goal?, position: Int)
     fun storeGoalInformationInSharedPrefs(items: ArrayList<Goal>)
@@ -19,7 +19,7 @@ interface GoalListInteractorInput {
     fun updateGoals()
 }
 
-class GoalListInteractor: GoalListInteractorInput {
+class GoalListInteractor: IGoalsInteractor {
 
     var output: AimListPresenterInput? = null
     var items = ArrayList<Goal>()

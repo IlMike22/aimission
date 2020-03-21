@@ -7,15 +7,10 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import com.example.michl.aimission.Adapters.AimListAdapter
-import com.example.michl.aimission.AimListScene.AimListConfigurator
-import com.example.michl.aimission.AimListScene.GoalListInteractorInput
-import com.example.michl.aimission.AimListScene.AimListRouter
-import com.example.michl.aimission.AimListScene.IOnBackPressed
+import com.example.michl.aimission.AimListScene.*
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.R
@@ -28,29 +23,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_aim_list.*
 
-
-interface AimListFragmentInput {
-    fun afterUserIdNotFound(msg: String)
-    fun afterItemsLoaded(items: ArrayList<Goal>, month: Int, year: Int)
-    fun afterUserItemsLoadedFailed(errorMsg: String)
-    fun afterNoUserItemsFound(msg: String)
-    fun afterItemStatusChangeSucceed(item: Goal, position: Int)
-    fun afterItemStatusChangeFailed(msg: String)
-    fun afterIterativeItemsGot(items: ArrayList<Goal>)
-    fun afterIterativeItemsGotFailed(msg: String)
-    fun afterHighPriorityItemsGot(items: ArrayList<Goal>)
-    fun afterHighPriorityItemsGotFailed(msg: String)
-    fun afterItemInformationFromSharedPrefSucceed(msgItemsCompleted: String, msgItemsHighPrio: String, msgItemsIterative: String)
-    fun afterItemInformationFromSharedPrefFailed(errorMsg: String)
-    fun afterSPStoredSucceed(itemsDoneMsg: String, itemsHighPrioMsg: String, itemsIterativeMsg: String)
-    fun afterSPStoredFailed(message: String)
-}
-
-class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
-    lateinit var router: AimListRouter
-    lateinit var output: GoalListInteractorInput
+class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
+    lateinit var router: GoalsRouter
+    lateinit var output: IGoalsInteractor
     private lateinit var aimListAdapter: RecyclerView.Adapter<*>
     private lateinit var lytManager: RecyclerView.LayoutManager
+    private lateinit var goals: ArrayList<Goal>
     var selectedMonth: Int? = 0
     var selectedYear: Int? = null
     val REQUEST_RELOAD_LIST = 101
@@ -58,6 +36,8 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
     @SuppressLint("RestrictedApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+        setHasOptionsMenu(true)
 
         // get current month and year information via intent
         try {
@@ -108,9 +88,57 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    //inflate the menu
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater!!.inflate(R.menu.menu_goal_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     override fun onBackPressed(): Boolean {
         output.updateGoals()
         return false
+    }
+
+    //handle item clicks of menu
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        //get item id to handle item clicks
+        val id = item!!.itemId
+        //handle item clicks
+        if (id == R.id.menu_item_goal_list_sorting_priority) {
+            //do your action here, im just showing toast
+            if (::goals.isInitialized) {
+                val sortedGoals = sortGoals(SortingOption.PRIORITY, goals)
+                Log.i(TAG,sortedGoals.toString()) //todo delete it later, go on here next time
+            }
+            else {
+                Toast.makeText(context,"Goals is no initialized yet.",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        if (id == R.id.menu_item_goal_list_sorting_creation_date) {
+            //do your action here, im just showing toast
+            if (::goals.isInitialized) {
+                val sortedGoals = sortGoals(SortingOption.CREATION_DATE, goals)
+                Log.i(TAG,sortedGoals.toString()) //todo delete it later, go on here next time
+            }
+            else {
+                Toast.makeText(context,"Goals is no initialized yet.",Toast.LENGTH_SHORT).show()
+
+            }
+        }
+
+        if (id == R.id.menu_item_goal_list_sorting_done) {
+            //do your action here, im just showing toast
+            if (::goals.isInitialized) {
+                val sortedGoals = sortGoals(SortingOption.ITEMS_DONE, goals)
+                Log.i(TAG,sortedGoals.toString()) //todo delete it later, go on here next time
+            }
+            else {
+                Toast.makeText(context,"Goals is no initialized yet.",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
 
@@ -118,7 +146,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterItemsLoaded(items: ArrayList<Goal>, month: Int, year: Int) {
+    override fun afterGoalsLoaded(items: ArrayList<Goal>, month: Int, year: Int) {
         val userSettings = getUserSettings()
         aimListAdapter = AimListAdapter(items, userSettings, isActualMonth(), output, activity)
         lytManager = LinearLayoutManager(activity?.applicationContext)
@@ -128,8 +156,8 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
             adapter = aimListAdapter
             layoutManager = lytManager
         }
-
-        showItemView()
+        goals = items
+        showViewWithGoals()
 
         //get current amount of highPrio items, done items and iterative items
         //todo maybe it's better to get these information via firebase database query on demand?
@@ -137,41 +165,41 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
         output.storeGoalInformationInSharedPrefs(items)
     }
 
-    override fun afterNoUserItemsFound(msg: String) {
-        showEmptyTextView()
+    override fun afterNoGoalsFound(msg: String) {
+        showEmptyView()
     }
 
-    override fun afterUserItemsLoadedFailed(errorMsg: String) {
+    override fun afterGoalsLoadedFailed(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterItemStatusChangeSucceed(item: Goal, position: Int) {
+    override fun afterGoalStatusChange(item: Goal, position: Int) {
         aimListAdapter.notifyItemChanged(position)
         Log.i(TAG, "Item ${item.title} successfully updated on position $position in list.")
     }
 
-    override fun afterItemStatusChangeFailed(msg: String) {
+    override fun afterGoalStatusChangeFailed(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterIterativeItemsGot(items: ArrayList<Goal>) {
+    override fun afterIterativeGoalsLoaded(items: ArrayList<Goal>) {
         Log.i(TAG, "Amount of iterative items ${items.size}")
         Toast.makeText(context, "Amount of iterative items: ${items.size}", Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterIterativeItemsGotFailed(msg: String) {
+    override fun afterIterativeGoalsLoadedFailed(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterHighPriorityItemsGot(items: ArrayList<Goal>) {
+    override fun afterHighPriorityGoalsLoaded(items: ArrayList<Goal>) {
         Toast.makeText(context, "Found ${items.size} high priority items for user.", Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterHighPriorityItemsGotFailed(msg: String) {
+    override fun afterHighPriorityGoalsLoadedFailed(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterItemInformationFromSharedPrefSucceed(msgItemsCompleted: String, msgItemsHighPrio: String, msgItemsIterative: String) {
+    override fun afterGoalInformationLoaded(msgItemsCompleted: String, msgItemsHighPrio: String, msgItemsIterative: String) {
 
         //todo not working at the moment
         Log.i(TAG, msgItemsCompleted)
@@ -179,7 +207,7 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
         Log.i(TAG, msgItemsIterative)
     }
 
-    override fun afterItemInformationFromSharedPrefFailed(errorMsg: String) {
+    override fun afterGoalInformationLoadedFailed(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
@@ -193,14 +221,14 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
         Log.e(TAG, message)
     }
 
-    private fun showEmptyTextView() {
+    private fun showEmptyView() {
         includeEmptyTextView?.visibility = View.VISIBLE
         scrvAimList?.apply {
             visibility = View.GONE
         }
     }
 
-    private fun showItemView() {
+    private fun showViewWithGoals() {
         includeEmptyTextView?.visibility = View.GONE
         scrvAimList?.apply {
             visibility = View.VISIBLE
@@ -216,5 +244,25 @@ class AimListFragment : AimListFragmentInput, Fragment(), IOnBackPressed {
 
     private fun isActualMonth(): Boolean {
         return (DateHelper.getCurrentMonth() == selectedMonth && DateHelper.getCurrentYear() == selectedYear)
+    }
+
+    private fun sortGoals(option: SortingOption, goals: List<Goal>): List<Goal> {
+        return when (option) {
+
+            SortingOption.PRIORITY -> goals.sortedByDescending { goal ->
+                goal.isHighPriority
+            }
+
+            SortingOption.CREATION_DATE -> goals.sortedByDescending { goal ->
+                goal.creationDate
+            }
+            SortingOption.ITEMS_DONE -> goals.sortedByDescending { goal ->
+                goal.status
+            }
+        }
+    }
+
+    enum class SortingOption {
+        PRIORITY, ITEMS_DONE, CREATION_DATE
     }
 }
