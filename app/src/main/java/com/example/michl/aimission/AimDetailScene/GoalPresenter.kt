@@ -6,7 +6,7 @@ import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
 
-interface AimDetailPresenterInput {
+interface GoalPresenterInput {
     fun validateFirebaseUser(userID: String)
     fun onSaveItemSucceed()
     fun onSaveItemFailed()
@@ -19,7 +19,7 @@ interface AimDetailPresenterInput {
     fun showValidationError(result:ValidationResult)
 }
 
-class AimDetailPresenter : AimDetailPresenterInput {
+class GoalPresenter : GoalPresenterInput {
 
 
     var output: WeakReference<AimDetailFragmentInput>? = null

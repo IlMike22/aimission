@@ -3,10 +3,8 @@ package com.example.michl.aimission.MainScene
 import android.content.Context
 import android.content.Intent
 import android.support.v4.content.ContextCompat.startActivity
-import android.util.Log
-import com.example.michl.aimission.AimListScene.Views.AimListActivity
+import com.example.michl.aimission.GoalsScene.Views.AimListActivity
 import com.example.michl.aimission.MainScene.Views.MainFragment
-import com.example.michl.aimission.Utility.Aimission
 import java.lang.ref.WeakReference
 
 interface MainRouterInput {

@@ -1,6 +1,6 @@
-package com.example.michl.aimission.AimListScene
+package com.example.michl.aimission.GoalsScene
 
-import com.example.michl.aimission.AimListScene.Views.GoalsFragment
+import com.example.michl.aimission.GoalsScene.Views.GoalsFragment
 import java.lang.ref.WeakReference
 
 

@@ -1,4 +1,4 @@
-package com.example.michl.aimission.AimListScene
+package com.example.michl.aimission.GoalsScene
 
 interface IOnBackPressed {
 

@@ -9,8 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.michl.aimission.AimDetailScene.AimDetailConfigurator
-import com.example.michl.aimission.AimDetailScene.AimDetailInteractorInput
+import com.example.michl.aimission.AimDetailScene.GoalConfigurator
+import com.example.michl.aimission.AimDetailScene.IGoalInteractor
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
@@ -39,7 +39,7 @@ interface AimDetailFragmentInput {
 }
 
 class AimDetailFragment : AimDetailFragmentInput, Fragment() {
-    var output: AimDetailInteractorInput? = null
+    var output: IGoalInteractor? = null
     private var userID: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +51,7 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        AimDetailConfigurator.configure(this)
+        GoalConfigurator.configure(this)
 
         val bundle = activity?.intent?.extras
         val mode = bundle?.get("Mode")
@@ -224,7 +224,6 @@ class AimDetailFragment : AimDetailFragmentInput, Fragment() {
     }
 
     private fun getGenre(selectedRbId: Int): Genre {
-
         return when (selectedRbId) {
             R.id.frg_aimdetail_rb_genrePrivate -> Genre.PRIVATE
             R.id.frg_aimdetail_rb_genreWork -> Genre.WORK

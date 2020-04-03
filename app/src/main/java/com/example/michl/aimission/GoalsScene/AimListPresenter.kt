@@ -1,4 +1,4 @@
-package com.example.michl.aimission.AimListScene
+package com.example.michl.aimission.GoalsScene
 
 import android.util.Log
 import com.example.michl.aimission.Models.Goal

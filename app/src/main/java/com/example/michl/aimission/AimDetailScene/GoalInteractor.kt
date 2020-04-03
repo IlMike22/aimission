@@ -13,7 +13,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 
-interface AimDetailInteractorInput {
+interface IGoalInteractor {
     fun createNewAim(userId: String, item: Goal)
     fun deleteSingleAim(userId: String, itemId: String)
     fun updateAim(userId: String, item: Goal)
@@ -30,10 +30,9 @@ enum class ValidationResult{
     VALIDATION_SUCCESS
 }
 
-class AimDetailInteractor : AimDetailInteractorInput {
+class GoalInteractor : IGoalInteractor {
 
-
-    var output: AimDetailPresenterInput? = null
+    var output: GoalPresenterInput? = null
 
     override fun getAndValidateFirebaseUser() {
         output?.validateFirebaseUser(getFireBaseUser())

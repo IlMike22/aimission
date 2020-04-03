@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.michl.aimission.AimListScene.IGoalsInteractor
-import com.example.michl.aimission.AimListScene.GoalsRouter
+import com.example.michl.aimission.GoalsScene.IGoalsInteractor
+import com.example.michl.aimission.GoalsScene.GoalsRouter
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
@@ -17,31 +17,28 @@ import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.Aimission
 import kotlinx.android.synthetic.main.cv_item_aim.view.*
 
-class AimListAdapter(
-        private val data: ArrayList<Goal>,
+class GoalsAdapter(
+        private var data: List<Goal>,
         private val settingEditPastItems: Boolean, // todo remove this boolean and get list of user settings with all the values or better especially only for adapter
         private val isActualMonth: Boolean,
         interactor: IGoalsInteractor,
         activity: Activity? = null
-) : RecyclerView.Adapter<AimListAdapter.ViewHolderAimItem>() {
-
+) : RecyclerView.Adapter<GoalsAdapter.ViewHolderGoal>() {
     val router = GoalsRouter()
-
     private val interactor = interactor
     private val activity = activity ?: null
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderAimItem {
+    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderGoal {
         val aimItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_item_aim, parent, false) as CardView
 
 
-        return ViewHolderAimItem(aimItem)
+        return ViewHolderGoal(aimItem)
     }
 
     override fun getItemCount() = data.size
 
-    override fun onBindViewHolder(holder: ViewHolderAimItem, position: Int) {
-        holder.aimItem.apply {
+    override fun onBindViewHolder(holder: ViewHolderGoal, position: Int) {
+        holder.cardViewGoal.apply {
             aimItemCV.titleTV.text = data[position].title
             aimItemCV.statusTV.text = getAimStatus(data[position].status)
             aimItemCV.aimTypeTV.text = getPriorityText(data[position].isHighPriority)
@@ -72,7 +69,15 @@ class AimListAdapter(
         }
     }
 
-    class ViewHolderAimItem(val aimItem: CardView) : RecyclerView.ViewHolder(aimItem)
+    class ViewHolderGoal(val cardViewGoal: CardView) : RecyclerView.ViewHolder(cardViewGoal)
+
+    fun updateGoals(goals:List<Goal>) {
+        if (goals.isEmpty())
+            return
+
+        data = goals
+        notifyDataSetChanged()
+    }
 
     private fun getPriorityText(isHighPriority: Boolean?): String {
         isHighPriority?.apply {

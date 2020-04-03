@@ -77,7 +77,7 @@ class DbHelper {
                     sharedPref?.apply {
                         with(this.edit())
                         {
-                            sharedPref.edit().putString(key, value)
+                            putString(key, value)
                             apply()
                         }
                     }

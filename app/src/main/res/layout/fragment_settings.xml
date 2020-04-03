@@ -29,5 +29,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/frg_settings_title" />
 
+    <TextView
+        android:id="@+id/settings_textview_sorting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="28dp"
+        android:text="Which sorting algorithm do you want by default?"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frg_settings_switch_enable_past_editing" />
+
+    <RadioGroup
+        android:id="@+id/settings_radio_button_group_sort"
+        android:layout_width="179dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_textview_sorting">
+
+        <RadioButton
+            android:id="@+id/settings_radio_button_sort_creation_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sort by creation date" />
+
+        <RadioButton
+            android:id="@+id/settings_radio_button_sort_items_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sort by items done" />
+
+        <RadioButton
+            android:id="@+id/settings_radio_button_sort_priority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sort by priority items" />
+    </RadioGroup>
+
 
 </android.support.constraint.ConstraintLayout>

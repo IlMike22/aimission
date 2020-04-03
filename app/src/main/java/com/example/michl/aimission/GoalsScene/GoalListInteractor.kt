@@ -1,4 +1,4 @@
-package com.example.michl.aimission.AimListScene
+package com.example.michl.aimission.GoalsScene
 
 import android.util.Log
 import com.example.michl.aimission.Helper.DateHelper.DateHelper.convertDataInGoals
@@ -13,8 +13,8 @@ import com.google.firebase.database.DataSnapshot
 
 interface IGoalsInteractor {
     fun getGoals(userId: String, data: DataSnapshot, selectedMonth:Int, selectedYear:Int)
-    fun changeGoalProgress(item: Goal?, position: Int)
-    fun storeGoalInformationInSharedPrefs(items: ArrayList<Goal>)
+    fun changeGoalProgress(goal: Goal?, position: Int)
+    fun storeGoalInformationInSharedPrefs(goals: ArrayList<Goal>)
     fun getGoalInformationFromSharedPrefs(month: Int, year: Int)
     fun updateGoals()
 }
@@ -59,21 +59,21 @@ class GoalListInteractor: IGoalsInteractor {
     }
 
 
-    override fun storeGoalInformationInSharedPrefs(items: ArrayList<Goal>) {
+    override fun storeGoalInformationInSharedPrefs(goals: ArrayList<Goal>) {
         // stores current state of item information for this month in sp and returns the result in a dict
-        if (items.size == 0) {
+        if (goals.size == 0) {
             output?.onSPStoreFailed("No items found.")
             return
         }
 
         val context = Aimission.getAppContext()
-        val month = items[0].month
-        val year = items[0].year
+        val month = goals[0].month
+        val year = goals[0].year
         val spEntries = getCurrentSPEntry(month, year)
 
-        val itemsCompleted = getGoalsCompleted(items).size
-        val itemsHighPrio = getHighPriorityItems(items).size
-        val itemsIterative = getIterativeItems(items).size
+        val itemsCompleted = getGoalsCompleted(goals).size
+        val itemsHighPrio = getHighPriorityItems(goals).size
+        val itemsIterative = getIterativeItems(goals).size
 
         // get information about the items and store this information in shared prefs.
         context?.apply {

@@ -1,11 +1,11 @@
-package com.example.michl.aimission.AimListScene
+package com.example.michl.aimission.GoalsScene
 
 import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.util.Log
 import com.example.michl.aimission.AimDetailScene.Views.AimDetailActivity
-import com.example.michl.aimission.AimListScene.Views.GoalsFragment
+import com.example.michl.aimission.GoalsScene.Views.GoalsFragment
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG

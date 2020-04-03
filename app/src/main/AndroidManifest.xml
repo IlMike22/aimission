@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AimDetailScene.Views.AimDetailActivity" />
-        <activity android:name=".AimListScene.Views.AimListActivity" />
+        <activity android:name=".GoalsScene.Views.AimListActivity" />
         <activity android:name=".InfoScene.Views.InfoActivity" />
         <activity android:name=".SettingsScene.Views.SettingsActivity" />
         <activity android:name=".Base.BaseActivity" />
