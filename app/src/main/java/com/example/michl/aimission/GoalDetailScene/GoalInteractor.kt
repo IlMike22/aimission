@@ -1,9 +1,10 @@
-package com.example.michl.aimission.AimDetailScene
+package com.example.michl.aimission.GoalDetailScene
 
 import android.util.Log
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
+import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
@@ -11,24 +12,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-
-
-interface IGoalInteractor {
-    fun createNewAim(userId: String, item: Goal)
-    fun deleteSingleAim(userId: String, itemId: String)
-    fun updateAim(userId: String, item: Goal)
-    fun getAndValidateFirebaseUser()
-    fun getDetailData(id: String)
-    fun createErrorMessageIfItemIdIsNull(msg: String)
-}
-
-enum class ValidationResult{
-    NO_GENRE_DEFINED_ERROR,
-    ERROR_REQUIRED_FIELD_IS_EMPTY_ERROR,
-    NO_STATUS_DEFINED_ERROR,
-    NO_AMOUNT_OF_REPEATS_ERROR,
-    VALIDATION_SUCCESS
-}
 
 class GoalInteractor : IGoalInteractor {
 
@@ -53,10 +36,14 @@ class GoalInteractor : IGoalInteractor {
     }
 
     override fun createNewAim(userId: String, item: Goal) {
-
         // add current month and year.
         item.month = DateHelper.getCurrentMonth()
         item.year = DateHelper.getCurrentYear()
+
+        //if goal is iterative, put title in shared prefs for iterative goals
+        if (item.isComingBack) {
+            DbHelper.storeIterativeGoalTitleInSharedPrefs(item.title)
+        }
 
         item?.apply {
             val validationResult = validateUserInput(this)
@@ -118,4 +105,13 @@ class GoalInteractor : IGoalInteractor {
         return ValidationResult.VALIDATION_SUCCESS
     }
 }
+
+enum class ValidationResult{
+    NO_GENRE_DEFINED_ERROR,
+    ERROR_REQUIRED_FIELD_IS_EMPTY_ERROR,
+    NO_STATUS_DEFINED_ERROR,
+    NO_AMOUNT_OF_REPEATS_ERROR,
+    VALIDATION_SUCCESS
+}
+
 

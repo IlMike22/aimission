@@ -1,7 +1,7 @@
-package com.example.michl.aimission.AimDetailScene
+package com.example.michl.aimission.GoalDetailScene
 
 import android.util.Log
-import com.example.michl.aimission.AimDetailScene.Views.AimDetailFragmentInput
+import com.example.michl.aimission.GoalDetailScene.Views.IGoalDetailFragment
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
@@ -22,7 +22,7 @@ interface GoalPresenterInput {
 class GoalPresenter : GoalPresenterInput {
 
 
-    var output: WeakReference<AimDetailFragmentInput>? = null
+    var output: WeakReference<IGoalDetailFragment>? = null
 
     override fun validateFirebaseUser(userID: String) {
         if (userID.isNullOrEmpty())

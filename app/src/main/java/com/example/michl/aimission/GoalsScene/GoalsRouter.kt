@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.util.Log
-import com.example.michl.aimission.AimDetailScene.Views.AimDetailActivity
+import com.example.michl.aimission.GoalDetailScene.Views.AimDetailActivity
 import com.example.michl.aimission.GoalsScene.Views.GoalsFragment
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Utility.Aimission

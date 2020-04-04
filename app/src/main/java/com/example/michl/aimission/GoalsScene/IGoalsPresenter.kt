@@ -1,0 +1,19 @@
+package com.example.michl.aimission.GoalsScene
+
+import com.example.michl.aimission.Models.Goal
+
+interface IGoalsPresenter {
+    fun onGoalsLoaded(goals: ArrayList<Goal>, month: Int, year: Int)
+    fun onNoUserIdExists()
+    fun onGoalStatusChanged(goal: Goal, position: Int)
+    fun onGoalStatusChangedFailed(goal: Goal?, position: Int)
+    fun onIterativeGoalsReceived(goals: ArrayList<Goal>)
+    fun onDoneGoalsReceived(goals: ArrayList<Goal>)
+    fun onIterativeGoalsReceivedFailed(msg: String)
+    fun onHighPriorityGoalsReceived(goals: ArrayList<Goal>)
+    fun onHighPriorityGoalsReceivedFailed(msg: String)
+    fun onItemInformationFromSharedPrefSucceed(goalsDone: Int, goalsHighPriority: Int, goalsIterative: Int)
+    fun onSPStoreSucceed(result: Map<String, Int>)
+    fun onSPStoreFailed(errorMsg: String)
+    fun onItemInformationFromSharedPrefFailed(msg: String)
+}

@@ -12,11 +12,13 @@ import android.widget.Toast
 import com.example.michl.aimission.Adapters.GoalsAdapter
 import com.example.michl.aimission.GoalsScene.*
 import com.example.michl.aimission.Helper.DateHelper
+import com.example.michl.aimission.Models.DefaultSortMode
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getCurrentUserId
+import com.example.michl.aimission.Utility.GoalHelper.Companion.sortGoalsBySortMode
 import com.example.michl.aimission.Utility.SettingHelper
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -31,7 +33,6 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
     private lateinit var goals: ArrayList<Goal>
     var selectedMonth: Int? = 0
     var selectedYear: Int? = null
-    val REQUEST_RELOAD_LIST = 101
 
     @SuppressLint("RestrictedApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -100,8 +101,8 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         if (id == R.id.menu_item_goal_list_sorting_priority) {
             if (::goals.isInitialized) {
                 goalsAdapter.updateGoals(
-                        sortGoals(
-                                option = SortingOption.PRIORITY,
+                        sortGoalsBySortMode(
+                                sortMode = DefaultSortMode.SORT_MODE_PRIORITY,
                                 goals = goals
                         )
                 )
@@ -111,8 +112,8 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         if (id == R.id.menu_item_goal_list_sorting_creation_date) {
             if (::goals.isInitialized) {
                 goalsAdapter.updateGoals(
-                        sortGoals(
-                                option = SortingOption.CREATION_DATE,
+                        sortGoalsBySortMode(
+                                sortMode = DefaultSortMode.SORT_MODE_CREATION_DATE,
                                 goals = goals
                         )
                 )
@@ -122,8 +123,8 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         if (id == R.id.menu_item_goal_list_sorting_done) {
             if (::goals.isInitialized) {
                 goalsAdapter.updateGoals(
-                        sortGoals(
-                                option = SortingOption.ITEMS_DONE,
+                        sortGoalsBySortMode(
+                                sortMode = DefaultSortMode.SORT_MODE_ITEMS_DONE,
                                 goals = goals
                         )
                 )
@@ -234,29 +235,4 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
     private fun isActualMonth(): Boolean {
         return (DateHelper.getCurrentMonth() == selectedMonth && DateHelper.getCurrentYear() == selectedYear)
     }
-
-    private fun sortGoals(option: SortingOption, goals: List<Goal>): List<Goal> {
-        return when (option) {
-            SortingOption.PRIORITY -> {
-                goals.sortedByDescending { goal ->
-                    goal.isHighPriority
-                }
-            }
-            SortingOption.CREATION_DATE -> {
-                goals.sortedByDescending { goal ->
-                    goal.creationDate
-                }
-            }
-            SortingOption.ITEMS_DONE -> {
-                goals.sortedByDescending { goal ->
-                    goal.status
-                }
-            }
-        }
-    }
-}
-
-//todo we have already an enum class for sorting modes. Use that instead of this.
-enum class SortingOption {
-    PRIORITY, ITEMS_DONE, CREATION_DATE
 }

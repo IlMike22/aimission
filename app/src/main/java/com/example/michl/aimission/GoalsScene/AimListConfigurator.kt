@@ -13,10 +13,10 @@ object AimListConfigurator {
         val router = GoalsRouter()
         router.fragment = WeakReference(fragment)
 
-        val presenter = AimListPresenter()
+        val presenter = GoalsPresenter()
         presenter.output = WeakReference(fragment)
 
-        val interactor = GoalListInteractor()
+        val interactor = GoalsInteractor()
         interactor.output = presenter
 
         fragment.output = interactor

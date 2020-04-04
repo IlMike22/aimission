@@ -1,30 +1,17 @@
 package com.example.michl.aimission.GoalsScene
 
 import android.util.Log
+import com.example.michl.aimission.Models.DefaultSortMode
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.R
+import com.example.michl.aimission.SettingsScene.Views.toDefaultSortMode
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
+import com.example.michl.aimission.Utility.GoalHelper.Companion.sortGoalsBySortMode
+import com.example.michl.aimission.Utility.SettingHelper
 import java.lang.ref.WeakReference
 
-interface AimListPresenterInput {
-    fun onItemsLoaded(items: ArrayList<Goal>, month: Int, year: Int)
-    fun onNoUserIdExists()
-    fun onItemStatusChanged(item: Goal, position: Int)
-    fun onItemStatusChangeFailed(item: Goal?, position: Int)
-    fun onIterativeItemsGot(items: ArrayList<Goal>)
-    fun onCompletedItemsGot(items: ArrayList<Goal>)
-    fun onIterativeItemsGotFailed(msg: String)
-    fun onHighPriorityItemsGot(items: ArrayList<Goal>)
-    fun onHighPriorityItemsGotFailed(msg: String)
-    fun onItemInformationFromSharedPrefSucceed(itemsDone: Int, itemsHighPrio: Int, itemsIterative: Int)
-    fun onSPStoreSucceed(result: Map<String, Int>)
-    fun onSPStoreFailed(errorMsg: String)
-    fun onItemInformationFromSharedPrefFailed(msg: String)
-
-}
-
-class AimListPresenter : AimListPresenterInput {
+class GoalsPresenter : IGoalsPresenter {
     var output: WeakReference<IGoalsFragment>? = null
 
     override fun onNoUserIdExists() {
@@ -32,22 +19,25 @@ class AimListPresenter : AimListPresenterInput {
         output?.get()?.afterUserIdNotFound(msgUserNotFound)
     }
 
-    override fun onItemsLoaded(goals: ArrayList<Goal>, month: Int, year: Int) {
+    override fun onGoalsLoaded(goals: ArrayList<Goal>, month: Int, year: Int) {
         Aimission.getAppContext()?.apply {
             if (goals.isEmpty())
                 output?.get()?.afterNoGoalsFound(getString(R.string.goal_list_msg_no_items_for_this_month))
             else
-                output?.get()?.afterGoalsLoaded(sortGoals(goals), month, year)
+                output?.get()?.afterGoalsLoaded(
+                        goals = sortGoalsByDefaultSettings(goals),
+                        month = month,
+                        year = year
+                )
         } ?: Log.e(TAG, "No app context available")
-
     }
 
-    override fun onItemStatusChanged(item: Goal, position: Int) {
-        output?.get()?.afterGoalStatusChange(item, position)
+    override fun onGoalStatusChanged(goal: Goal, position: Int) {
+        output?.get()?.afterGoalStatusChange(goal, position)
     }
 
-    override fun onItemStatusChangeFailed(item: Goal?, position: Int) {
-        item?.let { item ->
+    override fun onGoalStatusChangedFailed(goal: Goal?, position: Int) {
+        goal?.let { item ->
             val msg = "Unable to update status from item ${item.title} on position $position."
             Log.e(TAG, msg + " Please try in a few minutes again.")
             output?.get()?.afterGoalStatusChangeFailed(msg)
@@ -58,23 +48,23 @@ class AimListPresenter : AimListPresenterInput {
         }
     }
 
-    override fun onIterativeItemsGot(items: ArrayList<Goal>) {
-        output?.get()?.afterIterativeGoalsLoaded(items)
+    override fun onIterativeGoalsReceived(goals: ArrayList<Goal>) {
+        output?.get()?.afterIterativeGoalsLoaded(goals)
     }
 
-    override fun onIterativeItemsGotFailed(msg: String) {
+    override fun onIterativeGoalsReceivedFailed(msg: String) {
         output?.get()?.afterIterativeGoalsLoadedFailed(msg)
     }
 
-    override fun onHighPriorityItemsGot(items: ArrayList<Goal>) {
-        output?.get()?.afterHighPriorityGoalsLoaded(items)
+    override fun onHighPriorityGoalsReceived(goals: ArrayList<Goal>) {
+        output?.get()?.afterHighPriorityGoalsLoaded(goals)
     }
 
-    override fun onHighPriorityItemsGotFailed(msg: String) {
+    override fun onHighPriorityGoalsReceivedFailed(msg: String) {
         output?.get()?.afterHighPriorityGoalsLoadedFailed(msg)
     }
 
-    override fun onCompletedItemsGot(items: ArrayList<Goal>) {
+    override fun onDoneGoalsReceived(goals: ArrayList<Goal>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -104,10 +94,12 @@ class AimListPresenter : AimListPresenterInput {
         output?.get()?.afterSPStoredFailed(message)
     }
 
-    private fun sortGoals(goals: ArrayList<Goal>): ArrayList<Goal> {
-        goals.sortByDescending { goal ->
-            goal.creationDate
+    private fun sortGoalsByDefaultSettings(goals: ArrayList<Goal>): ArrayList<Goal> {
+        var defaultSortMode = DefaultSortMode.SORT_MODE_CREATION_DATE
+        Aimission.getAppContext()?.apply {
+            defaultSortMode = SettingHelper.getDefaultSortSetting(this).toDefaultSortMode()
         }
-        return goals
+
+        return sortGoalsBySortMode(defaultSortMode, goals)
     }
 }

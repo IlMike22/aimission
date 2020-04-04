@@ -1,4 +1,4 @@
-package com.example.michl.aimission.AimDetailScene.Views
+package com.example.michl.aimission.GoalDetailScene.Views
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

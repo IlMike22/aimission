@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AimDetailScene.Views.AimDetailActivity">
+    tools:context=".GoalDetailScene.Views.AimDetailActivity">
 
-    <fragment android:name="com.example.michl.aimission.AimDetailScene.Views.AimDetailFragment"
+    <fragment android:name="com.example.michl.aimission.GoalDetailScene.Views.GoalDetailFragment"
         android:id="@+id/frg_aimlist"
         android:layout_weight="1"
         android:layout_width="0dp"

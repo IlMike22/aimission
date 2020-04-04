@@ -17,7 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AimDetailScene.Views.AimDetailActivity" />
+        <activity android:name=".GoalDetailScene.Views.AimDetailActivity" />
         <activity android:name=".GoalsScene.Views.AimListActivity" />
         <activity android:name=".InfoScene.Views.InfoActivity" />
         <activity android:name=".SettingsScene.Views.SettingsActivity" />

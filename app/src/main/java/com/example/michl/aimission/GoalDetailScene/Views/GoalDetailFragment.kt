@@ -1,4 +1,4 @@
-package com.example.michl.aimission.AimDetailScene.Views
+package com.example.michl.aimission.GoalDetailScene.Views
 
 
 import android.app.AlertDialog
@@ -9,8 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.michl.aimission.AimDetailScene.GoalConfigurator
-import com.example.michl.aimission.AimDetailScene.IGoalInteractor
+import com.example.michl.aimission.GoalDetailScene.GoalConfigurator
+import com.example.michl.aimission.GoalDetailScene.IGoalInteractor
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
@@ -23,22 +23,7 @@ import java.time.LocalDateTime
 import java.util.*
 import kotlin.math.absoluteValue
 
-
-interface AimDetailFragmentInput {
-    fun afterDeleteItemSucceed(msg: String)
-    fun afterDeleteItemFailed(msg: String)
-    fun onFirebaseUserNotExists(msg: String)
-    fun onFirebaseUserExists(userId: String)
-    fun afterSaveItemSucceed()
-    fun afterSaveItemFailed(msg: String)
-    fun afterUpdateItemSucceed(msg: String)
-    fun afterUpdateItemFailed(msg: String)
-    fun showAimDetailData(item: Goal)
-    fun showErrorMessageToUser(msg: String)
-    fun afterValidationFailed(message:String)
-}
-
-class AimDetailFragment : AimDetailFragmentInput, Fragment() {
+class GoalDetailFragment : IGoalDetailFragment, Fragment() {
     var output: IGoalInteractor? = null
     private var userID: String = ""
 

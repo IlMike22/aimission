@@ -11,17 +11,8 @@ import com.example.michl.aimission.Utility.DbHelper.Companion.getGoalTableRefere
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 
-interface IGoalsInteractor {
-    fun getGoals(userId: String, data: DataSnapshot, selectedMonth:Int, selectedYear:Int)
-    fun changeGoalProgress(goal: Goal?, position: Int)
-    fun storeGoalInformationInSharedPrefs(goals: ArrayList<Goal>)
-    fun getGoalInformationFromSharedPrefs(month: Int, year: Int)
-    fun updateGoals()
-}
-
-class GoalListInteractor: IGoalsInteractor {
-
-    var output: AimListPresenterInput? = null
+class GoalsInteractor: IGoalsInteractor {
+    var output: IGoalsPresenter? = null
     var items = ArrayList<Goal>()
 
     //todo context should not be available in interactor, find a way to avoid context parameter here
@@ -37,7 +28,7 @@ class GoalListInteractor: IGoalsInteractor {
 //        }
         items = createNewItemListFromDb(userId, data, selectedMonth, selectedYear)
 
-        output?.onItemsLoaded(items, selectedMonth, selectedYear)
+        output?.onGoalsLoaded(items, selectedMonth, selectedYear)
 
     }
 
@@ -51,10 +42,10 @@ class GoalListInteractor: IGoalsInteractor {
 
             // update item list
             items.get(position).status = status
-            output?.onItemStatusChanged(goal, position)
+            output?.onGoalStatusChanged(goal, position)
 
         } ?: run {
-            output?.onItemStatusChangeFailed(null, position)
+            output?.onGoalStatusChangedFailed(null, position)
         }
     }
 

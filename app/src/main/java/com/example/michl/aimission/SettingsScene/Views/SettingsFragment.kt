@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.michl.aimission.Models.DefaultSortMode
 import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.SettingHelper
@@ -83,14 +84,6 @@ private fun readSharedPreferences(context: Context): Map<String,Any> {
     settings.set("edit_past_items", SettingHelper.getEditItemInPastSetting(context))
     settings.set("default_sort_mode", SettingHelper.getDefaultSortSetting(context))
     return settings
-}
-
-// todo put this enum in a separate package later
-enum class DefaultSortMode {
-    SORT_MODE_CREATION_DATE,
-    SORT_MODE_ITEMS_DONE,
-    SORT_MODE_PRIORITY,
-    SORT_MODE_UNKNOWN
 }
 
 //todo put this helper method in a separate package

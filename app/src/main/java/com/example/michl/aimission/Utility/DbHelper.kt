@@ -115,5 +115,26 @@ class DbHelper {
             val sharedPref = getSharedPrefsInstance(context)
             return sharedPref.getBoolean(key, false)
         }
+
+        fun storeIterativeGoalTitleInSharedPrefs(title: String) {
+            Aimission.getAppContext()?.apply {
+                val sharedPreferences = getSharedPrefsInstance(this)
+                val goals = readIterativeGoalTitleFromSharedPrefs().toMutableList()
+                goals.add(title)
+                Log.i("Aimission","Iterative goals from shared prefs are $goals")
+                sharedPreferences.edit().putStringSet("ITERATIVE_ITEMS", goals.toHashSet()).apply() {
+                    apply()
+                }
+            }
+
+        }
+
+        fun readIterativeGoalTitleFromSharedPrefs(): List<String> {
+            Aimission.getAppContext()?.apply {
+                val sharedPreferences = getSharedPrefsInstance(this)
+                return sharedPreferences.getStringSet("ITERATIVE_ITEMS", hashSetOf()).toList()
+            }
+            return emptyList()
+        }
     }
 }
