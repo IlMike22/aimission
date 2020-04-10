@@ -1,8 +1,7 @@
-package com.example.michl.aimission.MainScene.Views
+package com.example.michl.aimission.LandingpageScene.Views
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
@@ -11,7 +10,7 @@ import com.example.michl.aimission.InfoScene.REQUEST_USER_REGISTER_SUCCEED
 import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.activity_base.*
 
-class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class LandingpageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     val router = MainRouter()
 

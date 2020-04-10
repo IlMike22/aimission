@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.util.Log
-import com.example.michl.aimission.GoalDetailScene.Views.AimDetailActivity
+import com.example.michl.aimission.GoalDetailScene.Views.GoalDetailActivity
 import com.example.michl.aimission.GoalsScene.Views.GoalsFragment
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Utility.Aimission
@@ -21,7 +21,7 @@ class GoalsRouter : AimListRouterInput {
     val REQUEST_UPDATE_LIST = 101
 
     override fun showAimDetailView(aimId: String, mode: DateHelper.MODE_SELECTOR, sourceActivity:Activity?) {
-        var intent = Intent(Aimission.getAppContext(), AimDetailActivity::class.java)
+        var intent = Intent(Aimission.getAppContext(), GoalDetailActivity::class.java)
 
         if (aimId.isEmpty() && mode != DateHelper.MODE_SELECTOR.Create)
         {

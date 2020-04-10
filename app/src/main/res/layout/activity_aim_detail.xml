@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GoalDetailScene.Views.AimDetailActivity">
+    tools:context=".GoalDetailScene.Views.GoalDetailActivity">
 
     <fragment android:name="com.example.michl.aimission.GoalDetailScene.Views.GoalDetailFragment"
         android:id="@+id/frg_aimlist"

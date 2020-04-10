@@ -4,7 +4,6 @@ import android.util.Log
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
-import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
@@ -63,17 +62,17 @@ class GoalInteractor : IGoalInteractor {
 
     override fun getDetailData(id: String) {
         val query = FirebaseDatabase.getInstance().reference.child("Aim").child(getFireBaseUser()).child(id)
-        query.addValueEventListener(object : ValueEventListener {
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
                 Log.e(TAG, "An error occured while trying to read item detail data. ${p0.message}")
             }
 
             override fun onDataChange(data: DataSnapshot) {
-                val item = data.getValue(Goal::class.java)
-                Log.i(TAG, "Item is $item")
+                val goal = data.getValue(Goal::class.java)
+                Log.i(TAG, "Item is $goal")
 
                 //now open presenter with aimitem data
-                item?.apply {
+                goal?.apply {
                     output?.onAimReadSuccessfully(this)
                 } ?: Log.e(TAG, "Couldnt get detail item with $id")
             }

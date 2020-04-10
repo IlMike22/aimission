@@ -1,4 +1,4 @@
-package com.example.michl.aimission.MainScene
+package com.example.michl.aimission.LandingpageScene
 
 import android.util.Log
 import com.example.michl.aimission.Models.*
@@ -12,12 +12,8 @@ import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
-interface MainInteractorInput {
-    fun getUsersMonthList(data: DataSnapshot)
-}
-
-class MainInteractor : MainInteractorInput {
-    var output: MainPresenterInput? = null
+class LandingpageInteractor : ILandingpageInteractor {
+    var output: ILandingpagePresenter? = null
     private val goals = ArrayList<Goal?>()
 
     override fun getUsersMonthList(data: DataSnapshot) {
@@ -76,7 +72,6 @@ class MainInteractor : MainInteractorInput {
         var currentYear = 0
 
         for (aim in aims) {
-
             if (currentMonth == 0) {
                 currentMonth = aim?.month ?: -1
                 currentYear = aim?.year ?: -1

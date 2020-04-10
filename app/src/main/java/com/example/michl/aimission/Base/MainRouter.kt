@@ -4,7 +4,7 @@ import android.support.v4.app.FragmentManager
 import android.util.Log
 import com.example.michl.aimission.GoalDetailScene.Views.GoalDetailFragment
 import com.example.michl.aimission.InfoScene.Views.InfoFragment
-import com.example.michl.aimission.MainScene.Views.MainFragment
+import com.example.michl.aimission.LandingpageScene.Views.LandingpageFragment
 import com.example.michl.aimission.R
 import com.example.michl.aimission.SettingsScene.Views.SettingsFragment
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
@@ -20,7 +20,7 @@ interface MainRouterInput {
 
 class MainRouter : MainRouterInput {
 
-    var fragment: WeakReference<MainFragment>? = null
+    var fragment: WeakReference<LandingpageFragment>? = null
 
     override fun openAimDetailView(manager: FragmentManager) {
         Log.i(TAG,"open detail view router called.")
@@ -39,6 +39,6 @@ class MainRouter : MainRouterInput {
 
     override fun openMainView(manager: FragmentManager) {
         Log.i(TAG, "open main view")
-        manager.beginTransaction().replace(R.id.fragmentContainer, MainFragment()).addToBackStack(null).commitAllowingStateLoss()
+        manager.beginTransaction().replace(R.id.fragmentContainer, LandingpageFragment()).addToBackStack(null).commitAllowingStateLoss()
     }
 }

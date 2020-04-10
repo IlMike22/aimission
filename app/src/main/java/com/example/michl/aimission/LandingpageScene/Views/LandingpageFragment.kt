@@ -1,4 +1,4 @@
-package com.example.michl.aimission.MainScene.Views
+package com.example.michl.aimission.LandingpageScene.Views
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,9 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.michl.aimission.Adapters.MonthListAdapter
-import com.example.michl.aimission.MainScene.MainConfigurator
-import com.example.michl.aimission.MainScene.MainInteractorInput
-import com.example.michl.aimission.MainScene.MainRouter
+import com.example.michl.aimission.LandingpageScene.ILandingpageFragment
+import com.example.michl.aimission.LandingpageScene.LandingpageConfigurator
+import com.example.michl.aimission.LandingpageScene.LandingpageInteractor
+import com.example.michl.aimission.LandingpageScene.LandingpageRouter
 import com.example.michl.aimission.Models.MonthItem
 import com.example.michl.aimission.R
 import com.google.firebase.auth.FirebaseAuth
@@ -23,20 +24,13 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
-interface MainFragmentInput {
-    fun afterUserIdNotFound(errorMsg: String)
-    fun afterMonthItemsLoadedSuccessfully(monthItems: ArrayList<MonthItem>)
-    fun afterMonthItemsLoadedFailed(errorMsg: String)
-    fun afterEmptyMonthListLoaded(msg: String, firstItem: MonthItem)
-}
 
-class MainFragment : MainFragmentInput, Fragment() {
-
+class LandingpageFragment : ILandingpageFragment, Fragment() {
     private lateinit var lytManager: RecyclerView.LayoutManager
     private lateinit var monthItemAdapter: RecyclerView.Adapter<*>
     private lateinit var firebaseAuth: FirebaseAuth
-    lateinit var router: MainRouter
-    lateinit var output: MainInteractorInput
+    lateinit var router: LandingpageRouter
+    lateinit var output: LandingpageInteractor
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -50,7 +44,7 @@ class MainFragment : MainFragmentInput, Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         activity?.let { activity ->
-            MainConfigurator.configure(this)
+            LandingpageConfigurator.configure(this)
         }
 
         // writing a sample data to db (users name)
@@ -115,5 +109,12 @@ class MainFragment : MainFragmentInput, Fragment() {
             adapter = monthItemAdapter
             layoutManager = lytManager
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("michl","now do something")
+        if (::monthItemAdapter.isInitialized)
+            monthItemAdapter.notifyDataSetChanged()
     }
 }

@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.example.michl.aimission.GoalsScene.IOnBackPressed
 import com.example.michl.aimission.R
 
-class AimListActivity : AppCompatActivity() {
+class GoalsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,5 +16,6 @@ class AimListActivity : AppCompatActivity() {
         val fragment = supportFragmentManager.findFragmentById(R.id.frg_aimlist)
         if (!(fragment is IOnBackPressed) || !((fragment as IOnBackPressed).onBackPressed()))
             super.onBackPressed()
+            finish()
     }
 }
