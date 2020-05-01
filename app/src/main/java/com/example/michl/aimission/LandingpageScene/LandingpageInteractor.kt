@@ -2,6 +2,7 @@ package com.example.michl.aimission.LandingpageScene
 
 import android.util.Log
 import com.example.michl.aimission.Models.*
+import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getCurrentUserId
 import com.google.firebase.database.DataSnapshot
@@ -34,7 +35,6 @@ class LandingpageInteractor : ILandingpageInteractor {
                     }
                     catch(exception:Exception) {
                         Log.e(TAG,"Error while converting goals from dataset. Details: ${exception.message}")
-                        break
                     }
                 }
 
@@ -56,58 +56,59 @@ class LandingpageInteractor : ILandingpageInteractor {
                     output?.onMonthsLoaded(goals, monthItems)
 
                 } else {
-                    val firstItem = createNewMonth()
-                    output?.onEmptyMonthsLoaded(firstItem)
+                    val month = createNewMonth()
+                    val iterativeGoals = DbHelper.readIterativeGoalIdsFromSharedPrefs()
+                    output?.onEmptyMonthsLoaded(month) //todo put in all reverse goals here, so they were automatically added
                 }
             }
         })
     }
 
     // Get all month aims from all user's aims.
-    private fun getMonthItems(aims: ArrayList<Goal?>): ArrayList<MonthItem> {
+    private fun getMonthItems(goals: ArrayList<Goal?>): ArrayList<MonthItem> {
         val result = ArrayList<MonthItem>()
-        var aimAmount = 0
-        var aimSucceeded = 0
+        var goalAmount = 0
+        var goalsCompleted = 0
         var currentMonth = 0
         var currentYear = 0
 
-        for (aim in aims) {
+        for (goal in goals) {
             if (currentMonth == 0) {
-                currentMonth = aim?.month ?: -1
-                currentYear = aim?.year ?: -1
-                aimAmount++
-                if (aim?.status == Status.DONE)
-                    aimSucceeded++
+                currentMonth = goal?.month ?: -1
+                currentYear = goal?.year ?: -1
+                goalAmount++
+                if (goal?.status == Status.DONE)
+                    goalsCompleted++
 
             } else {
-                if (currentMonth != aim?.month ?: -1) {
+                if (currentMonth != goal?.month ?: -1) {
                     result.add(MonthItem(
                             name = getMonthName(currentMonth),
-                            aimsAmount = aimAmount,
-                            aimsSucceeded = aimSucceeded,
+                            goalAmount = goalAmount,
+                            goalsCompleted = goalsCompleted,
                             month = currentMonth,
                             year = currentYear,
                             isFirstStart = false))
-                    aimAmount = 1
-                    if (aim?.status == Status.DONE)
-                        aimSucceeded = 1
-                    else aimSucceeded = 0
+                    goalAmount = 1
+                    if (goal?.status == Status.DONE)
+                        goalsCompleted = 1
+                    else goalsCompleted = 0
 
-                    currentMonth = aim?.month ?: -1
-                    currentYear = aim?.year ?: -1
+                    currentMonth = goal?.month ?: -1
+                    currentYear = goal?.year ?: -1
                 } else {
-                    aimAmount++
-                    if (aim?.status == Status.DONE)
-                        aimSucceeded++
+                    goalAmount++
+                    if (goal?.status == Status.DONE)
+                        goalsCompleted++
                 }
 
-                if (aim == aims.get(aims.size - 1)) { // we reached last item of list
+                if (goal == goals.get(goals.size - 1)) { // we reached last item of list
                     result.add(MonthItem(name = getMonthName(
-                            month = aim?.month ?: -1),
-                            aimsAmount = aimAmount,
-                            aimsSucceeded = aimSucceeded,
-                            month = aim?.month ?: -1,
-                            year = aim?.year ?: -1,
+                            month = goal?.month ?: -1),
+                            goalAmount = goalAmount,
+                            goalsCompleted = goalsCompleted,
+                            month = goal?.month ?: -1,
+                            year = goal?.year ?: -1,
                             isFirstStart = false
                     ))
                 }
@@ -121,8 +122,8 @@ class LandingpageInteractor : ILandingpageInteractor {
         val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
         return MonthItem(name = getMonthName(currentMonth),
-                aimsSucceeded = 0,
-                aimsAmount = 0,
+                goalsCompleted = 0,
+                goalAmount = 0,
                 month = currentMonth,
                 year = currentYear,
                 isFirstStart = true)

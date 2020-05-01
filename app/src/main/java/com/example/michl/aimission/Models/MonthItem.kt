@@ -2,8 +2,8 @@ package com.example.michl.aimission.Models
 
 data class MonthItem(
         var name: String,
-        var aimsAmount: Int,
-        var aimsSucceeded: Int,
+        var goalAmount: Int,
+        var goalsCompleted: Int,
         var month: Int,
         var year: Int,
         var isFirstStart:Boolean)

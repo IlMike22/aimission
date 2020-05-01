@@ -27,8 +27,8 @@ class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>, private val c
     override fun onBindViewHolder(holder: ViewHolderMonthItem, position: Int) {
         holder.monthItem.apply {
             monthItemCV.monthNameTV.text = "${mDataSet[position].name} ${mDataSet[position].year}"
-            monthItemCV.aimAmountTV.text = "${mDataSet[position].aimsAmount} Ziele insgesamt"
-            monthItemCV.aimSucceededTV.text = "${getPercentOfSucceededAims(mDataSet[position].aimsSucceeded, mDataSet[position].aimsAmount)} % erreicht"
+            monthItemCV.aimAmountTV.text = "${mDataSet[position].goalAmount} Ziele insgesamt"
+            monthItemCV.aimSucceededTV.text = "${getPercentOfSucceededAims(mDataSet[position].goalsCompleted, mDataSet[position].goalAmount)} % erreicht"
         }
 
         holder.monthItem.setOnClickListener {

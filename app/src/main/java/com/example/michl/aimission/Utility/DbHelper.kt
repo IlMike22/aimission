@@ -116,25 +116,35 @@ class DbHelper {
             return sharedPref.getBoolean(key, false)
         }
 
-        fun storeIterativeGoalTitleInSharedPrefs(title: String) {
+        fun storeIterativeGoalIdInSharedPrefs(id: String) {
             Aimission.getAppContext()?.apply {
                 val sharedPreferences = getSharedPrefsInstance(this)
-                val goals = readIterativeGoalTitleFromSharedPrefs().toMutableList()
-                goals.add(title)
-                Log.i("Aimission","Iterative goals from shared prefs are $goals")
-                sharedPreferences.edit().putStringSet("ITERATIVE_ITEMS", goals.toHashSet()).apply() {
+                val ids = readIterativeGoalIdsFromSharedPrefs().toMutableList()
+                ids.add(id)
+                Log.i(TAG, "Iterative goals from shared prefs are $ids")
+                sharedPreferences.edit().putStringSet("ITERATIVE_ITEMS", ids.toHashSet()).apply() {
                     apply()
                 }
             }
-
         }
 
-        fun readIterativeGoalTitleFromSharedPrefs(): List<String> {
+        fun readIterativeGoalIdsFromSharedPrefs(): List<String> {
             Aimission.getAppContext()?.apply {
                 val sharedPreferences = getSharedPrefsInstance(this)
                 return sharedPreferences.getStringSet("ITERATIVE_ITEMS", hashSetOf()).toList()
             }
             return emptyList()
+        }
+
+        fun getIterativeGoals(goals: ArrayList<Goal>): ArrayList<Goal> {
+            val iterativeGoals = ArrayList<Goal>()
+            val ids = readIterativeGoalIdsFromSharedPrefs()
+            goals.forEach { goal ->
+                if (ids.contains(goal.id)) {
+                    iterativeGoals.add(goal)
+                }
+            }
+            return iterativeGoals
         }
     }
 }

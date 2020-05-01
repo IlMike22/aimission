@@ -21,9 +21,9 @@ class LandingpagePresenter : ILandingpagePresenter {
         output?.get()?.afterMonthItemsLoadedFailed(errorMsg)
     }
 
-    override fun onEmptyMonthsLoaded(firstItem: MonthItem) {
+    override fun onEmptyMonthsLoaded(month: MonthItem) {
         val msg = "At the moment there are no aims defined by you. Create now your first aim."
-        output?.get()?.afterEmptyMonthListLoaded(msg, firstItem)
+        output?.get()?.afterEmptyMonthListLoaded(msg, month)
     }
 
     private fun sortMonths(months: ArrayList<MonthItem>): ArrayList<MonthItem> {

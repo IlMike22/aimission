@@ -34,20 +34,20 @@ class GoalInteractor : IGoalInteractor {
             output?.onDeleteItemFailed()
     }
 
-    override fun createNewAim(userId: String, item: Goal) {
+    override fun createGoal(userId: String, goal: Goal) {
         // add current month and year.
-        item.month = DateHelper.getCurrentMonth()
-        item.year = DateHelper.getCurrentYear()
+        goal.month = DateHelper.getCurrentMonth()
+        goal.year = DateHelper.getCurrentYear()
 
         //if goal is iterative, put title in shared prefs for iterative goals
-        if (item.isComingBack) {
-            DbHelper.storeIterativeGoalTitleInSharedPrefs(item.title)
+        if (goal.isComingBack) {
+            DbHelper.storeIterativeGoalIdInSharedPrefs(goal.id)
         }
 
-        item?.apply {
+        goal?.apply {
             val validationResult = validateUserInput(this)
             if (validationResult == ValidationResult.VALIDATION_SUCCESS) {
-                if (DbHelper.createOrUpdateAimItem(userId, item)) {
+                if (DbHelper.createOrUpdateAimItem(userId, goal)) {
                     output?.onSaveItemSucceed()
                     return
                 }

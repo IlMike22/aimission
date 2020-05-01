@@ -98,7 +98,7 @@ class GoalDetailFragment : IGoalDetailFragment, Fragment() {
                 )
 
                 if (mode == DateHelper.MODE_SELECTOR.Create)
-                    output?.createNewAim(userID, goal)
+                    output?.createGoal(userID, goal)
                 else if (mode == DateHelper.MODE_SELECTOR.Edit)
                     output?.updateAim(userID, goal)
 

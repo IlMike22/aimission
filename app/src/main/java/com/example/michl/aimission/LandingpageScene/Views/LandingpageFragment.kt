@@ -97,7 +97,7 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
 
     override fun afterEmptyMonthListLoaded(msg: String, firstItem: MonthItem) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-        var monthList = ArrayList<MonthItem>()
+        val monthList = ArrayList<MonthItem>()
         monthList.add(firstItem)
         context?.apply { monthItemAdapter = MonthListAdapter(monthList, this) }
                 ?: println("Aimission - No context found. Cannot call adapter.")
@@ -113,7 +113,6 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.i("michl","now do something")
         if (::monthItemAdapter.isInitialized)
             monthItemAdapter.notifyDataSetChanged()
     }
