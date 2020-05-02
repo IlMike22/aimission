@@ -2,7 +2,7 @@ package com.example.michl.aimission.GoalDetailScene.Views
 
 import com.example.michl.aimission.Models.Goal
 
-interface IGoalDetailFragment {
+interface IGoalFragment {
     fun afterDeleteItemSucceed(msg: String)
     fun afterDeleteItemFailed(msg: String)
     fun onFirebaseUserNotExists(msg: String)

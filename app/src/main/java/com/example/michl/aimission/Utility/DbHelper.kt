@@ -4,18 +4,23 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 class DbHelper {
     companion object {
         const val TAG = "Aimission"
+        const val ITERATIVE_ITEMS_KEY = "ITERATIVE_ITEMS"
 
-        fun createOrUpdateAimItem(userId: String, item: Goal): Boolean {
+        fun createOrUpdateGoal(userId: String, goal: Goal): Boolean {
             return try {
-                getGoalTableReference().child(userId).child(item.id ?: "").setValue(item)
+                getGoalTableReference().child(userId).child(goal.id ?: "").setValue(goal)
                 true
             } catch (exception: Exception) {
                 Log.e("Aimission", "Failed writing new item in table Aim. Details: ${exception.message}")
@@ -23,7 +28,7 @@ class DbHelper {
             }
         }
 
-        fun deleteAimItem(userId: String, itemId: String): Boolean {
+        fun deleteGoal(userId: String, itemId: String): Boolean {
             return try {
                 getGoalTableReference().child(userId).child(itemId).setValue(null)
                 Log.i("Aimission", "Item was successfully deleted.")
@@ -116,35 +121,73 @@ class DbHelper {
             return sharedPref.getBoolean(key, false)
         }
 
-        fun storeIterativeGoalIdInSharedPrefs(id: String) {
+        fun storeIterativeGoalInSharedPrefs(id: String) {
             Aimission.getAppContext()?.apply {
                 val sharedPreferences = getSharedPrefsInstance(this)
-                val ids = readIterativeGoalIdsFromSharedPrefs().toMutableList()
+                val ids = readIterativeGoalsFromSharedPrefs().toMutableList()
                 ids.add(id)
-                Log.i(TAG, "Iterative goals from shared prefs are $ids")
-                sharedPreferences.edit().putStringSet("ITERATIVE_ITEMS", ids.toHashSet()).apply() {
+                sharedPreferences.edit().putStringSet(ITERATIVE_ITEMS_KEY, ids.toHashSet()).apply() {
                     apply()
                 }
             }
         }
 
-        fun readIterativeGoalIdsFromSharedPrefs(): List<String> {
+        fun removeIterativeGoalInSharedPrefs(id: String) {
             Aimission.getAppContext()?.apply {
                 val sharedPreferences = getSharedPrefsInstance(this)
-                return sharedPreferences.getStringSet("ITERATIVE_ITEMS", hashSetOf()).toList()
+                val ids = readIterativeGoalsFromSharedPrefs().toMutableList()
+                ids.remove(id)
+                sharedPreferences.edit().putStringSet(ITERATIVE_ITEMS_KEY, ids.toHashSet()).apply() {
+                    apply()
+                }
+            }
+        }
+
+        fun isIterativeGoalStoredInSharedPrefs(id: String): Boolean {
+            Aimission.getAppContext()?.apply {
+                val ids = readIterativeGoalsFromSharedPrefs().toMutableList()
+                return ids.contains(id)
+            }
+            return false
+        }
+
+        fun readIterativeGoalsFromSharedPrefs(): List<String> {
+            Aimission.getAppContext()?.apply {
+                val sharedPreferences = getSharedPrefsInstance(this)
+                return sharedPreferences.getStringSet(ITERATIVE_ITEMS_KEY, hashSetOf()).toList()
             }
             return emptyList()
         }
 
-        fun getIterativeGoals(goals: ArrayList<Goal>): ArrayList<Goal> {
+        fun getIterativeGoals(goals: ArrayList<Goal?>): ArrayList<Goal> {
             val iterativeGoals = ArrayList<Goal>()
-            val ids = readIterativeGoalIdsFromSharedPrefs()
+            val ids = readIterativeGoalsFromSharedPrefs()
             goals.forEach { goal ->
-                if (ids.contains(goal.id)) {
-                    iterativeGoals.add(goal)
+                goal?.apply {
+                    if (ids.contains(id)) {
+                        // create new goal with new id, current month, current year, and the information of goal
+                        iterativeGoals.add(
+                                Goal(
+                                        id = createRandomGuid(),
+                                        title = title,
+                                        description = description,
+                                        month = DateHelper.getCurrentMonth(),
+                                        year = DateHelper.getCurrentYear(),
+                                        creationDate = LocalDateTime.now().toString(),
+                                        repeatCount = repeatCount,
+                                        isHighPriority = isHighPriority,
+                                        isRepetitive = isRepetitive,
+                                        status = status,
+                                        genre = genre
+                                )
+                        )
+                    }
                 }
             }
+
             return iterativeGoals
         }
+
+        fun createRandomGuid(): String = UUID.randomUUID().toString()
     }
 }

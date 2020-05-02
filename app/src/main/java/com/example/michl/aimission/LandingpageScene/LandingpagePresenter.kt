@@ -1,7 +1,7 @@
 package com.example.michl.aimission.LandingpageScene
 
 import com.example.michl.aimission.Models.Goal
-import com.example.michl.aimission.Models.MonthItem
+import com.example.michl.aimission.Models.Month
 import java.lang.ref.WeakReference
 
 
@@ -13,7 +13,7 @@ class LandingpagePresenter : ILandingpagePresenter {
         output?.get()?.afterUserIdNotFound(errorMsg)
     }
 
-    override fun onMonthsLoaded(aims: ArrayList<Goal?>, months: ArrayList<MonthItem>) {
+    override fun onMonthsLoaded(aims: ArrayList<Goal?>, months: ArrayList<Month>) {
         output?.get()?.afterMonthItemsLoadedSuccessfully(sortMonths(months))
     }
 
@@ -21,12 +21,12 @@ class LandingpagePresenter : ILandingpagePresenter {
         output?.get()?.afterMonthItemsLoadedFailed(errorMsg)
     }
 
-    override fun onEmptyMonthsLoaded(month: MonthItem) {
+    override fun onEmptyMonthsLoaded(month: Month) {
         val msg = "At the moment there are no aims defined by you. Create now your first aim."
         output?.get()?.afterEmptyMonthListLoaded(msg, month)
     }
 
-    private fun sortMonths(months: ArrayList<MonthItem>): ArrayList<MonthItem> {
+    private fun sortMonths(months: ArrayList<Month>): ArrayList<Month> {
         months.sortByDescending { month ->
             month.month
         }

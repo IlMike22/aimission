@@ -6,11 +6,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.michl.aimission.LandingpageScene.LandingpageRouter
-import com.example.michl.aimission.Models.MonthItem
+import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.cv_item_month.view.*
 
-class MonthListAdapter(private val mDataSet: ArrayList<MonthItem>, private val context: Context) : RecyclerView.Adapter<MonthListAdapter.ViewHolderMonthItem>() {
+class MonthListAdapter(private val mDataSet: ArrayList<Month>, private val context: Context) : RecyclerView.Adapter<MonthListAdapter.ViewHolderMonthItem>() {
 
     private val router = LandingpageRouter()
 

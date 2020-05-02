@@ -1,6 +1,6 @@
 package com.example.michl.aimission.Models
 
-data class MonthItem(
+data class Month(
         var name: String,
         var goalAmount: Int,
         var goalsCompleted: Int,
@@ -9,7 +9,7 @@ data class MonthItem(
         var isFirstStart:Boolean)
 
 
-fun ArrayList<MonthItem>.containsMonthItem(month: Int, year: Int): Boolean {
+fun ArrayList<Month>.containsMonth(month: Int, year: Int): Boolean {
     for (item in this) {
         if (item.month == month && item.year == year)
             return true

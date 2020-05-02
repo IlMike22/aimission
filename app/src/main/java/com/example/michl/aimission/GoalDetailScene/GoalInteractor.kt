@@ -20,18 +20,20 @@ class GoalInteractor : IGoalInteractor {
         output?.validateFirebaseUser(getFireBaseUser())
     }
 
-    override fun updateAim(userId: String, item: Goal) {
-        if (DbHelper.createOrUpdateAimItem(userId, item))
-            output?.onUpdateItemSucceed()
+    override fun updateGoal(userId: String, goal: Goal) {
+        updateIterativeGoalsInSharedPrefs(goal)
+
+        if (DbHelper.createOrUpdateGoal(userId, goal))
+            output?.updateGoalSucceed()
         else
-            output?.onUpdateItemFailed()
+            output?.onUpdateGoalFailed()
     }
 
-    override fun deleteSingleAim(userId: String, itemId: String) {
-        if (DbHelper.deleteAimItem(userId, itemId))
-            output?.onDeleteItemSucceed()
+    override fun deleteGoal(userId: String, goalId: String) {
+        if (DbHelper.deleteGoal(userId, goalId))
+            output?.onDeleteGoalSucceed()
         else
-            output?.onDeleteItemFailed()
+            output?.onDeleteGoalFailed()
     }
 
     override fun createGoal(userId: String, goal: Goal) {
@@ -39,21 +41,17 @@ class GoalInteractor : IGoalInteractor {
         goal.month = DateHelper.getCurrentMonth()
         goal.year = DateHelper.getCurrentYear()
 
-        //if goal is iterative, put title in shared prefs for iterative goals
-        if (goal.isComingBack) {
-            DbHelper.storeIterativeGoalIdInSharedPrefs(goal.id)
-        }
+        updateIterativeGoalsInSharedPrefs(goal)
 
-        goal?.apply {
+        goal.apply {
             val validationResult = validateUserInput(this)
             if (validationResult == ValidationResult.VALIDATION_SUCCESS) {
-                if (DbHelper.createOrUpdateAimItem(userId, goal)) {
+                if (DbHelper.createOrUpdateGoal(userId, goal)) {
                     output?.onSaveItemSucceed()
                     return
                 }
                 output?.onSaveItemFailed()
-            }
-            else { // validation error occured
+            } else { // validation error occured
                 output?.showValidationError(validationResult)
             }
 
@@ -84,11 +82,20 @@ class GoalInteractor : IGoalInteractor {
         output?.onErrorMessageCreated(msg)
     }
 
+    private fun updateIterativeGoalsInSharedPrefs(goal: Goal) {
+        if (!goal.isComingBack && DbHelper.isIterativeGoalStoredInSharedPrefs(goal.id)) {
+            DbHelper.removeIterativeGoalInSharedPrefs(goal.id)
+
+        } else {
+            DbHelper.storeIterativeGoalInSharedPrefs(goal.id)
+        }
+    }
+
     private fun getFireBaseUser(): String {
         return FirebaseAuth.getInstance().currentUser?.uid ?: ""
     }
 
-    private fun validateUserInput(aim: Goal):ValidationResult {
+    private fun validateUserInput(aim: Goal): ValidationResult {
         if (aim.title.isEmpty() || aim.description.isEmpty()) {
             return ValidationResult.ERROR_REQUIRED_FIELD_IS_EMPTY_ERROR
         }
@@ -105,7 +112,7 @@ class GoalInteractor : IGoalInteractor {
     }
 }
 
-enum class ValidationResult{
+enum class ValidationResult {
     NO_GENRE_DEFINED_ERROR,
     ERROR_REQUIRED_FIELD_IS_EMPTY_ERROR,
     NO_STATUS_DEFINED_ERROR,

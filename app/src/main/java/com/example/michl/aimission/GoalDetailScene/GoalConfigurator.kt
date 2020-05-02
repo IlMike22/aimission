@@ -1,10 +1,10 @@
 package com.example.michl.aimission.GoalDetailScene
 
-import com.example.michl.aimission.GoalDetailScene.Views.GoalDetailFragment
+import com.example.michl.aimission.GoalDetailScene.Views.GoalFragment
 import java.lang.ref.WeakReference
 
 object GoalConfigurator {
-    fun configure(fragment: GoalDetailFragment) {
+    fun configure(fragment: GoalFragment) {
         val router = GoalRouter()
         router.fragment = WeakReference(fragment)
 

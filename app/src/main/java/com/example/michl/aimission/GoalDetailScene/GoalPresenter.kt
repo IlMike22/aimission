@@ -1,7 +1,7 @@
 package com.example.michl.aimission.GoalDetailScene
 
 import android.util.Log
-import com.example.michl.aimission.GoalDetailScene.Views.IGoalDetailFragment
+import com.example.michl.aimission.GoalDetailScene.Views.IGoalFragment
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
@@ -10,10 +10,10 @@ interface GoalPresenterInput {
     fun validateFirebaseUser(userID: String)
     fun onSaveItemSucceed()
     fun onSaveItemFailed()
-    fun onUpdateItemSucceed()
-    fun onUpdateItemFailed()
-    fun onDeleteItemSucceed()
-    fun onDeleteItemFailed()
+    fun updateGoalSucceed()
+    fun onUpdateGoalFailed()
+    fun onDeleteGoalSucceed()
+    fun onDeleteGoalFailed()
     fun onAimReadSuccessfully(item: Goal)
     fun onErrorMessageCreated(msg: String)
     fun showValidationError(result:ValidationResult)
@@ -22,7 +22,7 @@ interface GoalPresenterInput {
 class GoalPresenter : GoalPresenterInput {
 
 
-    var output: WeakReference<IGoalDetailFragment>? = null
+    var output: WeakReference<IGoalFragment>? = null
 
     override fun validateFirebaseUser(userID: String) {
         if (userID.isNullOrEmpty())
@@ -59,24 +59,24 @@ class GoalPresenter : GoalPresenterInput {
         output?.get()?.afterValidationFailed(message)
     }
 
-    override fun onUpdateItemFailed() {
+    override fun onUpdateGoalFailed() {
         val msg = "An error occured while trying to update item."
         Log.e(TAG, msg)
         output?.get()?.afterUpdateItemFailed(msg)
     }
 
-    override fun onUpdateItemSucceed() {
+    override fun updateGoalSucceed() {
         val msg = "Item was updated successfully."
         Log.i(TAG, msg)
         output?.get()?.afterUpdateItemSucceed(msg)
     }
 
-    override fun onDeleteItemSucceed() {
+    override fun onDeleteGoalSucceed() {
         val msg = "Item was deleted successfully."
         output?.get()?.afterDeleteItemSucceed(msg)
     }
 
-    override fun onDeleteItemFailed() {
+    override fun onDeleteGoalFailed() {
        val msg = "An error occured while trying to delete item."
         output?.get()?.afterDeleteItemFailed(msg)
     }

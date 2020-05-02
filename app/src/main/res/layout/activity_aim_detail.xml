@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".GoalDetailScene.Views.GoalDetailActivity">
 
-    <fragment android:name="com.example.michl.aimission.GoalDetailScene.Views.GoalDetailFragment"
+    <fragment android:name="com.example.michl.aimission.GoalDetailScene.Views.GoalFragment"
         android:id="@+id/frg_aimlist"
         android:layout_weight="1"
         android:layout_width="0dp"

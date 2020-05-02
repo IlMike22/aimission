@@ -16,14 +16,14 @@ import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.R
+import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import kotlinx.android.synthetic.main.fragment_aim_detail.*
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
 import kotlin.math.absoluteValue
 
-class GoalDetailFragment : IGoalDetailFragment, Fragment() {
+class GoalFragment : IGoalFragment, Fragment() {
     var output: IGoalInteractor? = null
     private var userID: String = ""
 
@@ -46,18 +46,12 @@ class GoalDetailFragment : IGoalDetailFragment, Fragment() {
 
             frg_aimdetail_btn_delete.visibility = View.VISIBLE
 
-            if (id != null) {
-                try {
-                    output?.getDetailData(id)
-                } catch (exc: Exception) {
-                    Log.e(TAG, "Cannot parse bundle parameter AimId to String. ${exc.message}")
-                    output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_unknown_error_edit_mode))
-                }
-            } else {
-                Log.e(TAG, "Cannot read item data for edit mode because item id is null.")
-                output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_item_id_null))
+            try {
+                output?.getDetailData(id)
+            } catch (exc: Exception) {
+                Log.e(TAG, "Cannot parse bundle parameter AimId to String. ${exc.message}")
+                output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_unknown_error_edit_mode))
             }
-
         }
         output?.getAndValidateFirebaseUser()
 
@@ -80,8 +74,9 @@ class GoalDetailFragment : IGoalDetailFragment, Fragment() {
             val isRepetitive = frg_aimdetail_switch_repeat.isChecked
 
             try {
-                if (id.isEmpty())
-                    id = UUID.randomUUID().toString()
+                if (id.isEmpty()) {
+                    id = DbHelper.createRandomGuid()
+                }
                 val goal = Goal(
                         id = id,
                         creationDate = LocalDateTime.now().toString(),
@@ -100,7 +95,7 @@ class GoalDetailFragment : IGoalDetailFragment, Fragment() {
                 if (mode == DateHelper.MODE_SELECTOR.Create)
                     output?.createGoal(userID, goal)
                 else if (mode == DateHelper.MODE_SELECTOR.Edit)
-                    output?.updateAim(userID, goal)
+                    output?.updateGoal(userID, goal)
 
             } catch (exc: Exception) {
                 Log.e(TAG, "Unable to store new aim item. Reason: ${exc.message}")
@@ -113,7 +108,7 @@ class GoalDetailFragment : IGoalDetailFragment, Fragment() {
                         if (isDelete) {
                             //no clicked
                             id?.let { itemId ->
-                                output?.deleteSingleAim(userID, itemId)
+                                output?.deleteGoal(userID, itemId)
                             }
                                     ?: Log.e(TAG, "Cannot call delete item function because itemId is null.")
                         }

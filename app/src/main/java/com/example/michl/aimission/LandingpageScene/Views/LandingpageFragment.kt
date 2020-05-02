@@ -14,7 +14,7 @@ import com.example.michl.aimission.LandingpageScene.ILandingpageFragment
 import com.example.michl.aimission.LandingpageScene.LandingpageConfigurator
 import com.example.michl.aimission.LandingpageScene.LandingpageInteractor
 import com.example.michl.aimission.LandingpageScene.LandingpageRouter
-import com.example.michl.aimission.Models.MonthItem
+import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -78,9 +78,9 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterMonthItemsLoadedSuccessfully(monthItems: ArrayList<MonthItem>) {
+    override fun afterMonthItemsLoadedSuccessfully(months: ArrayList<Month>) {
         context?.apply {
-            monthItemAdapter = MonthListAdapter(monthItems, this)
+            monthItemAdapter = MonthListAdapter(months, this)
         }
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
@@ -95,10 +95,10 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterEmptyMonthListLoaded(msg: String, firstItem: MonthItem) {
+    override fun afterEmptyMonthListLoaded(msg: String, month: Month) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-        val monthList = ArrayList<MonthItem>()
-        monthList.add(firstItem)
+        val monthList = ArrayList<Month>()
+        monthList.add(month)
         context?.apply { monthItemAdapter = MonthListAdapter(monthList, this) }
                 ?: println("Aimission - No context found. Cannot call adapter.")
 

@@ -2,7 +2,7 @@ package com.example.michl.aimission.Base
 
 import android.support.v4.app.FragmentManager
 import android.util.Log
-import com.example.michl.aimission.GoalDetailScene.Views.GoalDetailFragment
+import com.example.michl.aimission.GoalDetailScene.Views.GoalFragment
 import com.example.michl.aimission.InfoScene.Views.InfoFragment
 import com.example.michl.aimission.LandingpageScene.Views.LandingpageFragment
 import com.example.michl.aimission.R
@@ -24,7 +24,7 @@ class MainRouter : MainRouterInput {
 
     override fun openAimDetailView(manager: FragmentManager) {
         Log.i(TAG,"open detail view router called.")
-        manager.beginTransaction().replace(R.id.fragmentContainer, GoalDetailFragment()).addToBackStack(null).commitAllowingStateLoss()
+        manager.beginTransaction().replace(R.id.fragmentContainer, GoalFragment()).addToBackStack(null).commitAllowingStateLoss()
     }
 
     override fun openSettingsView(manager: FragmentManager) {

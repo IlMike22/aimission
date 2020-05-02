@@ -32,41 +32,52 @@ class LandingpageInteractor : ILandingpageInteractor {
                 for (dataset in data.children) {
                     try {
                         goals.add(dataset.getValue(Goal::class.java))
-                    }
-                    catch(exception:Exception) {
-                        Log.e(TAG,"Error while converting goals from dataset. Details: ${exception.message}")
+                    } catch (exception: Exception) {
+                        Log.e(TAG, "Error while converting goals from dataset. Details: ${exception.message}")
                     }
                 }
 
                 if (goals.size > 0) {
-                    val monthItems = getMonthItems(goals)
-                    val currentMonthItem = createNewMonth()
+                    val months = getMonths(goals)
+                    val currentMonth = createNewMonth()
 
-                    if (!monthItems.containsMonthItem(currentMonthItem.month, currentMonthItem.year)) {
-                        monthItems.add(currentMonthItem)
-
-                        //todo move it to aim list
-//                        val defaultGoals = getDefaultGoals(goals)
-//                        Log.i(TAG,"Found some default goals: $defaultGoals")
-//                        if (defaultGoals.isNotEmpty())
-//                            //todo add these items to new month. Therefore you have to return these items and create them
+                    if (!months.containsMonth(currentMonth.month, currentMonth.year)) {
+                        months.add(currentMonth)
 
                     }
-
-                    output?.onMonthsLoaded(goals, monthItems)
+                    output?.onMonthsLoaded(
+                            goals = goals,
+                            months = months
+                    )
 
                 } else {
                     val month = createNewMonth()
-                    val iterativeGoals = DbHelper.readIterativeGoalIdsFromSharedPrefs()
-                    output?.onEmptyMonthsLoaded(month) //todo put in all reverse goals here, so they were automatically added
+                    val goalsIterative = DbHelper.getIterativeGoals(goals)
+
+                    if (goalsIterative.isEmpty()) {
+                        output?.onEmptyMonthsLoaded(month)
+                        return
+                    }
+
+                    goalsIterative.forEach { goal ->
+                        DbHelper.createOrUpdateGoal(
+                                userId = getCurrentUserId(),
+                                goal = goal
+                        )
+                        goals.add(goal)
+                    }
+
+                    output?.onMonthsLoaded(
+                            goals = goals,
+                            months = getMonths(goals)) //todo test this next time. Are there any iterative goals automaticcally added to a new month?
                 }
             }
         })
     }
 
     // Get all month aims from all user's aims.
-    private fun getMonthItems(goals: ArrayList<Goal?>): ArrayList<MonthItem> {
-        val result = ArrayList<MonthItem>()
+    private fun getMonths(goals: ArrayList<Goal?>): ArrayList<Month> {
+        val result = ArrayList<Month>()
         var goalAmount = 0
         var goalsCompleted = 0
         var currentMonth = 0
@@ -82,7 +93,7 @@ class LandingpageInteractor : ILandingpageInteractor {
 
             } else {
                 if (currentMonth != goal?.month ?: -1) {
-                    result.add(MonthItem(
+                    result.add(Month(
                             name = getMonthName(currentMonth),
                             goalAmount = goalAmount,
                             goalsCompleted = goalsCompleted,
@@ -103,7 +114,7 @@ class LandingpageInteractor : ILandingpageInteractor {
                 }
 
                 if (goal == goals.get(goals.size - 1)) { // we reached last item of list
-                    result.add(MonthItem(name = getMonthName(
+                    result.add(Month(name = getMonthName(
                             month = goal?.month ?: -1),
                             goalAmount = goalAmount,
                             goalsCompleted = goalsCompleted,
@@ -117,11 +128,11 @@ class LandingpageInteractor : ILandingpageInteractor {
         return result
     }
 
-    private fun createNewMonth(): MonthItem {
+    private fun createNewMonth(): Month {
         // Calender functions month range is [0..11] not [1..12] so we have to convert it later
         val currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        return MonthItem(name = getMonthName(currentMonth),
+        return Month(name = getMonthName(currentMonth),
                 goalsCompleted = 0,
                 goalAmount = 0,
                 month = currentMonth,
