@@ -47,6 +47,8 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
             LandingpageConfigurator.configure(this)
         }
 
+        showProgressBar()
+
         // writing a sample data to db (users name)
         firebaseAuth = FirebaseAuth.getInstance()
 
@@ -79,6 +81,7 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
     }
 
     override fun afterMonthItemsLoadedSuccessfully(months: ArrayList<Month>) {
+        hideProgressBar()
         context?.apply {
             monthItemAdapter = MonthListAdapter(months, this)
         }
@@ -115,5 +118,13 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
         super.onResume()
         if (::monthItemAdapter.isInitialized)
             monthItemAdapter.notifyDataSetChanged()
+    }
+
+    private fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBar.visibility = View.GONE
     }
 }

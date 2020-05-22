@@ -41,8 +41,14 @@ class GoalsAdapter(
         holder.cardViewGoal.apply {
             aimItemCV.titleTV.text = data[position].title
             aimItemCV.statusTV.text = getAimStatus(data[position].status)
-            aimItemCV.aimTypeTV.text = getPriorityText(data[position].isHighPriority)
-            aimItemCV.genreTV.text = getGenreAsText(data[position].genre ?: Genre.UNDEFINED)
+            aimItemCV.genreTV.text = getGenreAsText(data[position].genre)
+            aimItemCV.descriptionTV.text = data[position].description
+
+            if (data[position].isHighPriority) {
+                ivHighPriority.visibility = View.VISIBLE
+            } else {
+                ivHighPriority.visibility = View.GONE
+            }
 
             if (data[position].status == Status.OPEN)
                 aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_black_24dp)
@@ -64,14 +70,15 @@ class GoalsAdapter(
             }
             aimItemCV.btnEditItem.visibility = View.VISIBLE
             aimItemCV.btnEditItem.setOnClickListener {
-                router.showAimDetailView(data[position].id ?: "", DateHelper.MODE_SELECTOR.Edit, activity)
+                router.showAimDetailView(data[position].id
+                        ?: "", DateHelper.MODE_SELECTOR.Edit, activity)
             }
         }
     }
 
     class ViewHolderGoal(val cardViewGoal: CardView) : RecyclerView.ViewHolder(cardViewGoal)
 
-    fun updateGoals(goals:List<Goal>) {
+    fun updateGoals(goals: List<Goal>) {
         if (goals.isEmpty())
             return
 
@@ -79,7 +86,7 @@ class GoalsAdapter(
         notifyDataSetChanged()
     }
 
-    private fun getPriorityText(isHighPriority: Boolean?): String {
+    private fun setHighPriorityImage(isHighPriority: Boolean?): String {
         isHighPriority?.apply {
 
             val context = Aimission.getAppContext() ?: return ""

@@ -11,7 +11,7 @@
         android:id="@+id/loginGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:constraint_referenced_ids="frg_main_tv_login, frg_main_txt_email, frg_main_txt_pswrd, frg_main_btnLogin, frg_main_btnRegister"/>
+        app:constraint_referenced_ids="frg_main_tv_login, frg_main_txt_email, frg_main_txt_pswrd, frg_main_btnLogin, frg_main_btnRegister" />
 
     <android.support.constraint.Group
         android:id="@+id/logoutGroup"

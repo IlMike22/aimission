@@ -83,11 +83,11 @@ class InfoFragment : Fragment(), InfoFragmentInput {
         // start login process
         Log.i("Aimission", "Trying to log in with username = $email and $pswrd")
         showLoadingStatus()
-        output?.loginUserWithUserCredentials(email, pswrd)
+        output.loginUserWithUserCredentials(email, pswrd)
     }
 
     override fun onLogoutClicked() {
-        output?.logoutUser()
+        output.logoutUser()
     }
 
     override fun afterUserLoggedInError(errorMessage: String) {
@@ -97,7 +97,6 @@ class InfoFragment : Fragment(), InfoFragmentInput {
     }
 
     override fun afterUserLoggedInSuccess(email: String, uuid: String, successMessage: String) {
-
         progressBar.visibility = View.GONE
         Toast.makeText(activity, successMessage, Toast.LENGTH_SHORT).show()
         // disable login layout group, show logout layout group instead
@@ -124,7 +123,7 @@ class InfoFragment : Fragment(), InfoFragmentInput {
 
     override fun onRegisterClicked() {
         activity?.apply {
-            router?.openRegisterView(this)
+            router.openRegisterView(this)
 
         }
     }
