@@ -10,8 +10,10 @@ import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.cv_item_month.view.*
 
-class MonthListAdapter(private val mDataSet: ArrayList<Month>, private val context: Context) : RecyclerView.Adapter<MonthListAdapter.ViewHolderMonthItem>() {
-
+class MonthListAdapter(
+        private val mDataSet: ArrayList<Month>,
+        private val context: Context
+) : RecyclerView.Adapter<MonthListAdapter.ViewHolderMonthItem>() {
     private val router = LandingpageRouter()
 
     class ViewHolderMonthItem(val monthItem: CardView) : RecyclerView.ViewHolder(monthItem)
@@ -26,21 +28,46 @@ class MonthListAdapter(private val mDataSet: ArrayList<Month>, private val conte
 
     override fun onBindViewHolder(holder: ViewHolderMonthItem, position: Int) {
         holder.monthItem.apply {
+            val goalsCompleted = mDataSet[position].goalsCompleted
+            val goalsAmount = mDataSet[position].goalAmount
+
             monthItemCV.monthNameTV.text = "${mDataSet[position].name} ${mDataSet[position].year}"
-            monthItemCV.aimAmountTV.text = "${mDataSet[position].goalAmount} Ziele insgesamt"
-            monthItemCV.aimSucceededTV.text = "${getPercentOfSucceededAims(mDataSet[position].goalsCompleted, mDataSet[position].goalAmount)} % erreicht"
+            monthItemCV.aimAmountTV.text = "$goalsAmount Ziele insgesamt"
+            monthItemCV.aimSucceededTV.text = "${getPercentOfCompletedGoals(goalsCompleted, goalsAmount)} % erreicht"
+            setEmoji(
+                    monthItem = this,
+                    goalsAmount = goalsAmount,
+                    goalsCompleted = goalsCompleted
+            )
         }
 
+
         holder.monthItem.setOnClickListener {
-            router.openAimListView(context,mDataSet[position].month, mDataSet[position].year)
+            router.openAimListView(context, mDataSet[position].month, mDataSet[position].year)
         }
     }
 
     override fun getItemCount() = mDataSet.size
 
-    private fun getPercentOfSucceededAims(aimSucceeded: Int, aimAmount: Int):Int {
-        if (aimAmount == 0)
+    private fun getPercentOfCompletedGoals(goalsCompleted: Int, goalsAmpount: Int): Int {
+        if (goalsAmpount == 0)
             return 100
-        return aimSucceeded * 100 / aimAmount
+        return goalsCompleted * 100 / goalsAmpount
+    }
+
+    private fun setEmoji(
+            monthItem: CardView,
+            goalsAmount: Int,
+            goalsCompleted: Int
+    ) {
+
+        val progress = getPercentOfCompletedGoals(goalsCompleted,goalsAmount)
+
+        when (progress) {
+            in 0..49 -> monthItem.ivEmoji.setImageResource(R.drawable.ic_emoji_sad)
+            in 50..79 -> monthItem.ivEmoji.setImageResource(R.drawable.ic_emoji_average)
+            in 80..99 -> monthItem.ivEmoji.setImageResource(R.drawable.ic_emoji_good)
+            100 -> monthItem.ivEmoji.setImageResource(R.drawable.ic_emoji_great)
+        }
     }
 }

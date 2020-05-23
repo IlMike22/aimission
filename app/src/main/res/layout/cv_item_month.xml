@@ -48,11 +48,12 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/smileyIV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/ivEmoji"
+            android:layout_width="46dp"
+            android:layout_height="47dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
-            android:src="@mipmap/smiley" />
+            card_view:srcCompat="@drawable/ic_emoji_great" />
 
     </LinearLayout>
 

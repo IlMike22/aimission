@@ -125,6 +125,6 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
     }
 
     private fun hideProgressBar() {
-        progressBar.visibility = View.GONE
+        progressBar.visibility = View.GONE // todo doesnt work
     }
 }
