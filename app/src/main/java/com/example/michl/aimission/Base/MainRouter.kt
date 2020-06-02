@@ -1,7 +1,7 @@
 package com.example.michl.aimission.Base
 
-import android.support.v4.app.FragmentManager
 import android.util.Log
+import androidx.fragment.app.FragmentManager
 import com.example.michl.aimission.GoalDetailScene.Views.GoalFragment
 import com.example.michl.aimission.InfoScene.Views.InfoFragment
 import com.example.michl.aimission.LandingpageScene.Views.LandingpageFragment

@@ -2,12 +2,12 @@ package com.example.michl.aimission.InfoScene.Views
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.michl.aimission.InfoScene.InfoConfigurator
 import com.example.michl.aimission.InfoScene.InfoInteractorInput
 import com.example.michl.aimission.InfoScene.InfoRouter

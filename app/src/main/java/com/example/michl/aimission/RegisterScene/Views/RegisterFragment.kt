@@ -1,14 +1,13 @@
 package com.example.michl.aimission.RegisterScene.Views
 
-import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.michl.aimission.InfoScene.REQUEST_USER_REGISTER_SUCCEED
 import com.example.michl.aimission.R
 import com.example.michl.aimission.RegisterScene.RegisterConfigurator

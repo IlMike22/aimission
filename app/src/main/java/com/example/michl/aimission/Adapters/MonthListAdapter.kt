@@ -1,10 +1,10 @@
 package com.example.michl.aimission.Adapters
 
 import android.content.Context
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
 import com.example.michl.aimission.LandingpageScene.LandingpageRouter
 import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.R
@@ -37,13 +37,16 @@ class MonthListAdapter(
             setEmoji(
                     monthItem = this,
                     goalsAmount = goalsAmount,
-                    goalsCompleted = goalsCompleted
+                    goalsCompleted = goalsCompleted,
+                    isDepecrecated = mDataSet[position].isDepecrecated
             )
         }
 
-
         holder.monthItem.setOnClickListener {
-            router.openAimListView(context, mDataSet[position].month, mDataSet[position].year)
+            router.openGoals(
+                    context = context,
+                    month = mDataSet[position]
+            )
         }
     }
 
@@ -58,10 +61,15 @@ class MonthListAdapter(
     private fun setEmoji(
             monthItem: CardView,
             goalsAmount: Int,
-            goalsCompleted: Int
+            goalsCompleted: Int,
+            isDepecrecated: Boolean
     ) {
+        val progress = getPercentOfCompletedGoals(goalsCompleted, goalsAmount)
 
-        val progress = getPercentOfCompletedGoals(goalsCompleted,goalsAmount)
+        if (progress == 0 && isDepecrecated) {
+            monthItem.ivEmoji.setImageResource(R.drawable.ic_emoji_destructive)
+            return
+        }
 
         when (progress) {
             in 0..49 -> monthItem.ivEmoji.setImageResource(R.drawable.ic_emoji_sad)

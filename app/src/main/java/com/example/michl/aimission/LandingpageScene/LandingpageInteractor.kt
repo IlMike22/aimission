@@ -1,7 +1,13 @@
 package com.example.michl.aimission.LandingpageScene
 
+import android.content.Context
+import android.content.res.Resources
 import android.util.Log
+import com.example.michl.aimission.Constants
+import com.example.michl.aimission.Constants.Companion.SHARED_PREFS_KEY_DEFAULT_GOALS
+import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.*
+import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getCurrentUserId
@@ -49,7 +55,6 @@ class LandingpageInteractor : ILandingpageInteractor {
                             goals = goals,
                             months = months
                     )
-
                 } else {
                     val month = createNewMonth()
                     val goalsIterative = DbHelper.getIterativeGoals(goals)
@@ -69,7 +74,7 @@ class LandingpageInteractor : ILandingpageInteractor {
 
                     output?.onMonthsLoaded(
                             goals = goals,
-                            months = getMonths(goals)) //todo test this next time. Are there any iterative goals automaticcally added to a new month?
+                            months = getMonths(goals))
                 }
             }
         })
@@ -99,7 +104,8 @@ class LandingpageInteractor : ILandingpageInteractor {
                             goalsCompleted = goalsCompleted,
                             month = currentMonth,
                             year = currentYear,
-                            isFirstStart = false))
+                            isFirstStart = false,
+                            isDepecrecated = true))
                     goalAmount = 1
                     if (goal?.status == Status.DONE)
                         goalsCompleted = 1
@@ -113,17 +119,24 @@ class LandingpageInteractor : ILandingpageInteractor {
                         goalsCompleted++
                 }
 
-                if (goal == goals.get(goals.size - 1)) { // we reached last item of list
+                if (goal == goals.get(goals.size - 1)) {
                     result.add(Month(name = getMonthName(
                             month = goal?.month ?: -1),
                             goalAmount = goalAmount,
                             goalsCompleted = goalsCompleted,
                             month = goal?.month ?: -1,
                             year = goal?.year ?: -1,
-                            isFirstStart = false
+                            isFirstStart = false,
+                            isDepecrecated = isMonthDeprecated(
+                                    month = goal?.month ?: -1,
+                                    year = goal?.year ?: -1
+                            )
                     ))
                 }
             }
+        }
+        if (getAndStoreDefaultGoals(goals) == false) {
+            Log.e(TAG, "Something went wrong getting and storing the default goals.")
         }
         return result
     }
@@ -137,26 +150,41 @@ class LandingpageInteractor : ILandingpageInteractor {
                 goalAmount = 0,
                 month = currentMonth,
                 year = currentYear,
-                isFirstStart = true)
+                isFirstStart = true,
+                isDepecrecated = false)
     }
 
     private fun clearDeprecatedGoals(goalds: ArrayList<Goal?>): Unit {
         goals.clear()
     }
 
-    //todo 01.02. this method needs to remain here because only here we have access to all months and items
-    // in AimList we have only access to selected month.
-    // maybe we store the value here in sp and get them back in aim list scene or you should think about how
-    // you can transfer this information to aimlist scene in an other way..
-    private fun getDefaultGoals(goals: List<Goal?>): ArrayList<Goal> {
+    private fun isMonthDeprecated(month: Int, year: Int): Boolean {
+        if (month == DateHelper.getCurrentMonth() && year == DateHelper.getCurrentYear()) {
+            return false
+        }
+        return true
+    }
+
+    private fun getAndStoreDefaultGoals(goals: ArrayList<Goal?>): Boolean {
         val defaultGoals = ArrayList<Goal>()
+        val context = Aimission.getAppContext()
         goals.forEach { goal ->
-            goal?.apply {
+            if (goal == null) {
+                return false
+            }
+            goal.apply {
                 if (goal.isComingBack) {
-                    defaultGoals.add(goal)
+                    defaultGoals.add(goal) //todo michl 02.06. you cannot store complex objects in sharedprefs.
                 }
             }
         }
-        return defaultGoals
+        context?.apply {
+            return DbHelper.storeInSharedPrefs(
+                    context = this,
+                    key = SHARED_PREFS_KEY_DEFAULT_GOALS,
+                    value = goals)
+        }
+
+        return false
     }
 }

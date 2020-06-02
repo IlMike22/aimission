@@ -1,13 +1,20 @@
 package com.example.michl.aimission.Models
 
+import android.os.Parcelable
+import androidx.room.Entity
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+@Entity(tableName = "monthItem")
 data class Month(
         var name: String,
         var goalAmount: Int,
         var goalsCompleted: Int,
         var month: Int,
         var year: Int,
-        var isFirstStart:Boolean)
-
+        var isFirstStart:Boolean,
+        var isDepecrecated:Boolean
+):Parcelable
 
 fun ArrayList<Month>.containsMonth(month: Int, year: Int): Boolean {
     for (item in this) {

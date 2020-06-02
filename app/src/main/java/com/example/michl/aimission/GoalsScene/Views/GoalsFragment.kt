@@ -3,17 +3,18 @@ package com.example.michl.aimission.GoalsScene.Views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.michl.aimission.Adapters.GoalsAdapter
 import com.example.michl.aimission.GoalsScene.*
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.DefaultSortMode
 import com.example.michl.aimission.Models.Goal
+import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
@@ -31,41 +32,37 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
     private lateinit var goalsAdapter: GoalsAdapter
     private lateinit var lytManager: RecyclerView.LayoutManager
     private lateinit var goals: ArrayList<Goal>
-    var selectedMonth: Int? = 0
-    var selectedYear: Int? = null
+    var selectedMonthItem: Month? = null
 
     @SuppressLint("RestrictedApi")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         setHasOptionsMenu(true)
 
         try {
-            selectedMonth = activity?.intent?.getSerializableExtra("month") as Int
-            selectedYear = activity?.intent?.getIntExtra("year", 0)
-                    ?: Log.i(TAG, "Cannot get intent data information year. Value is null.")
-
+            selectedMonthItem = activity?.intent?.getParcelableExtra("month") as Month?
         } catch (exc: Exception) {
             Log.i(TAG, "Cannot get intent data information month.${exc.message}")
         }
 
         val query = DbHelper.getGoalTableReference().child(getCurrentUserId())
         query.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
+            override fun onCancelled(dbError: DatabaseError) {
                 Log.i(TAG, "A data changed error occured.")
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                //todo onDataChange must not be called if you click a list item button such as checkmark or edit button....
-                Log.i(TAG, "The data has changed.")
-                selectedMonth?.let { month ->
-                    selectedYear?.let { year ->
-                        output.getGoals(getCurrentUserId(), dataSnapshot, month, year)
+                selectedMonthItem?.let { monthItem ->
+                    selectedMonthItem?.year?.let { year ->
+                        output.getGoals(
+                                userId = getCurrentUserId(),
+                                data = dataSnapshot,
+                                selectedMonth = monthItem.month,
+                                selectedYear = monthItem.year)
                     }
                 }
             }
         })
-
         return inflater.inflate(R.layout.fragment_aim_list, container, false)
     }
 
@@ -152,7 +149,7 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         this.goals = goals
         showViewWithGoals()
 
-        output.storeGoalInformationInSharedPrefs(goals)
+        output.storeGoalsInSharedPreferences(goals)
     }
 
     override fun afterNoGoalsFound(msg: String) {
@@ -233,6 +230,6 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
     }
 
     private fun isActualMonth(): Boolean {
-        return (DateHelper.getCurrentMonth() == selectedMonth && DateHelper.getCurrentYear() == selectedYear)
+        return (DateHelper.getCurrentMonth() == selectedMonthItem?.month && DateHelper.getCurrentYear() == selectedMonthItem?.year)
     }
 }

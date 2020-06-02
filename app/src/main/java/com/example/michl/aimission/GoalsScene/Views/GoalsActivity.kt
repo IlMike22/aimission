@@ -1,7 +1,7 @@
 package com.example.michl.aimission.GoalsScene.Views
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.michl.aimission.GoalsScene.IOnBackPressed
 import com.example.michl.aimission.R
 

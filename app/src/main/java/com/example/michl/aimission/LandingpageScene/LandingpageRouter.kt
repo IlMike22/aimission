@@ -5,19 +5,18 @@ import android.content.Intent
 import android.support.v4.content.ContextCompat.startActivity
 import com.example.michl.aimission.GoalsScene.Views.GoalsActivity
 import com.example.michl.aimission.LandingpageScene.Views.LandingpageFragment
+import com.example.michl.aimission.Models.Month
 import java.lang.ref.WeakReference
 
 class LandingpageRouter : ILandingpageRouter {
     var fragment: WeakReference<LandingpageFragment>? = null
 
-    override fun openAimListView(
+    override fun openGoals(
             context:Context,
-            month: Int,
-            year: Int
+            month: Month
     ) {
                 val intent = Intent(context, GoalsActivity::class.java)
                 intent.putExtra("month", month)
-                intent.putExtra("year", year)
                 startActivity(context,intent,null)
     }
 

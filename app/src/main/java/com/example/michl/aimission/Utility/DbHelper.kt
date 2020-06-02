@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import com.example.michl.aimission.Constants
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.google.firebase.auth.FirebaseAuth
@@ -18,7 +19,10 @@ class DbHelper {
         const val TAG = "Aimission"
         const val ITERATIVE_ITEMS_KEY = "ITERATIVE_ITEMS"
 
-        fun createOrUpdateGoal(userId: String, goal: Goal): Boolean {
+        fun createOrUpdateGoal(
+                userId: String,
+                goal: Goal
+        ): Boolean {
             return try {
                 getGoalTableReference().child(userId).child(goal.id ?: "").setValue(goal)
                 true
@@ -28,9 +32,12 @@ class DbHelper {
             }
         }
 
-        fun deleteGoal(userId: String, itemId: String): Boolean {
+        fun deleteGoal(
+                userId: String,
+                id: String
+        ): Boolean {
             return try {
-                getGoalTableReference().child(userId).child(itemId).setValue(null)
+                getGoalTableReference().child(userId).child(id).setValue(null)
                 Log.i("Aimission", "Item was successfully deleted.")
                 true
             } catch (exception: java.lang.Exception) {
@@ -59,9 +66,7 @@ class DbHelper {
         }
 
         fun getSharedPrefsInstance(context: Context): SharedPreferences {
-
             return context.getSharedPreferences("Aimission", Context.MODE_PRIVATE)
-
         }
 
         @SuppressLint("CommitPrefEdits")
@@ -186,6 +191,14 @@ class DbHelper {
             }
 
             return iterativeGoals
+        }
+
+        fun readDefaultGoalsFromSharedPrefs():ArrayList<Goal> {
+            Aimission.getAppContext()?.apply {
+                val sharedPreferences = getSharedPrefsInstance(this)
+                return sharedPreferences.get(Constants.SHARED_PREFS_KEY_DEFAULT_GOALS, hashSetOf()).toList()
+            }
+            return emptyList()
         }
 
         fun createRandomGuid(): String = UUID.randomUUID().toString()

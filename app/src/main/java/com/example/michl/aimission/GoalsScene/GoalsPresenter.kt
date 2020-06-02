@@ -89,7 +89,7 @@ class GoalsPresenter : IGoalsPresenter {
         output?.get()?.afterSPStoredSucceed(itemsDoneMsg, itemsHighPrioMsg, itemsIterativeMsg)
     }
 
-    override fun onSPStoreFailed(errorMsg: String) {
+    override fun onSharedPreferencesStoredFailed(errorMsg: String) {
         val message = "Something went wrong while trying to store current item status in sp. Details: $errorMsg"
         output?.get()?.afterSPStoredFailed(message)
     }

@@ -14,6 +14,6 @@ interface IGoalsPresenter {
     fun onHighPriorityGoalsReceivedFailed(msg: String)
     fun onItemInformationFromSharedPrefSucceed(goalsDone: Int, goalsHighPriority: Int, goalsIterative: Int)
     fun onSPStoreSucceed(result: Map<String, Int>)
-    fun onSPStoreFailed(errorMsg: String)
+    fun onSharedPreferencesStoredFailed(errorMsg: String)
     fun onItemInformationFromSharedPrefFailed(msg: String)
 }

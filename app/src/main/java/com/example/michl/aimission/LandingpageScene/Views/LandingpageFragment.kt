@@ -1,14 +1,14 @@
 package com.example.michl.aimission.LandingpageScene.Views
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.michl.aimission.Adapters.MonthListAdapter
 import com.example.michl.aimission.LandingpageScene.ILandingpageFragment
 import com.example.michl.aimission.LandingpageScene.LandingpageConfigurator
@@ -22,7 +22,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_main.*
-
 
 
 class LandingpageFragment : ILandingpageFragment, Fragment() {
@@ -73,8 +72,8 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
     }
 
     /**
-        Loads all aim items for current user from db and creates list which is shown in MainFragment.
-        If user is not logged in, we show an empty list with request to login instead.
+    Loads all aim items for current user from db and creates list which is shown in MainFragment.
+    If user is not logged in, we show an empty list with request to login instead.
      */
     override fun afterUserIdNotFound(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()

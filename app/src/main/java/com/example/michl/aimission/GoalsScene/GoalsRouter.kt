@@ -2,7 +2,6 @@ package com.example.michl.aimission.GoalsScene
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.util.Log
 import com.example.michl.aimission.GoalDetailScene.Views.GoalDetailActivity
 import com.example.michl.aimission.GoalsScene.Views.GoalsFragment
