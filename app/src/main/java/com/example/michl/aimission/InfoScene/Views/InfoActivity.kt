@@ -1,8 +1,6 @@
 package com.example.michl.aimission.InfoScene.Views
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import com.example.michl.aimission.Base.BaseActivity

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,10 +18,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scrvAimList"></include>
+        app:layout_constraintTop_toTopOf="@+id/scrollview_goals"></include>
 
     <ScrollView
-        android:id="@+id/scrvAimList"
+        android:id="@+id/scrollview_goals"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -32,16 +31,16 @@
         app:layout_constraintVertical_bias="0.059"
         tools:layout_editor_absoluteX="8dp">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/aimListRV"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_goals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />
 
     </ScrollView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fltAddAimItem"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="328dp"
@@ -51,7 +50,8 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/includeEmptyTextView"
         app:layout_constraintTop_toBottomOf="@+id/includeEmptyTextView" />
-</android.support.constraint.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

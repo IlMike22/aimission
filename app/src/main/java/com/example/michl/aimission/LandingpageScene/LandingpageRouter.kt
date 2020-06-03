@@ -2,7 +2,7 @@ package com.example.michl.aimission.LandingpageScene
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat.startActivity
 import com.example.michl.aimission.GoalsScene.Views.GoalsActivity
 import com.example.michl.aimission.LandingpageScene.Views.LandingpageFragment
 import com.example.michl.aimission.Models.Month

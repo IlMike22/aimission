@@ -6,11 +6,13 @@ import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.Utility.Aimission
+import com.example.michl.aimission.Utility.Aimission.Companion.roomDb
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getGoalTableReference
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
+import org.jetbrains.anko.doAsync
 
 class GoalsInteractor : IGoalsInteractor {
     var output: IGoalsPresenter? = null
@@ -30,7 +32,11 @@ class GoalsInteractor : IGoalsInteractor {
 
         if (monthItem.isFirstStart) {
             // get all default goals and create them for new month, set isFirstStart then to false and save this in firebase
-            DbHelper.
+            doAsync {
+                val defaultGoalsAmount = roomDb?.DefaultGoalsDao()?.getDefaultGoalAmount()
+                val defaultGoals = roomDb?.DefaultGoalsDao()?.getDefaultGoalsFromRoomDb()
+                Log.i("TAG","Default goals found?")
+            }
         }
 
         goals = getGoalsFromDb(userId, data, monthItem.month, monthItem.year)

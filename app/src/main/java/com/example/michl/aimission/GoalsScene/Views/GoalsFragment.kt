@@ -24,7 +24,7 @@ import com.example.michl.aimission.Utility.SettingHelper
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.fragment_aim_list.*
+import kotlinx.android.synthetic.main.fragment_goals.*
 
 class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
     lateinit var router: GoalsRouter
@@ -57,26 +57,25 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
                         output.getGoals(
                                 userId = getCurrentUserId(),
                                 data = dataSnapshot,
-                                selectedMonth = monthItem.month,
-                                selectedYear = monthItem.year)
+                                monthItem = monthItem)
                     }
                 }
             }
         })
-        return inflater.inflate(R.layout.fragment_aim_list, container, false)
+        return inflater.inflate(R.layout.fragment_goals, container, false)
     }
 
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         AimListConfigurator.configure(this)
         if (isActualMonth())
-            fltAddAimItem.visibility = View.VISIBLE
+            fab_add_goal.visibility = View.VISIBLE
         else
-            fltAddAimItem.visibility = View.GONE
+            fab_add_goal.visibility = View.GONE
 
-        fltAddAimItem.setOnClickListener {
+        fab_add_goal.setOnClickListener {
             activity?.supportFragmentManager?.apply {
-                router.showAimDetailView("", DateHelper.MODE_SELECTOR.Create, activity)
+                router.showGoalDetail("", DateHelper.MODE_SELECTOR.Create, activity)
             }
         }
 
@@ -141,7 +140,7 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         goalsAdapter = GoalsAdapter(goals, userSettings, isActualMonth(), output, activity)
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
-        aimListRV?.apply {
+        recyclerview_goals?.apply {
             setHasFixedSize(true)
             adapter = goalsAdapter
             layoutManager = lytManager
@@ -210,14 +209,14 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
 
     private fun showEmptyView() {
         includeEmptyTextView?.visibility = View.VISIBLE
-        scrvAimList?.apply {
+        scrollview_goals?.apply {
             visibility = View.GONE
         }
     }
 
     private fun showViewWithGoals() {
         includeEmptyTextView?.visibility = View.GONE
-        scrvAimList?.apply {
+        scrollview_goals?.apply {
             visibility = View.VISIBLE
         }
     }

@@ -1,13 +1,11 @@
 package com.example.michl.aimission.LandingpageScene
 
-import android.content.Context
-import android.content.res.Resources
 import android.util.Log
-import com.example.michl.aimission.Constants
 import com.example.michl.aimission.Constants.Companion.SHARED_PREFS_KEY_DEFAULT_GOALS
 import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.*
 import com.example.michl.aimission.Utility.Aimission
+import com.example.michl.aimission.Utility.Aimission.Companion.roomDb
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getCurrentUserId
@@ -15,6 +13,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import org.jetbrains.anko.doAsync
 import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
@@ -166,25 +165,18 @@ class LandingpageInteractor : ILandingpageInteractor {
     }
 
     private fun getAndStoreDefaultGoals(goals: ArrayList<Goal?>): Boolean {
-        val defaultGoals = ArrayList<Goal>()
-        val context = Aimission.getAppContext()
         goals.forEach { goal ->
             if (goal == null) {
                 return false
             }
-            goal.apply {
-                if (goal.isComingBack) {
-                    defaultGoals.add(goal) //todo michl 02.06. you cannot store complex objects in sharedprefs.
+
+            if (goal.isComingBack) {
+                doAsync {
+                    roomDb?.DefaultGoalsDao()?.storeDefaultGoalToRoomDb(goal)
                 }
             }
         }
-        context?.apply {
-            return DbHelper.storeInSharedPrefs(
-                    context = this,
-                    key = SHARED_PREFS_KEY_DEFAULT_GOALS,
-                    value = goals)
-        }
 
-        return false
+        return true
     }
 }

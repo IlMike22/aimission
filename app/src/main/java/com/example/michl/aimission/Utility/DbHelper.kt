@@ -181,7 +181,6 @@ class DbHelper {
                                         creationDate = LocalDateTime.now().toString(),
                                         repeatCount = repeatCount,
                                         isHighPriority = isHighPriority,
-                                        isRepetitive = isRepetitive,
                                         status = status,
                                         genre = genre
                                 )
@@ -191,14 +190,6 @@ class DbHelper {
             }
 
             return iterativeGoals
-        }
-
-        fun readDefaultGoalsFromSharedPrefs():ArrayList<Goal> {
-            Aimission.getAppContext()?.apply {
-                val sharedPreferences = getSharedPrefsInstance(this)
-                return sharedPreferences.get(Constants.SHARED_PREFS_KEY_DEFAULT_GOALS, hashSetOf()).toList()
-            }
-            return emptyList()
         }
 
         fun createRandomGuid(): String = UUID.randomUUID().toString()

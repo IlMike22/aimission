@@ -9,7 +9,7 @@ class GoalsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_aim_list)
+        setContentView(R.layout.activity_goals)
     }
 
     override fun onBackPressed() {

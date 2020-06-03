@@ -2,9 +2,7 @@ package com.example.michl.aimission.InfoScene
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.util.Log
-import com.example.michl.aimission.InfoScene.Views.InfoActivity
 import com.example.michl.aimission.InfoScene.Views.InfoFragment
 import com.example.michl.aimission.RegisterScene.Views.RegisterActivity
 import com.example.michl.aimission.Utility.Aimission

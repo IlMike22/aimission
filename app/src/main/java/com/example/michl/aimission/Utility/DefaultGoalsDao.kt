@@ -8,11 +8,14 @@ import com.example.michl.aimission.Models.Goal
 
 @Dao
 interface DefaultGoalsDao {
-    @Query("SELECT * FROM monthItem")
-    fun getDefaultGoalsFromRoomDb(): ArrayList<Goal>
+    @Query("SELECT * FROM default_goals")
+    fun getDefaultGoalsFromRoomDb(): List<Goal>
+
+    @Query("SELECT COUNT(id) FROM default_goals")
+    fun getDefaultGoalAmount():Int
 
     @Insert
-    fun storeDefaultGoalsToRoomDb(vararg goals: ArrayList<Goal>)
+    fun storeDefaultGoalToRoomDb(vararg goals: Goal)
 
     @Delete
     fun removeDefaultGoalFromRoomDb(goal:Goal)

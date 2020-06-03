@@ -70,7 +70,7 @@ class GoalsAdapter(
             }
             aimItemCV.btnEditItem.visibility = View.VISIBLE
             aimItemCV.btnEditItem.setOnClickListener {
-                router.showAimDetailView(data[position].id
+                router.showGoalDetail(data[position].id
                         ?: "", DateHelper.MODE_SELECTOR.Edit, activity)
             }
         }

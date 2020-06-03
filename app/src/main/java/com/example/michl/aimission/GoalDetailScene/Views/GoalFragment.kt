@@ -71,7 +71,6 @@ class GoalFragment : IGoalFragment, Fragment() {
             val isHighPrio = frg_aimdetail_switch_aaim.isChecked
             val genre = getGenre(frg_aimdetail_rbGroup_genre.checkedRadioButtonId)
             val comesBack = frg_aimdetail_switch_comesback.isChecked
-            val isRepetitive = frg_aimdetail_switch_repeat.isChecked
 
             try {
                 if (id.isEmpty()) {
@@ -82,7 +81,6 @@ class GoalFragment : IGoalFragment, Fragment() {
                         creationDate = LocalDateTime.now().toString(),
                         title = title,
                         description = description,
-                        isRepetitive = isRepetitive,
                         repeatCount = repeatCount,
                         isHighPriority = isHighPrio,
                         status = Status.OPEN,

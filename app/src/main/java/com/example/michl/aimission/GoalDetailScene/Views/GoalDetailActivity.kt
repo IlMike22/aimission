@@ -8,6 +8,6 @@ class GoalDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_aim_detail)
+        setContentView(R.layout.activity_goal)
     }
 }

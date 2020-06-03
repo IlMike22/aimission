@@ -105,7 +105,7 @@ class GoalInteractor : IGoalInteractor {
         if (aim.status == Genre.UNDEFINED) {
             return ValidationResult.NO_STATUS_DEFINED_ERROR
         }
-        if (aim.isRepetitive && aim.repeatCount == 0)
+        if (aim.isComingBack && aim.repeatCount == 0)
             return ValidationResult.NO_AMOUNT_OF_REPEATS_ERROR
 
         return ValidationResult.VALIDATION_SUCCESS

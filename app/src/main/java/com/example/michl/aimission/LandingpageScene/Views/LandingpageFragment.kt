@@ -21,7 +21,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_landingpage.*
 
 
 class LandingpageFragment : ILandingpageFragment, Fragment() {
@@ -37,7 +37,7 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
         setHasOptionsMenu(true)
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        return inflater.inflate(R.layout.fragment_landingpage, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -124,6 +124,8 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
     }
 
     private fun hideProgressBar() {
-        progressBar.visibility = View.GONE // todo doesnt work
+        if (progressBar != null) {
+            progressBar.visibility = View.GONE // todo doesnt work
+        }
     }
 }

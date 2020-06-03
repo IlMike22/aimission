@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,19 +7,19 @@
     tools:context=".InfoScene.Views.InfoFragment">
 
 
-    <android.support.constraint.Group
+    <androidx.constraintlayout.widget.Group
         android:id="@+id/loginGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:constraint_referenced_ids="frg_main_tv_login, frg_main_txt_email, frg_main_txt_pswrd, frg_main_btnLogin, frg_main_btnRegister" />
 
-    <android.support.constraint.Group
+    <androidx.constraintlayout.widget.Group
         android:id="@+id/logoutGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
         app:constraint_referenced_ids="frg_main_btnLogout, frg_main_tvUserInfo"
-        ></android.support.constraint.Group>
+        ></androidx.constraintlayout.widget.Group>
 
         <TextView
             android:id="@+id/frg_main_tv_login"
@@ -137,5 +137,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

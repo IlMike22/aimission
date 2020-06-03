@@ -12,14 +12,14 @@ import java.lang.ref.WeakReference
 
 
 interface AimListRouterInput {
-    fun showAimDetailView(aimId: String, mode: DateHelper.MODE_SELECTOR, sourceActivity: Activity?=null)
+    fun showGoalDetail(aimId: String, mode: DateHelper.MODE_SELECTOR, sourceActivity: Activity?=null)
 }
 
 class GoalsRouter : AimListRouterInput {
     var fragment: WeakReference<GoalsFragment>? = null
     val REQUEST_UPDATE_LIST = 101
 
-    override fun showAimDetailView(aimId: String, mode: DateHelper.MODE_SELECTOR, sourceActivity:Activity?) {
+    override fun showGoalDetail(aimId: String, mode: DateHelper.MODE_SELECTOR, sourceActivity:Activity?) {
         var intent = Intent(Aimission.getAppContext(), GoalDetailActivity::class.java)
 
         if (aimId.isEmpty() && mode != DateHelper.MODE_SELECTOR.Create)
@@ -32,7 +32,7 @@ class GoalsRouter : AimListRouterInput {
         intent.putExtra("Mode", mode)
         Aimission.getAppContext()?.apply {
             sourceActivity?.apply {
-                startActivityForResult(this,intent, REQUEST_UPDATE_LIST,null)
+                startActivityForResult(intent, REQUEST_UPDATE_LIST)
             }?:Log.i(TAG,"Activity is null. Cannot call startActivityForResult in AimListRouter")
         }
     }
