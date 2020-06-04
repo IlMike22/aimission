@@ -10,19 +10,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LandingpageScene.Views.LandingpageActivity">
+        <activity android:name=".LandingpageScene.views.LandingpageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GoalDetailScene.Views.GoalDetailActivity" />
-        <activity android:name=".GoalsScene.Views.GoalsActivity" />
-        <activity android:name=".InfoScene.Views.InfoActivity" />
-        <activity android:name=".SettingsScene.Views.SettingsActivity" />
+        <activity android:name=".GoalScene.views.GoalActivity" />
+        <activity android:name=".GoalsScene.views.GoalsActivity" />
+        <activity android:name=".InfoScene.views.InfoActivity" />
+        <activity android:name=".SettingsScene.views.SettingsActivity" />
         <activity android:name=".Base.BaseActivity" />
-        <activity android:name=".RegisterScene.Views.RegisterActivity"></activity>
+        <activity android:name=".RegisterScene.views.RegisterActivity"></activity>
     </application>
 
 </manifest>

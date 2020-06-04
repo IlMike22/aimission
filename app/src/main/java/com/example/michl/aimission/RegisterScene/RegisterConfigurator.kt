@@ -1,6 +1,6 @@
 package com.example.michl.aimission.RegisterScene
 
-import com.example.michl.aimission.RegisterScene.Views.RegisterFragment
+import com.example.michl.aimission.RegisterScene.views.RegisterFragment
 import java.lang.ref.WeakReference
 
 object RegisterConfigurator {

@@ -6,12 +6,8 @@ import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 
-interface RegisterInteractorInput {
-    fun registerUser(email: String, pswrd: String)
-}
-
-class RegisterInteractor : RegisterInteractorInput {
-    var output: RegisterPresenterInput? = null
+class RegisterInteractor : IRegisterInteractor {
+    var output: IRegisterPresenter? = null
     private lateinit var mAuth: FirebaseAuth
 
     override fun registerUser(email: String, pswrd: String) {
@@ -36,12 +32,9 @@ class RegisterInteractor : RegisterInteractorInput {
 
                 } else {
                     Log.e(TAG, "User registration was not successful. Details: ${it.exception?.message}")
-                    if (it.exception is FirebaseNetworkException)
-                    {
+                    if (it.exception is FirebaseNetworkException) {
                         output?.onUserRegistrationFailed("A network error occured. Are you connected to the internet?")
-                    }
-                    else
-                    {
+                    } else {
                         output?.onUserRegistrationFailed("Unknown error reason.")
                     }
                 }

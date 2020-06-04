@@ -3,8 +3,8 @@ package com.example.michl.aimission.InfoScene
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
-import com.example.michl.aimission.InfoScene.Views.InfoFragment
-import com.example.michl.aimission.RegisterScene.Views.RegisterActivity
+import com.example.michl.aimission.InfoScene.views.InfoFragment
+import com.example.michl.aimission.RegisterScene.views.RegisterActivity
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference

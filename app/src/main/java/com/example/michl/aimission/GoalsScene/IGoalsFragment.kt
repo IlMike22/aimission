@@ -4,7 +4,12 @@ import com.example.michl.aimission.Models.Goal
 
 interface IGoalsFragment {
     fun afterUserIdNotFound(msg: String)
-    fun afterGoalsLoaded(goals: ArrayList<Goal>, month: Int, year: Int)
+    fun afterGoalsLoaded(
+            goals: ArrayList<Goal>,
+            month: Int,
+            year: Int,
+            addedDefaultGoalsSize: Int = 0
+    )
     fun afterGoalsLoadedFailed(errorMsg: String)
     fun afterNoGoalsFound(msg: String)
     fun afterGoalStatusChange(goal: Goal, position: Int)

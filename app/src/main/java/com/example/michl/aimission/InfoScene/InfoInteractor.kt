@@ -4,15 +4,8 @@ import android.util.Log
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
 
-interface InfoInteractorInput {
-    fun loginUserWithUserCredentials(email: String, password: String)
-    fun logoutUser()
-    fun isUserLoggedIn()
-}
-
-class InfoInteractor : InfoInteractorInput {
-
-    var output: InfoPresenterInput? = null
+class InfoInteractor : IInfoInteractor {
+    var output: IInfoPresenter? = null
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     override fun logoutUser() {

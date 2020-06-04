@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsScene.Views.SettingsActivity">
+    tools:context=".SettingsScene.views.SettingsActivity">
 
     <fragment
         android:id="@+id/frg_main"
-        android:name="com.example.michl.aimission.SettingsScene.Views.SettingsFragment"
+        android:name="com.example.michl.aimission.SettingsScene.views.SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1" />

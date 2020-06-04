@@ -2,11 +2,11 @@ package com.example.michl.aimission.Base
 
 import android.util.Log
 import androidx.fragment.app.FragmentManager
-import com.example.michl.aimission.GoalDetailScene.Views.GoalFragment
-import com.example.michl.aimission.InfoScene.Views.InfoFragment
-import com.example.michl.aimission.LandingpageScene.Views.LandingpageFragment
+import com.example.michl.aimission.GoalScene.views.GoalFragment
+import com.example.michl.aimission.InfoScene.views.InfoFragment
+import com.example.michl.aimission.LandingpageScene.views.LandingpageFragment
 import com.example.michl.aimission.R
-import com.example.michl.aimission.SettingsScene.Views.SettingsFragment
+import com.example.michl.aimission.SettingsScene.views.SettingsFragment
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference
 

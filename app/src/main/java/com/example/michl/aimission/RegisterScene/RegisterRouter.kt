@@ -2,10 +2,8 @@ package com.example.michl.aimission.RegisterScene
 
 import android.content.Intent
 import android.util.Log
-import com.example.michl.aimission.InfoScene.Views.InfoActivity
-import com.example.michl.aimission.InfoScene.Views.InfoFragment
-import com.example.michl.aimission.RegisterScene.Views.RegisterActivity
-import com.example.michl.aimission.RegisterScene.Views.RegisterFragment
+import com.example.michl.aimission.InfoScene.views.InfoActivity
+import com.example.michl.aimission.RegisterScene.views.RegisterFragment
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.michl.aimission.LandingpageScene.LandingpageRouter
+import com.example.michl.aimission.LandingpageScene.implementation.LandingpageRouter
 import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.R
 import kotlinx.android.synthetic.main.cv_item_month.view.*

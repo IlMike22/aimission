@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterScene.Views.RegisterActivity">
+    tools:context=".RegisterScene.views.RegisterActivity">
 
     <fragment
         android:id="@+id/frg_register"
-        android:name="com.example.michl.aimission.RegisterScene.Views.RegisterFragment"
+        android:name="com.example.michl.aimission.RegisterScene.views.RegisterFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="712dp"

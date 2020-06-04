@@ -1,6 +1,6 @@
 package com.example.michl.aimission.InfoScene
 
-import com.example.michl.aimission.InfoScene.Views.InfoFragment
+import com.example.michl.aimission.InfoScene.views.InfoFragment
 import java.lang.ref.WeakReference
 
 object InfoConfigurator {
