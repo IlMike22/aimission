@@ -10,8 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.michl.aimission.InfoScene.IInfoFragment
 import com.example.michl.aimission.InfoScene.IInfoInteractor
-import com.example.michl.aimission.InfoScene.InfoConfigurator
-import com.example.michl.aimission.InfoScene.InfoRouter
+import com.example.michl.aimission.InfoScene.implementation.InfoConfigurator
+import com.example.michl.aimission.InfoScene.implementation.InfoRouter
 import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG

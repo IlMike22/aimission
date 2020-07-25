@@ -1,7 +1,6 @@
 package com.example.michl.aimission.GoalScene.views
 
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,9 +16,12 @@ import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.R
+import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
-import kotlinx.android.synthetic.main.fragment_aim_detail.*
+import com.example.michl.aimission.Utility.showSimpleDialog
+import kotlinx.android.synthetic.main.fragment_goal_detail.*
+import org.jetbrains.anko.doAsync
 import java.time.LocalDate
 import java.time.LocalDateTime
 import kotlin.math.absoluteValue
@@ -27,11 +29,12 @@ import kotlin.math.absoluteValue
 class GoalFragment : IGoalFragment, Fragment() {
     var output: IGoalInteractor? = null
     private var userID: String = ""
+    var goal: Goal? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.fragment_aim_detail, container, false)
+        return inflater.inflate(R.layout.fragment_goal_detail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +44,7 @@ class GoalFragment : IGoalFragment, Fragment() {
 
         val bundle = activity?.intent?.extras
         val mode = bundle?.get("Mode")
-        var id = bundle?.getString("AimId")?:""
+        var id = bundle?.getString("AimId") ?: ""
 
         if (mode == DateHelper.MODE_SELECTOR.Edit) {
 
@@ -50,7 +53,7 @@ class GoalFragment : IGoalFragment, Fragment() {
             try {
                 output?.getDetailData(id)
             } catch (exc: Exception) {
-                Log.e(TAG, "Cannot parse bundle parameter AimId to String. ${exc.message}")
+                Log.e(TAG, "Cannot parse bundle parameter goal id to string. ${exc.message}")
                 output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_unknown_error_edit_mode))
             }
         }
@@ -98,25 +101,20 @@ class GoalFragment : IGoalFragment, Fragment() {
 
             } catch (exc: Exception) {
                 Log.e(TAG, "Unable to store new aim item. Reason: ${exc.message}")
-                Toast.makeText(context, "Something went wrong while trying to save your new aim item. Please try again", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.toast_goal_save_error_text), Toast.LENGTH_SHORT).show()
             }
         }
 
         frg_aimdetail_btn_delete.setOnClickListener {
-            if (showSimpleDialog("Delete item", "Do you really want to delete this item?") { isDelete ->
-                        if (isDelete) {
-                            //no clicked
-                            id?.let { itemId ->
-                                output?.deleteGoal(userID, itemId)
-                            }
-                                    ?: Log.e(TAG, "Cannot call delete item function because itemId is null.")
-                        }
-                    }) {
-
+            context?.let { context ->
+                showSimpleDialog(
+                        context = context,
+                        title = getString(R.string.dialog_delete_item_title),
+                        msg = getString(R.string.dialog_delete_goal_text),
+                        onButtonClicked = this::deleteGoal)
             }
         }
     }
-
 
     override fun onFirebaseUserNotExists(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
@@ -141,7 +139,7 @@ class GoalFragment : IGoalFragment, Fragment() {
     }
 
     override fun afterSaveItemSucceed() {
-        Toast.makeText(context, "Aim stored successfully!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "Goal successfully saved!", Toast.LENGTH_SHORT).show()
         activity?.finish()
     }
 
@@ -158,22 +156,24 @@ class GoalFragment : IGoalFragment, Fragment() {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
 
-    override fun showAimDetailData(item: Goal) {
-        frg_aimdetail_txt_title.setText(item.title)
-        frg_aimdetail_txt_description.setText(item.description)
-        if (item.repeatCount > 0) {
+    override fun showGoal(goal: Goal) {
+        this.goal = goal
+
+        frg_aimdetail_txt_title.setText(goal.title)
+        frg_aimdetail_txt_description.setText(goal.description)
+        if (goal.repeatCount > 0) {
 
             frg_aimdetail_switch_repeat.isChecked = true
         }
 
-        if (item.isComingBack == true)
+        if (goal.isComingBack == true)
             frg_aimdetail_switch_comesback.isChecked = true
 
-        if (item.isHighPriority == true)
+        if (goal.isHighPriority == true)
             frg_aimdetail_switch_aaim.isChecked = true
-        frg_aimdetail_txt_repeat.setText(item.repeatCount.toString())
+        frg_aimdetail_txt_repeat.setText(goal.repeatCount.toString())
 
-        when (item.genre) {
+        when (goal.genre) {
             Genre.PRIVATE -> frg_aimdetail_rb_genrePrivate.isChecked = true
             Genre.WORK -> frg_aimdetail_rb_genreWork.isChecked = true
             Genre.FUN -> frg_aimdetail_rb_genreFun.isChecked = true
@@ -182,6 +182,12 @@ class GoalFragment : IGoalFragment, Fragment() {
             Genre.FINANCES -> frg_aimdetail_rb_genreFinance.isChecked = true
             Genre.UNDEFINED -> Toast.makeText(context, "AimItem's genre is unknown!", Toast.LENGTH_SHORT).show()
         }
+
+        frg_aimdetail_switch_comesback.setOnClickListener {
+            val comesBackIsDisabled = frg_aimdetail_switch_comesback.isChecked == false
+            if (goal.isComingBack && comesBackIsDisabled)
+                showDisableComesBackWarning()
+        }
     }
 
     override fun showErrorMessageToUser(msg: String) {
@@ -189,7 +195,54 @@ class GoalFragment : IGoalFragment, Fragment() {
     }
 
     override fun afterValidationFailed(message: String) {
-        Toast.makeText(context,message,Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun deleteGoal(deleteGoal: Boolean) {
+        val cancelDelete = !deleteGoal
+
+        if (cancelDelete) {
+            return
+        }
+
+        goal?.apply {
+            output?.deleteGoal(userID, this.id)
+        }
+    }
+
+    private fun showDisableComesBackWarning() {
+        context?.let { context ->
+            showSimpleDialog(
+                    context = context,
+                    title = getString(R.string.dialog_goal_not_coming_back_title),
+                    msg = getString(R.string.dialog_goal_not_coming_back_text),
+                    onButtonClicked = this::disableComingBack)
+        }
+    }
+
+    private fun disableComingBack(isConfirmed: Boolean) {
+        val isDenied = !isConfirmed
+
+        if (isDenied) {
+            frg_aimdetail_switch_comesback.isChecked = true
+            return
+        }
+
+        doAsync {
+            try {
+                goal?.apply {
+                    try {
+                        Aimission.roomDb?.DefaultGoalsDao()?.removeDefaultGoalFromRoomDb(this)
+                        Log.i(TAG, "Default goal ${this.id} was successfully removed.")
+                    } catch (error: Throwable) {
+                        Toast.makeText(context, "Something went wrong, unable to remove default goal.", Toast.LENGTH_SHORT).show()
+                        Log.e(TAG, "Unable to remove default goal. Details: ${error.message}")
+                    }
+                } ?: throw java.lang.Exception("goal was null")
+            } catch (error: Throwable) {
+                Log.e(TAG, "Something went wrong while trying to remove default goal. ${error.message}")
+            }
+        }
     }
 
     private fun getCurrentMonth(): Int {
@@ -212,24 +265,5 @@ class GoalFragment : IGoalFragment, Fragment() {
             R.id.frg_aimdetail_rb_genreFinance -> Genre.FINANCES
             else -> Genre.UNDEFINED
         }
-    }
-
-    private fun showSimpleDialog(title: String, msg: String, onButtonClicked: (Boolean) -> Unit): Boolean {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle(title)
-        builder.setMessage(msg)
-        builder.setPositiveButton("Yes")
-        { _, _ ->
-
-            onButtonClicked(true)
-        }
-        builder.setNegativeButton("no")
-        { _, _ ->
-
-            onButtonClicked(false)
-        }
-        builder.show()
-
-        return false
     }
 }

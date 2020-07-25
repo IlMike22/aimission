@@ -53,4 +53,11 @@
     <string name="menu_item_sorting_priority">Sortierung: Priority</string>
     <string name="menu_item_sorting_creation_date">Sortierung: Creation Date</string>
     <string name="menu_item_sorting_done">Sortierung: Items done</string>
+    <string name="dialog_helper_positive_button_text">Yes</string>
+    <string name="dialog_helper_negative_button_text">No</string>
+    <string name="dialog_delete_goal_text">Do you really want to delete this goal?</string>
+    <string name="dialog_delete_item_title">Delete item</string>
+    <string name="toast_goal_save_error_text">Something went wrong while trying to save your goal. Please try again</string>
+    <string name="dialog_goal_not_coming_back_title">Goal no longer repeatable</string>
+    <string name="dialog_goal_not_coming_back_text">If you proceed this goal will no longer be marked as coming back in the whole app. Do you wish to continue?</string>
 </resources>

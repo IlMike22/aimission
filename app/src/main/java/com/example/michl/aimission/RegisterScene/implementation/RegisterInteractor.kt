@@ -1,6 +1,8 @@
-package com.example.michl.aimission.RegisterScene
+package com.example.michl.aimission.RegisterScene.implementation
 
 import android.util.Log
+import com.example.michl.aimission.RegisterScene.IRegisterInteractor
+import com.example.michl.aimission.RegisterScene.IRegisterPresenter
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.FirebaseNetworkException

@@ -1,6 +1,8 @@
-package com.example.michl.aimission.InfoScene
+package com.example.michl.aimission.InfoScene.implementation
 
 import android.util.Log
+import com.example.michl.aimission.InfoScene.IInfoInteractor
+import com.example.michl.aimission.InfoScene.IInfoPresenter
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
 

@@ -1,4 +1,4 @@
-package com.example.michl.aimission.InfoScene
+package com.example.michl.aimission.InfoScene.implementation
 
 import android.app.Activity
 import android.content.Intent

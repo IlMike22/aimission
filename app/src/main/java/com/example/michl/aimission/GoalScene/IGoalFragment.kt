@@ -11,7 +11,7 @@ interface IGoalFragment {
     fun afterSaveItemFailed(msg: String)
     fun afterUpdateItemSucceed(msg: String)
     fun afterUpdateItemFailed(msg: String)
-    fun showAimDetailData(item: Goal)
+    fun showGoal(item: Goal)
     fun showErrorMessageToUser(msg: String)
     fun afterValidationFailed(message:String)
 }

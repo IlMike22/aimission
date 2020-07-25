@@ -27,7 +27,7 @@ class GoalPresenter : IGoalPresenter {
     }
 
     override fun onGoalReadSucceed(goal: Goal) {
-        output?.get()?.showAimDetailData(goal)
+        output?.get()?.showGoal(goal)
     }
 
     override fun onErrorMessageCreated(msg: String) {

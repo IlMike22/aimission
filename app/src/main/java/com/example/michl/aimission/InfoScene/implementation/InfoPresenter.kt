@@ -1,5 +1,7 @@
-package com.example.michl.aimission.InfoScene
+package com.example.michl.aimission.InfoScene.implementation
 
+import com.example.michl.aimission.InfoScene.IInfoFragment
+import com.example.michl.aimission.InfoScene.IInfoPresenter
 import java.lang.ref.WeakReference
 
 class InfoPresenter : IInfoPresenter {

@@ -1,4 +1,4 @@
-package com.example.michl.aimission.RegisterScene
+package com.example.michl.aimission.RegisterScene.implementation
 
 import android.content.Intent
 import android.util.Log
@@ -13,7 +13,7 @@ interface RegisterRouterInput
     fun navigateToInfo()
 }
 
-class RegisterRouter:RegisterRouterInput
+class RegisterRouter: RegisterRouterInput
 {
     var fragment: WeakReference<RegisterFragment>? = null
 

@@ -8,12 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.michl.aimission.InfoScene.REQUEST_USER_REGISTER_SUCCEED
+import com.example.michl.aimission.InfoScene.implementation.REQUEST_USER_REGISTER_SUCCEED
 import com.example.michl.aimission.R
 import com.example.michl.aimission.RegisterScene.IRegisterFragment
 import com.example.michl.aimission.RegisterScene.IRegisterInteractor
-import com.example.michl.aimission.RegisterScene.RegisterConfigurator
-import com.example.michl.aimission.RegisterScene.RegisterRouter
+import com.example.michl.aimission.RegisterScene.implementation.RegisterConfigurator
+import com.example.michl.aimission.RegisterScene.implementation.RegisterRouter
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import kotlinx.android.synthetic.main.fragment_register.*
 

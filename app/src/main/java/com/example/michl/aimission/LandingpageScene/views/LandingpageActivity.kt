@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.michl.aimission.Base.MainRouter
-import com.example.michl.aimission.InfoScene.REQUEST_USER_REGISTER_SUCCEED
+import com.example.michl.aimission.InfoScene.implementation.REQUEST_USER_REGISTER_SUCCEED
 import com.example.michl.aimission.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_base.*

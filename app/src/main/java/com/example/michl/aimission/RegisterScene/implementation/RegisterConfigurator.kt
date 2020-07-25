@@ -1,4 +1,4 @@
-package com.example.michl.aimission.RegisterScene
+package com.example.michl.aimission.RegisterScene.implementation
 
 import com.example.michl.aimission.RegisterScene.views.RegisterFragment
 import java.lang.ref.WeakReference

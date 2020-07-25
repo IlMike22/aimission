@@ -1,5 +1,7 @@
-package com.example.michl.aimission.RegisterScene
+package com.example.michl.aimission.RegisterScene.implementation
 
+import com.example.michl.aimission.RegisterScene.IRegisterFragment
+import com.example.michl.aimission.RegisterScene.IRegisterPresenter
 import java.lang.ref.WeakReference
 
 class RegisterPresenter : IRegisterPresenter {
