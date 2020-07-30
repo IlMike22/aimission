@@ -60,4 +60,13 @@
     <string name="toast_goal_save_error_text">Something went wrong while trying to save your goal. Please try again</string>
     <string name="dialog_goal_not_coming_back_title">Goal no longer repeatable</string>
     <string name="dialog_goal_not_coming_back_text">If you proceed this goal will no longer be marked as coming back in the whole app. Do you wish to continue?</string>
+    <string name="landing_page_no_goals_defined">At the moment there are no goals defined by you. Create now your first goal.</string>
+    <string name="landing_page_no_user_id_found">Couldn\'t find user id. Are you logged in?</string>
+    <string name="register_error_context_is_null">Context is null. Cannot load activity InfoActivity</string>
+    <string name="register_error_password_too_short">Please define a password with at least 6 characters.</string>
+    <string name="register_error_wrong_password_repeat">Your password repeat is not the same as your password.</string>
+    <string name="register_error_wrong_email_address">Please type in a valid email address.</string>
+    <string name="register_error_empty_fields">Please fill all the input fields to register.</string>
+    <string name="settings_value_edit_past_items">edit_past_items</string>
+    <string name="settings_value_default_sort_mode">default_sort_mode</string>
 </resources>

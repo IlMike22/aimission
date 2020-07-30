@@ -25,11 +25,11 @@ import kotlinx.android.synthetic.main.fragment_landingpage.*
 
 
 class LandingpageFragment : ILandingpageFragment, Fragment() {
+    lateinit var router: LandingpageRouter
+    lateinit var output: LandingpageInteractor
     private lateinit var lytManager: RecyclerView.LayoutManager
     private lateinit var monthItemAdapter: RecyclerView.Adapter<*>
     private lateinit var firebaseAuth: FirebaseAuth
-    lateinit var router: LandingpageRouter
-    lateinit var output: LandingpageInteractor
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

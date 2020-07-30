@@ -15,7 +15,7 @@ import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.R
 import com.example.michl.aimission.Utility.Aimission
-import kotlinx.android.synthetic.main.cv_item_aim.view.*
+import kotlinx.android.synthetic.main.cv_goal.view.*
 
 class GoalsAdapter(
         private var data: List<Goal>,
@@ -29,7 +29,7 @@ class GoalsAdapter(
     private val activity = activity ?: null
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderGoal {
-        val aimItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_item_aim, parent, false) as CardView
+        val aimItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_goal, parent, false) as CardView
 
 
         return ViewHolderGoal(aimItem)

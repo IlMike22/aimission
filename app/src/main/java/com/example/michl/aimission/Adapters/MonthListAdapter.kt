@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.michl.aimission.LandingpageScene.implementation.LandingpageRouter
 import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.R
-import kotlinx.android.synthetic.main.cv_item_month.view.*
+import kotlinx.android.synthetic.main.cv_month.view.*
 
 class MonthListAdapter(
         private val mDataSet: ArrayList<Month>,
@@ -19,7 +19,7 @@ class MonthListAdapter(
     class ViewHolderMonthItem(val monthItem: CardView) : RecyclerView.ViewHolder(monthItem)
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolderMonthItem {
-        val monthItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_item_month, parent, false) as CardView
+        val monthItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_month, parent, false) as CardView
         monthItem.setOnClickListener {
 
         }

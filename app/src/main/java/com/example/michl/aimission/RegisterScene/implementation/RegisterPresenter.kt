@@ -12,8 +12,8 @@ class RegisterPresenter : IRegisterPresenter {
        output?.get()?.afterRegistrationSucceed(message)
     }
 
-    override fun onUserRegistrationFailed(msg:String) {
-        val errorMessage = "Couldnt register user. $msg"
+    override fun onUserRegistrationFailed(message:String) {
+        val errorMessage = "Couldnt register user. $message"
         output?.get()?.afterRegistrationFailed(errorMessage)
     }
 }

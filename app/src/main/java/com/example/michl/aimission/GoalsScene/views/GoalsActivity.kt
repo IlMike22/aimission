@@ -13,7 +13,7 @@ class GoalsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentById(R.id.frg_aimlist)
+        val fragment = supportFragmentManager.findFragmentById(R.id.frg_goals)
         if (!(fragment is IOnBackPressed) || !((fragment as IOnBackPressed).onBackPressed()))
             super.onBackPressed()
             finish()

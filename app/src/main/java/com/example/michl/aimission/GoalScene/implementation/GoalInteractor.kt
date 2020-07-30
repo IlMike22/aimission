@@ -24,13 +24,20 @@ class GoalInteractor : IGoalInteractor {
         output?.validateFirebaseUser(getFireBaseUser())
     }
 
-    override fun updateGoal(userId: String, goal: Goal) {
-        updateIterativeGoalsInSharedPrefs(goal)
+    override fun updateGoal(
+            userId: String,
+            goal: Goal,
+            isGoalRepeatable: Boolean) {
+        if (validateUserInput(goal, isGoalRepeatable) == ValidationResult.VALIDATION_SUCCESS) {
+            updateIterativeGoalsInSharedPrefs(goal)
 
-        if (DbHelper.createOrUpdateGoal(userId, goal))
-            output?.updateGoalSucceed()
-        else
+            if (DbHelper.createOrUpdateGoal(userId, goal)) {
+                output?.updateGoalSucceed()
+                return
+            }
+
             output?.onUpdateGoalFailed()
+        }
     }
 
     override fun deleteGoal(userId: String, goalId: String) {
@@ -40,30 +47,29 @@ class GoalInteractor : IGoalInteractor {
             output?.onDeleteGoalFailed()
     }
 
-    override fun createGoal(userId: String, goal: Goal) {
-        // add current month and year.
+    override fun createGoal(
+            userId: String,
+            goal: Goal,
+            isGoalRepeatable: Boolean) {
         goal.month = DateHelper.getCurrentMonth()
         goal.year = DateHelper.getCurrentYear()
 
         updateIterativeGoalsInSharedPrefs(goal)
 
-        goal.apply {
-            val validationResult = validateUserInput(this)
-            if (validationResult == ValidationResult.VALIDATION_SUCCESS) {
-                if (DbHelper.createOrUpdateGoal(userId, goal)) {
-                    output?.onStoreGoalSucceed()
-                    return
-                }
-
-                if (goal.isComingBack) {
-                    storeDefaultGoal(goal)
-                }
-
-                output?.onStoreGoalFailed()
-            } else {
-                output?.showValidationError(validationResult)
+        val validationResult = validateUserInput(goal, isGoalRepeatable)
+        if (validationResult == ValidationResult.VALIDATION_SUCCESS) {
+            if (DbHelper.createOrUpdateGoal(userId, goal)) {
+                output?.onStoreGoalSucceed()
+                return
             }
 
+            if (goal.isComingBack) {
+                storeDefaultGoal(goal)
+            }
+
+            output?.onStoreGoalFailed()
+        } else {
+            output?.showValidationError(validationResult)
         }
     }
 
@@ -83,7 +89,6 @@ class GoalInteractor : IGoalInteractor {
                 } ?: Log.e(TAG, "Couldnt get detail goal with $id")
             }
         })
-
     }
 
     override fun createErrorMessageIfItemIdIsNull(msg: String) {
@@ -103,17 +108,20 @@ class GoalInteractor : IGoalInteractor {
         return FirebaseAuth.getInstance().currentUser?.uid ?: ""
     }
 
-    private fun validateUserInput(aim: Goal): ValidationResult {
-        if (aim.title.isEmpty() || aim.description.isEmpty()) {
+    private fun validateUserInput(
+            goal: Goal,
+            isGoalRepeatable: Boolean
+    ): ValidationResult {
+        if (goal.title.isEmpty() || goal.description.isEmpty()) {
             return ValidationResult.ERROR_REQUIRED_FIELD_IS_EMPTY_ERROR
         }
-        if (aim.genre == Genre.UNDEFINED) {
+        if (goal.genre == Genre.UNDEFINED) {
             return ValidationResult.NO_GENRE_DEFINED_ERROR
         }
-        if (aim.status == Status.UNDEFINED) {
+        if (goal.status == Status.UNDEFINED) {
             return ValidationResult.NO_STATUS_DEFINED_ERROR
         }
-        if (aim.isComingBack && aim.repeatCount == 0)
+        if (isGoalRepeatable && goal.repeatCount == 0)
             return ValidationResult.NO_AMOUNT_OF_REPEATS_ERROR
 
         return ValidationResult.VALIDATION_SUCCESS

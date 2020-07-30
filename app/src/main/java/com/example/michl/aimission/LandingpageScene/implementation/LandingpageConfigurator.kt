@@ -12,7 +12,7 @@ object LandingpageConfigurator {
         val router = LandingpageRouter()
         router.fragment = WeakReference(fragment)
 
-        val presenter = LandingpagePresenter()
+        val presenter = LandingpagePresenter(fragment.context)
         presenter.output = WeakReference(fragment)
 
         val interactor = LandingpageInteractor()

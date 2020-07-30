@@ -1,7 +1,6 @@
 package com.example.michl.aimission.RegisterScene.views
 
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -14,22 +13,21 @@ import com.example.michl.aimission.RegisterScene.IRegisterFragment
 import com.example.michl.aimission.RegisterScene.IRegisterInteractor
 import com.example.michl.aimission.RegisterScene.implementation.RegisterConfigurator
 import com.example.michl.aimission.RegisterScene.implementation.RegisterRouter
-import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import kotlinx.android.synthetic.main.fragment_register.*
 
 class RegisterFragment : Fragment(), IRegisterFragment {
     lateinit var router: RegisterRouter
     lateinit var output: IRegisterInteractor
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        // init configurator
         RegisterConfigurator.configure(this)
 
         btnRegister.setOnClickListener {
@@ -41,7 +39,6 @@ class RegisterFragment : Fragment(), IRegisterFragment {
     }
 
     override fun onRegisterClicked() {
-        Log.i(TAG, "Starting register process")
         val email = txtEmail.text.toString()
         val pswrd = txtPswrd.text.toString()
         val pswrdRepeat = txtPswrdRepeat.text.toString()
@@ -51,25 +48,24 @@ class RegisterFragment : Fragment(), IRegisterFragment {
         }
     }
 
-    override fun validateInput(email: String, pswrd: String, pswrdRepeat: String): Boolean {
-
-        if (email.isEmpty() || pswrd.isEmpty() || pswrdRepeat.isEmpty()) {
-            Toast.makeText(context, "Please fill all the input fields to register.", Toast.LENGTH_SHORT).show()
+    override fun validateInput(email: String, password: String, repeatPassword: String): Boolean {
+        if (email.isEmpty() || password.isEmpty() || repeatPassword.isEmpty()) {
+            Toast.makeText(context, getString(R.string.register_error_empty_fields), Toast.LENGTH_SHORT).show()
             return false
         }
 
         if (!email.isValidEmail()) {
-            Toast.makeText(context, "Please type in a valid email address.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(R.string.register_error_wrong_email_address), Toast.LENGTH_SHORT).show()
             return false
         }
 
-        if (!pswrd.isValidPswrdLength()) {
-            Toast.makeText(context, "Please define a password with at least 6 characters.", Toast.LENGTH_SHORT).show()
+        if (!password.isValidPswrdLength()) {
+            Toast.makeText(context, getString(R.string.register_error_password_too_short), Toast.LENGTH_SHORT).show()
             return false
         }
 
-        if (!pswrd.equals(pswrdRepeat)) {
-            Toast.makeText(context, "Your password repeat is not the same as your password.", Toast.LENGTH_SHORT).show()
+        if (!password.equals(repeatPassword)) {
+            Toast.makeText(context, getString(R.string.register_error_wrong_password_repeat), Toast.LENGTH_SHORT).show()
             return false
         }
 
@@ -86,10 +82,8 @@ class RegisterFragment : Fragment(), IRegisterFragment {
         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
-    // extension for validating email adress
     private fun String.isValidEmail(): Boolean = this.isNotEmpty() &&
             Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
-    // extension for validating password length
     private fun String.isValidPswrdLength(): Boolean = this.length >= 6
 }

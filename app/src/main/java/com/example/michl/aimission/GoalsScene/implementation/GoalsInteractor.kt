@@ -114,8 +114,8 @@ class GoalsInteractor : IGoalsInteractor {
     }
 
     override fun updateGoals() {
-        for (item in goals) {
-            updateGoalsInDb(item)
+        for (goal in goals) {
+            updateGoalsInDb(goal)
         }
     }
 

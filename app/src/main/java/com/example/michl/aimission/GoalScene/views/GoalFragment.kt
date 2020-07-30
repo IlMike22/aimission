@@ -20,7 +20,7 @@ import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.showSimpleDialog
-import kotlinx.android.synthetic.main.fragment_goal_detail.*
+import kotlinx.android.synthetic.main.fragment_goal.*
 import org.jetbrains.anko.doAsync
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -34,7 +34,7 @@ class GoalFragment : IGoalFragment, Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        return inflater.inflate(R.layout.fragment_goal_detail, container, false)
+        return inflater.inflate(R.layout.fragment_goal, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,6 +75,7 @@ class GoalFragment : IGoalFragment, Fragment() {
             val isHighPrio = frg_aimdetail_switch_aaim.isChecked
             val genre = getGenre(frg_aimdetail_rbGroup_genre.checkedRadioButtonId)
             val comesBack = frg_aimdetail_switch_comesback.isChecked
+            val isGoalRepeatable = frg_aimdetail_switch_repeat.isChecked
 
             try {
                 if (id.isEmpty()) {
@@ -95,9 +96,9 @@ class GoalFragment : IGoalFragment, Fragment() {
                 )
 
                 if (mode == DateHelper.MODE_SELECTOR.Create)
-                    output?.createGoal(userID, goal)
+                    output?.createGoal(userID, goal, isGoalRepeatable)
                 else if (mode == DateHelper.MODE_SELECTOR.Edit)
-                    output?.updateGoal(userID, goal)
+                    output?.updateGoal(userID, goal, isGoalRepeatable)
 
             } catch (exc: Exception) {
                 Log.e(TAG, "Unable to store new aim item. Reason: ${exc.message}")

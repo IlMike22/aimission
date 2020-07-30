@@ -6,7 +6,7 @@ import com.example.michl.aimission.GoalsScene.IGoalsPresenter
 import com.example.michl.aimission.Models.DefaultSortMode
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.R
-import com.example.michl.aimission.SettingsScene.views.toDefaultSortMode
+import com.example.michl.aimission.SettingsScene.views.SettingsFragment.Companion.toDefaultSortMode
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.GoalHelper.Companion.sortGoalsBySortMode

@@ -13,8 +13,11 @@ import com.example.michl.aimission.Utility.SettingHelper
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(
                 R.layout.fragment_settings,
                 container,
@@ -32,7 +35,6 @@ class SettingsFragment : Fragment() {
                 DefaultSortMode.SORT_MODE_ITEMS_DONE -> settings_radio_button_sort_items_done.isChecked = true
                 DefaultSortMode.SORT_MODE_PRIORITY -> settings_radio_button_sort_priority.isChecked = true
             }
-
 
             frg_settings_switch_enable_past_editing.setOnClickListener {
                 context?.apply {
@@ -73,32 +75,31 @@ class SettingsFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
     }
-}
 
-private fun readSharedPreferences(context: Context): Map<String,Any> {
-    val settings = mutableMapOf<String,Any>()
+    companion object {
+        fun readSharedPreferences(context: Context): Map<String, Any> {
+            val settings = mutableMapOf<String, Any>()
+            settings.set(context.getString(R.string.settings_value_edit_past_items), SettingHelper.getEditItemInPastSetting(context))
+            settings.set(context.getString(R.string.settings_value_default_sort_mode), SettingHelper.getDefaultSortSetting(context))
+            return settings
+        }
 
-    settings.set("edit_past_items", SettingHelper.getEditItemInPastSetting(context))
-    settings.set("default_sort_mode", SettingHelper.getDefaultSortSetting(context))
-    return settings
-}
+        fun DefaultSortMode.toText(): String {
+            return when (this) {
+                DefaultSortMode.SORT_MODE_CREATION_DATE -> "SORT_MODE_CREATION_DATE"
+                DefaultSortMode.SORT_MODE_ITEMS_DONE -> "SORT_MODE_ITEMS_DONE"
+                DefaultSortMode.SORT_MODE_PRIORITY -> "SORT_MODE_PRIORITY"
+                else -> "SORT_MODE_CREATION_DATE"
+            }
+        }
 
-//todo put this helper method in a separate package
-fun DefaultSortMode.toText(): String {
-    return when (this) {
-        DefaultSortMode.SORT_MODE_CREATION_DATE -> "SORT_MODE_CREATION_DATE"
-        DefaultSortMode.SORT_MODE_ITEMS_DONE -> "SORT_MODE_ITEMS_DONE"
-        DefaultSortMode.SORT_MODE_PRIORITY -> "SORT_MODE_PRIORITY"
-        else -> "SORT_MODE_CREATION_DATE"
-    }
-}
-
-//todo put this helper method in a separate package
-fun String.toDefaultSortMode(): DefaultSortMode {
-    return when (this) {
-        "SORT_MODE_CREATION_DATE" -> DefaultSortMode.SORT_MODE_CREATION_DATE
-        "SORT_MODE_ITEMS_DONE" -> DefaultSortMode.SORT_MODE_ITEMS_DONE
-        "SORT_MODE_PRIORITY" -> DefaultSortMode.SORT_MODE_PRIORITY
-        else -> DefaultSortMode.SORT_MODE_UNKNOWN
+        fun String.toDefaultSortMode(): DefaultSortMode {
+            return when (this) {
+                "SORT_MODE_CREATION_DATE" -> DefaultSortMode.SORT_MODE_CREATION_DATE
+                "SORT_MODE_ITEMS_DONE" -> DefaultSortMode.SORT_MODE_ITEMS_DONE
+                "SORT_MODE_PRIORITY" -> DefaultSortMode.SORT_MODE_PRIORITY
+                else -> DefaultSortMode.SORT_MODE_UNKNOWN
+            }
+        }
     }
 }

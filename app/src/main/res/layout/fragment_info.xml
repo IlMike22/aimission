@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".InfoScene.views.InfoFragment">
 
-
     <androidx.constraintlayout.widget.Group
         android:id="@+id/loginGroup"
         android:layout_width="match_parent"

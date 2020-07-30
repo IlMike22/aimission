@@ -21,7 +21,6 @@ class LandingpageInteractor : ILandingpageInteractor {
     private val goals = ArrayList<Goal?>()
 
     override fun getUsersMonthList(data: DataSnapshot) {
-        // get all months with at least one aim
         val query = FirebaseDatabase.getInstance().reference.child("Aim").child(getCurrentUserId()).orderByChild("month")
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -30,7 +29,9 @@ class LandingpageInteractor : ILandingpageInteractor {
             }
 
             override fun onDataChange(data: DataSnapshot) {
+                var isNewMonthAdded = false
                 clearDeprecatedGoals(goals)
+                val currentMonth = createNewMonth()
 
                 for (dataset in data.children) {
                     try {
@@ -42,42 +43,33 @@ class LandingpageInteractor : ILandingpageInteractor {
 
                 if (goals.size > 0) {
                     val months = getMonths(goals)
-                    val currentMonth = createNewMonth()
-
                     if (!months.containsMonth(currentMonth.month, currentMonth.year)) {
                         months.add(currentMonth)
+                        goals.addAll(setIterativeGoals())
 
                     }
                     output?.onMonthsLoaded(
                             goals = goals,
                             months = months
                     )
-                } else {
-                    val month = createNewMonth()
-                    val goalsIterative = DbHelper.getIterativeGoals(goals)
 
-                    if (goalsIterative.isEmpty()) {
-                        output?.onEmptyMonthsLoaded(month)
-                        return
-                    }
-
-                    goalsIterative.forEach { goal ->
-                        DbHelper.createOrUpdateGoal(
-                                userId = getCurrentUserId(),
-                                goal = goal
-                        )
-                        goals.add(goal)
-                    }
-
-                    output?.onMonthsLoaded(
-                            goals = goals,
-                            months = getMonths(goals))
+                    return
                 }
+
+                if (getIterativeGoals().isEmpty()) {
+                    output?.onEmptyMonthsLoaded(currentMonth)
+                    return
+                }
+
+                goals.addAll(setIterativeGoals())
+
+                output?.onMonthsLoaded(
+                        goals = goals,
+                        months = getMonths(goals))
             }
         })
     }
 
-    // Get all month aims from all user's aims.
     private fun getMonths(goals: ArrayList<Goal?>): ArrayList<Month> {
         val result = ArrayList<Month>()
         var goalAmount = 0
@@ -158,4 +150,20 @@ class LandingpageInteractor : ILandingpageInteractor {
         }
         return true
     }
+
+    private fun setIterativeGoals(): ArrayList<Goal> {
+        val iterativeGoals = getIterativeGoals()
+        iterativeGoals.forEach { iterativeGoal ->
+            DbHelper.createOrUpdateGoal(
+                    userId = getCurrentUserId(),
+                    goal = iterativeGoal
+            )
+        }
+
+        return iterativeGoals
+    }
+
+    private fun getIterativeGoals(): ArrayList<Goal> =
+            DbHelper.getIterativeGoals(goals)
+
 }

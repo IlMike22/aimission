@@ -1,20 +1,24 @@
 package com.example.michl.aimission.LandingpageScene.implementation
 
+import android.content.Context
 import com.example.michl.aimission.LandingpageScene.ILandingpageFragment
 import com.example.michl.aimission.LandingpageScene.ILandingpagePresenter
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Month
+import com.example.michl.aimission.R
 import java.lang.ref.WeakReference
 
-class LandingpagePresenter : ILandingpagePresenter {
+class LandingpagePresenter(val context: Context?) : ILandingpagePresenter {
     var output: WeakReference<ILandingpageFragment>? = null
 
     override fun onNoUserIdExists() {
-        val errorMsg = "Couldn't find user id. Are you logged in?"
-        output?.get()?.afterUserIdNotFound(errorMsg)
+        context?.apply {
+            val errorMsg = getString(R.string.landing_page_no_user_id_found)
+            output?.get()?.afterUserIdNotFound(errorMsg)
+        }
     }
 
-    override fun onMonthsLoaded(aims: ArrayList<Goal?>, months: ArrayList<Month>) {
+    override fun onMonthsLoaded(goals: ArrayList<Goal?>, months: ArrayList<Month>) {
         output?.get()?.afterMonthItemsLoadedSuccessfully(sortMonths(months))
     }
 
@@ -23,8 +27,10 @@ class LandingpagePresenter : ILandingpagePresenter {
     }
 
     override fun onEmptyMonthsLoaded(month: Month) {
-        val msg = "At the moment there are no aims defined by you. Create now your first aim."
-        output?.get()?.afterEmptyMonthListLoaded(msg, month)
+        context?.apply {
+            val msg = getString(R.string.landing_page_no_goals_defined)
+            output?.get()?.afterEmptyMonthListLoaded(msg, month)
+        }
     }
 
     private fun sortMonths(months: ArrayList<Month>): ArrayList<Month> {

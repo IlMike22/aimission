@@ -12,11 +12,11 @@ class RegisterInteractor : IRegisterInteractor {
     var output: IRegisterPresenter? = null
     private lateinit var mAuth: FirebaseAuth
 
-    override fun registerUser(email: String, pswrd: String) {
-        Log.i(TAG, "Try to register user $email with pswrd $pswrd")
+    override fun registerUser(email: String, password: String) {
+        Log.i(TAG, "Try to register user $email with pswrd $password")
         try {
             mAuth = FirebaseAuth.getInstance()
-            mAuth.createUserWithEmailAndPassword(email, pswrd).addOnCompleteListener {
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 if (it.isSuccessful) {
                     Log.i(TAG, "User registration was successful")
                     val user = mAuth.currentUser

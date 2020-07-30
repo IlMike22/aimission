@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".GoalScene.views.GoalFragment">
 
-
     <EditText
         android:id="@+id/frg_aimdetail_txt_title"
         android:layout_width="353dp"

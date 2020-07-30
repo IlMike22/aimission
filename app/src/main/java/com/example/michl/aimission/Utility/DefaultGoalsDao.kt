@@ -19,8 +19,4 @@ interface DefaultGoalsDao {
 
     @Delete
     fun removeDefaultGoalFromRoomDb(goal:Goal)
-
-    companion object {
-
-    }
 }

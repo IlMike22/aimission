@@ -11,13 +11,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_base.*
 
 class LandingpageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-
     val router = MainRouter()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_landingpage)
 
         router.openMainView(supportFragmentManager)
 

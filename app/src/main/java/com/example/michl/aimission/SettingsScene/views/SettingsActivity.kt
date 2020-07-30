@@ -6,12 +6,6 @@ import com.example.michl.aimission.Base.BaseActivity
 import com.example.michl.aimission.R
 
 class SettingsActivity : BaseActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_settings)
-    }
-
     override fun getNavigationMenuItemId(): Int {
         return R.id.action_settings
     }
