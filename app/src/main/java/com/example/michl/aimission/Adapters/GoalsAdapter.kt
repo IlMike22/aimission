@@ -19,14 +19,12 @@ import kotlinx.android.synthetic.main.cv_goal.view.*
 
 class GoalsAdapter(
         private var data: List<Goal>,
-        private val settingEditPastItems: Boolean, // todo remove this boolean and get list of user settings with all the values or better especially only for adapter
+        private val settingEditPastItems: Boolean,
         private val isActualMonth: Boolean,
-        interactor: IGoalsInteractor,
-        activity: Activity? = null
+        private val interactor: IGoalsInteractor,
+        private val activity: Activity? = null
 ) : RecyclerView.Adapter<GoalsAdapter.ViewHolderGoal>() {
     val router = GoalsRouter()
-    private val interactor = interactor
-    private val activity = activity ?: null
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderGoal {
         val aimItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_goal, parent, false) as CardView
@@ -39,10 +37,10 @@ class GoalsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolderGoal, position: Int) {
         holder.cardViewGoal.apply {
-            aimItemCV.titleTV.text = data[position].title
-            aimItemCV.statusTV.text = getAimStatus(data[position].status)
-            aimItemCV.genreTV.text = getGenreAsText(data[position].genre)
-            aimItemCV.descriptionTV.text = data[position].description
+            goalItemCV.titleTV.text = data[position].title
+            goalItemCV.statusTV.text = getAimStatus(data[position].status)
+            goalItemCV.genreTV.text = getGenreAsText(data[position].genre)
+            goalItemCV.descriptionTV.text = data[position].description
 
             if (data[position].isHighPriority) {
                 ivHighPriority.visibility = View.VISIBLE
@@ -51,12 +49,12 @@ class GoalsAdapter(
             }
 
             if (data[position].status == Status.OPEN)
-                aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_black_24dp)
+                goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_black_24dp)
             else if (data[position].status == Status.DONE)
-                aimItemCV.btnFinishAim.setImageResource(R.drawable.ic_check_circle_green_24dp)
+                goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_green_24dp)
 
             if (settingEditPastItems == false && !isActualMonth) {
-                aimItemCV.btnFinishAim.setOnClickListener {
+                goalItemCV.btnFinishGoal.setOnClickListener {
                     Toast.makeText(
                             context,
                             context.getString(R.string.list_adapter_toast_no_edit_in_past),
@@ -65,11 +63,11 @@ class GoalsAdapter(
                 }
                 return@apply
             }
-            aimItemCV.btnFinishAim.setOnClickListener {
+            goalItemCV.btnFinishGoal.setOnClickListener {
                 interactor.changeGoalProgress(data[position], position)
             }
-            aimItemCV.btnEditItem.visibility = View.VISIBLE
-            aimItemCV.btnEditItem.setOnClickListener {
+            goalItemCV.btnEditItem.visibility = View.VISIBLE
+            goalItemCV.btnEditItem.setOnClickListener {
                 router.showGoalDetail(data[position].id
                         ?: "", DateHelper.MODE_SELECTOR.Edit, activity)
             }

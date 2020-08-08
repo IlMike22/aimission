@@ -31,9 +31,11 @@ class MonthListAdapter(
             val goalsCompleted = mDataSet[position].goalsCompleted
             val goalsAmount = mDataSet[position].goalAmount
 
-            monthItemCV.monthNameTV.text = "${mDataSet[position].name} ${mDataSet[position].year}"
-            monthItemCV.aimAmountTV.text = "$goalsAmount Ziele insgesamt"
-            monthItemCV.aimSucceededTV.text = "${getPercentOfCompletedGoals(goalsCompleted, goalsAmount)} % erreicht"
+            //monthItemCV.monthNameTV.text = "${mDataSet[position].name} ${mDataSet[position].year}"
+            // todo next: set image background of header layout depending on current month.
+            // the textview is then no longer needed and can be deleted.
+            monthItemCV.goalAmountTV.text = "$goalsAmount Ziele insgesamt"
+            monthItemCV.goalSucceededTV.text = "${getPercentOfCompletedGoals(goalsCompleted, goalsAmount)} % erreicht"
             setEmoji(
                     monthItem = this,
                     goalsAmount = goalsAmount,
