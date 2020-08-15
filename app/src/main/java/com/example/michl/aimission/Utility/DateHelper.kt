@@ -1,7 +1,8 @@
-package com.example.michl.aimission.Helper
+package com.example.michl.aimission.Utility
 
 import android.util.Log
 import com.example.michl.aimission.Models.Goal
+import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.database.DataSnapshot
 import java.time.LocalDate
@@ -11,12 +12,27 @@ class DateHelper {
     companion object DateHelper {
         var currentDate = LocalDate.now()
 
+        fun getCurrentDay():Int {
+            return currentDate.dayOfMonth
+        }
+
         fun getCurrentMonth(): Int {
             return currentDate.month.value
         }
 
         fun getCurrentYear(): Int {
             return currentDate.year
+        }
+
+        fun Month.isCurrentMonth():Boolean = this.month == getCurrentMonth()
+
+        fun Month.isCurrentMonthAlreadyFinished():Boolean{
+            val isNotCurrentMonth = !this.isCurrentMonth()
+            if (isNotCurrentMonth) {
+                return false
+            }
+
+            return getCurrentDay() > 25
         }
 
         fun convertDataInGoals(data: DataSnapshot, queryMonth: Int? = null, queryYear: Int? = null): ArrayList<Goal> {

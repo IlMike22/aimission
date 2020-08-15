@@ -5,7 +5,7 @@ import android.content.Intent
 import android.util.Log
 import com.example.michl.aimission.GoalScene.views.GoalActivity
 import com.example.michl.aimission.GoalsScene.views.GoalsFragment
-import com.example.michl.aimission.Helper.DateHelper
+import com.example.michl.aimission.Utility.DateHelper
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import java.lang.ref.WeakReference

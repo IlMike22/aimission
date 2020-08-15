@@ -9,7 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.michl.aimission.GoalsScene.IGoalsInteractor
 import com.example.michl.aimission.GoalsScene.implementation.GoalsRouter
-import com.example.michl.aimission.Helper.DateHelper
+import com.example.michl.aimission.Utility.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status

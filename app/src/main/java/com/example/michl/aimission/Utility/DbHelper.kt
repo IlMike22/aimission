@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import com.example.michl.aimission.Constants
-import com.example.michl.aimission.Helper.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference

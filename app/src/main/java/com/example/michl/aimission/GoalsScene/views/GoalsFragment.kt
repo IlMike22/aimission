@@ -12,7 +12,7 @@ import com.example.michl.aimission.Adapters.GoalsAdapter
 import com.example.michl.aimission.GoalsScene.*
 import com.example.michl.aimission.GoalsScene.implementation.GoalsConfigurator
 import com.example.michl.aimission.GoalsScene.implementation.GoalsRouter
-import com.example.michl.aimission.Helper.DateHelper
+import com.example.michl.aimission.Utility.DateHelper
 import com.example.michl.aimission.Models.DefaultSortMode
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Month

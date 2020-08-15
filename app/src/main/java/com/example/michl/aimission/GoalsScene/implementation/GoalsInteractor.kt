@@ -3,13 +3,13 @@ package com.example.michl.aimission.GoalsScene.implementation
 import android.util.Log
 import com.example.michl.aimission.GoalsScene.IGoalsInteractor
 import com.example.michl.aimission.GoalsScene.IGoalsPresenter
-import com.example.michl.aimission.Helper.DateHelper
-import com.example.michl.aimission.Helper.DateHelper.DateHelper.convertDataInGoals
+import com.example.michl.aimission.Utility.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Month
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.Aimission.Companion.roomDb
+import com.example.michl.aimission.Utility.DateHelper.DateHelper.convertDataInGoals
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getGoalTableReference

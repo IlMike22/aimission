@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.michl.aimission.GoalScene.IGoalFragment
 import com.example.michl.aimission.GoalScene.implementation.GoalConfigurator
 import com.example.michl.aimission.GoalScene.IGoalInteractor
-import com.example.michl.aimission.Helper.DateHelper
+import com.example.michl.aimission.Utility.DateHelper
 import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status

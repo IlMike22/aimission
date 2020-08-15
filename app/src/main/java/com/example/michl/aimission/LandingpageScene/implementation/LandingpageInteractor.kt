@@ -1,7 +1,7 @@
 package com.example.michl.aimission.LandingpageScene.implementation
 
 import android.util.Log
-import com.example.michl.aimission.Helper.DateHelper
+import com.example.michl.aimission.Utility.DateHelper
 import com.example.michl.aimission.LandingpageScene.ILandingpageInteractor
 import com.example.michl.aimission.LandingpageScene.ILandingpagePresenter
 import com.example.michl.aimission.Models.*
