@@ -35,17 +35,16 @@ class GoalsAdapter(
 
     override fun getItemCount() = data.size
 
-    override fun onBindViewHolder(holder: ViewHolderGoal, position: Int) {
+    override fun onBindViewHolder(
+            holder: ViewHolderGoal,
+            position: Int
+    ) {
         holder.cardViewGoal.apply {
             goalItemCV.titleTV.text = data[position].title
-            goalItemCV.statusTV.text = getAimStatus(data[position].status)
-            goalItemCV.genreTV.text = getGenreAsText(data[position].genre)
             goalItemCV.descriptionTV.text = data[position].description
 
             if (data[position].isHighPriority) {
                 ivHighPriority.visibility = View.VISIBLE
-            } else {
-                ivHighPriority.visibility = View.GONE
             }
 
             if (data[position].status == Status.OPEN)

@@ -169,9 +169,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="aba9a1" />
-                            <entry key="outputName" value="ic_emoji_destructive" />
-                            <entry key="sourceFile" value="C:\Users\Michl" />
+                            <entry key="outputName" value="ic_geld" />
+                            <entry key="sourceFile" value="C:\Users\Michl\Downloads\geld.svg" />
                           </map>
                         </option>
                       </PersistentState>
