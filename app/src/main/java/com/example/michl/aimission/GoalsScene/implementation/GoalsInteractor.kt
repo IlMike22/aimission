@@ -49,31 +49,41 @@ class GoalsInteractor : IGoalsInteractor {
                             )
                     )
                 }
-                onGoalsLoaded(goals,monthItem.month, monthItem.year)
+                onGoalsLoaded(goals, monthItem.month, monthItem.year)
 
             }
         } else {
-            onGoalsLoaded(goals,monthItem.month, monthItem.year)
+            onGoalsLoaded(goals, monthItem.month, monthItem.year)
         }
     }
 
     override fun changeGoalProgress(goal: Goal?, position: Int) {
         goal?.apply {
-            // change progress status
-            if (status == Status.DONE)
-                status = Status.OPEN
-            else if (status == Status.OPEN)
-                status = Status.DONE
+            if (repeatCount > 0) {
+                if (status == Status.DONE) {
+                    status = Status.OPEN
+                    partGoalsAchieved = 0
+                } else {
+                    partGoalsAchieved = partGoalsAchieved+1
+                    if (partGoalsAchieved == repeatCount) {
+                        status = Status.DONE
+                    }
+                }
+            } else {
+                if (status == Status.DONE)
+                    status = Status.OPEN
+                else if (status == Status.OPEN)
+                    status = Status.DONE
+            }
 
             // update item list
             goals.get(position).status = status
-            output?.onGoalStatusChanged(goal, position)
+            output?.onGoalStatusChanged(position)
 
         } ?: run {
             output?.onGoalStatusChangedFailed(null, position)
         }
     }
-
 
     override fun storeGoalsInSharedPreferences(goals: ArrayList<Goal>) {
         // stores current state of item information for this month in sp and returns the result in a dict
@@ -173,7 +183,7 @@ class GoalsInteractor : IGoalsInteractor {
     }
 
     private fun onGoalsLoaded(
-            goals:ArrayList<Goal>,
+            goals: ArrayList<Goal>,
             month: Int,
             year: Int
     ) {

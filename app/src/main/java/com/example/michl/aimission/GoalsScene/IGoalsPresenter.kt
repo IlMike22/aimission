@@ -10,10 +10,7 @@ interface IGoalsPresenter {
             addedDefaultGoalsSize:Int = 0
     )
     fun onNoUserIdExists()
-    fun onGoalStatusChanged(
-            goal: Goal,
-            position: Int
-    )
+    fun onGoalStatusChanged(position: Int)
     fun onGoalStatusChangedFailed(
             goal: Goal?,
             position: Int

@@ -12,7 +12,7 @@ interface IGoalsFragment {
     )
     fun afterGoalsLoadedFailed(errorMsg: String)
     fun afterNoGoalsFound(msg: String)
-    fun afterGoalStatusChange(goal: Goal, position: Int)
+    fun afterGoalStatusChange(position: Int)
     fun afterGoalStatusChangeFailed(msg: String)
     fun afterIterativeGoalsLoaded(goals: ArrayList<Goal>)
     fun afterIterativeGoalsLoadedFailed(msg: String)

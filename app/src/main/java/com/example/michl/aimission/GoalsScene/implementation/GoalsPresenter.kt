@@ -35,8 +35,8 @@ class GoalsPresenter : IGoalsPresenter {
         } ?: Log.e(TAG, "No app context available")
     }
 
-    override fun onGoalStatusChanged(goal: Goal, position: Int) {
-        output?.get()?.afterGoalStatusChange(goal, position)
+    override fun onGoalStatusChanged(position: Int) {
+        output?.get()?.afterGoalStatusChange(position)
     }
 
     override fun onGoalStatusChangedFailed(goal: Goal?, position: Int) {
@@ -105,4 +105,6 @@ class GoalsPresenter : IGoalsPresenter {
 
         return sortGoalsBySortMode(defaultSortMode, goals)
     }
+
+    private fun setRepeatCountText(repeatCount:Int, partGoalsAchieved:Int):String = "$partGoalsAchieved von $repeatCount Zielen erreicht"
 }

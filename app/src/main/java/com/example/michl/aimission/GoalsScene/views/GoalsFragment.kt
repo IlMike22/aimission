@@ -171,9 +171,8 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterGoalStatusChange(goal: Goal, position: Int) {
+    override fun afterGoalStatusChange(position: Int) {
         goalsAdapter.notifyItemChanged(position)
-        Log.i(TAG, "Item ${goal.title} successfully updated on position $position in list.")
     }
 
     override fun afterGoalStatusChangeFailed(msg: String) {

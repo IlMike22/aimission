@@ -40,17 +40,14 @@ class GoalsAdapter(
             position: Int
     ) {
         holder.cardViewGoal.apply {
-            goalItemCV.titleTV.text = data[position].title
-            goalItemCV.descriptionTV.text = data[position].description
+            val goal = data[position]
+            goalItemCV.titleTV.text = goal.title
+            goalItemCV.progressTV.text = createPartGoalsAchievedText(goal.partGoalsAchieved, goal.repeatCount)
+            goalItemCV.repeatTV.text = createRepeatText(goal.isComingBack)
 
-            if (data[position].isHighPriority) {
+            if (goal.isHighPriority) {
                 ivHighPriority.visibility = View.VISIBLE
             }
-
-            if (data[position].status == Status.OPEN)
-                goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_black_24dp)
-            else if (data[position].status == Status.DONE)
-                goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_green_24dp)
 
             if (settingEditPastItems == false && !isActualMonth) {
                 goalItemCV.btnFinishGoal.setOnClickListener {
@@ -63,13 +60,19 @@ class GoalsAdapter(
                 return@apply
             }
             goalItemCV.btnFinishGoal.setOnClickListener {
-                interactor.changeGoalProgress(data[position], position)
+                interactor.changeGoalProgress(goal, position)
             }
-            goalItemCV.btnEditItem.visibility = View.VISIBLE
-            goalItemCV.btnEditItem.setOnClickListener {
-                router.showGoalDetail(data[position].id
+            goalItemCV.setOnClickListener {
+                router.showGoalDetail(goal.id
                         ?: "", DateHelper.MODE_SELECTOR.Edit, activity)
             }
+
+            if (goal.status == Status.OPEN) {
+                goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_black_24dp)
+                return
+            }
+
+            goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_green_24dp)
         }
     }
 
@@ -82,6 +85,10 @@ class GoalsAdapter(
         data = goals
         notifyDataSetChanged()
     }
+
+    private fun createRepeatText(isRepeatable:Boolean):String = if (isRepeatable) "wiederholend" else "nicht wiederholend"
+
+    private fun createPartGoalsAchievedText(partGoalsAchieved:Int, repeatCount:Int) = "$partGoalsAchieved von $repeatCount Teilzielen erreicht"
 
     private fun setHighPriorityImage(isHighPriority: Boolean?): String {
         isHighPriority?.apply {
@@ -108,8 +115,7 @@ class GoalsAdapter(
         }
     }
 
-    private fun getAimStatus(status: Status?): String {
-
+    private fun getGoalStatus(status: Status?): String {
         val context = Aimission.getAppContext() ?: return ""
 
         status?.apply {
