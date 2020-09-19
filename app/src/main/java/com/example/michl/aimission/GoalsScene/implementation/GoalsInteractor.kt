@@ -10,6 +10,7 @@ import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.Utility.Aimission
 import com.example.michl.aimission.Utility.Aimission.Companion.roomDb
 import com.example.michl.aimission.Utility.DateHelper.DateHelper.convertDataInGoals
+import com.example.michl.aimission.Utility.DateHelper.DateHelper.getFireBaseUser
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.example.michl.aimission.Utility.DbHelper.Companion.getGoalTableReference
@@ -59,21 +60,12 @@ class GoalsInteractor : IGoalsInteractor {
 
     override fun changeGoalProgress(goal: Goal?, position: Int) {
         goal?.apply {
-            if (repeatCount > 0) {
-                if (status == Status.DONE) {
-                    status = Status.OPEN
-                    partGoalsAchieved = 0
-                } else {
-                    partGoalsAchieved = partGoalsAchieved+1
-                    if (partGoalsAchieved == repeatCount) {
-                        status = Status.DONE
-                    }
-                }
-            } else {
-                if (status == Status.DONE)
-                    status = Status.OPEN
-                else if (status == Status.OPEN)
-                    status = Status.DONE
+            setGoalStatus(this,repeatCount)
+
+            val isGoalUpdateFailed = !DbHelper.createOrUpdateGoal(getFireBaseUser(),goal)
+
+            if (isGoalUpdateFailed) {
+                Log.e(TAG,"GoalsInteractor: Goal could not be updated after progress changed.")
             }
 
             // update item list
@@ -204,6 +196,35 @@ class GoalsInteractor : IGoalsInteractor {
         defaultGoal.year = monthItem.year
         defaultGoal.status = Status.OPEN
         return defaultGoal
+    }
+
+    private fun setGoalStatus(goal: Goal, repeatCount: Int) {
+        goal.apply {
+            if (repeatCount == 0) {
+                if (goal.status == Status.DONE) {
+                    goal.status = Status.OPEN
+                    return
+                }
+
+                goal.status = Status.DONE
+                return
+            }
+
+            goal.partGoalsAchieved = goal.partGoalsAchieved + 1
+
+            if (goal.status == Status.DONE) {
+                goal.status = Status.OPEN
+                goal.partGoalsAchieved = 0
+                return
+            }
+
+            if (goal.partGoalsAchieved == repeatCount) {
+                goal.status = Status.DONE
+                return
+            }
+
+            goal.status = Status.PROGRESS
+        }
     }
 }
 

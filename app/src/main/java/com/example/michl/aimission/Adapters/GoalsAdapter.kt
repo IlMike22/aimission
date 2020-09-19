@@ -1,6 +1,7 @@
 package com.example.michl.aimission.Adapters
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,12 +68,15 @@ class GoalsAdapter(
                         ?: "", DateHelper.MODE_SELECTOR.Edit, activity)
             }
 
-            if (goal.status == Status.OPEN) {
-                goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_black_24dp)
-                return
+            when (goal.status) {
+                Status.PROGRESS -> {
+                    setPartlyGoalAchievedIcon(goalItemCV)
+                }
+                Status.DONE -> goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_green_24dp)
+                else -> {
+                    goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_black_24dp)
+                }
             }
-
-            goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_green_24dp)
         }
     }
 
@@ -86,22 +90,15 @@ class GoalsAdapter(
         notifyDataSetChanged()
     }
 
-    private fun createRepeatText(isRepeatable:Boolean):String = if (isRepeatable) "wiederholend" else "nicht wiederholend"
+    private fun createRepeatText(isRepeatable: Boolean): String = if (isRepeatable) "wiederholend" else "nicht wiederholend"
 
-    private fun createPartGoalsAchievedText(partGoalsAchieved:Int, repeatCount:Int) = "$partGoalsAchieved von $repeatCount Teilzielen erreicht"
+    private fun createPartGoalsAchievedText(partGoalsAchieved: Int, repeatCount: Int) = "$partGoalsAchieved von $repeatCount Teilzielen erreicht"
 
-    private fun setHighPriorityImage(isHighPriority: Boolean?): String {
-        isHighPriority?.apply {
-
-            val context = Aimission.getAppContext() ?: return ""
-            if (this)
-                return context.getString(R.string.priority_item_text)
-        } ?: return ""
-
-        return ""
-    }
+    private fun setPartlyGoalAchievedIcon(goalItemCV: View) = goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_black_24dp_partly_done)
 
     private fun getGenreAsText(genre: Genre): String {
+        //todo update this function. we dont need text here, we need the correct icon for genre
+
         val context = Aimission.getAppContext() ?: return ""
 
         return when (genre) {
@@ -113,28 +110,5 @@ class GoalsAdapter(
             Genre.FINANCES -> context.getString(R.string.genre_item_finances)
             Genre.UNDEFINED -> context.getString(R.string.genre_item_undefined)
         }
-    }
-
-    private fun getGoalStatus(status: Status?): String {
-        val context = Aimission.getAppContext() ?: return ""
-
-        status?.apply {
-            return when (status) {
-                Status.OPEN -> {
-                    context.getString(R.string.status_item_open)
-                }
-                Status.PROGRESS -> {
-                    context.getString(R.string.status_item_progress)
-                }
-                Status.DONE -> {
-                    context.getString(R.string.status_item_done)
-                }
-                Status.UNDEFINED -> {
-                    context.getString(R.string.status_item_undefined)
-                }
-            }
-        }
-
-        return ""
     }
 }

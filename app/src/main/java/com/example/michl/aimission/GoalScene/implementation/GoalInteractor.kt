@@ -8,6 +8,7 @@ import com.example.michl.aimission.Models.Goal
 import com.example.michl.aimission.Models.Genre
 import com.example.michl.aimission.Models.Status
 import com.example.michl.aimission.Utility.Aimission
+import com.example.michl.aimission.Utility.DateHelper.DateHelper.getFireBaseUser
 import com.example.michl.aimission.Utility.DbHelper
 import com.example.michl.aimission.Utility.DbHelper.Companion.TAG
 import com.google.firebase.auth.FirebaseAuth
@@ -102,10 +103,6 @@ class GoalInteractor : IGoalInteractor {
         } else {
             DbHelper.storeIterativeGoalInSharedPrefs(goal.id)
         }
-    }
-
-    private fun getFireBaseUser(): String {
-        return FirebaseAuth.getInstance().currentUser?.uid ?: ""
     }
 
     private fun validateUserInput(
