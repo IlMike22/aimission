@@ -140,11 +140,18 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
             goals: ArrayList<Goal>,
             month: Int,
             year: Int,
-            addedDefaultGoalsSize:Int
+            addedDefaultGoalsSize: Int
     ) {
         val userSettings = getUserSettings()
         val addedDefaultGoalsMessage = "A new month item was created and Aimission added $addedDefaultGoalsSize default goals to it."
-        goalsAdapter = GoalsAdapter(goals, userSettings, isActualMonth(), output, activity)
+        goalsAdapter = GoalsAdapter(
+                data = goals,
+                settingEditPastItems = userSettings,
+                interactor = output,
+                isActualMonth = isActualMonth(),
+                activity = activity
+
+        )
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
         recyclerview_goals?.apply {

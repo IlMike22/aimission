@@ -28,8 +28,8 @@ class GoalsInteractor : IGoalsInteractor {
             data: DataSnapshot,
             monthItem: Month
     ) {
-        val userId = getCurrentUserId()
 
+        val userId = getCurrentUserId()
         if (userId.isNullOrEmpty()) {
             output?.onNoUserIdExists()
             return
@@ -78,20 +78,20 @@ class GoalsInteractor : IGoalsInteractor {
     }
 
     override fun storeGoalsInSharedPreferences(goals: ArrayList<Goal>) {
+        val context = Aimission.getAppContext()
+        val month = goals[0].month
+        val year = goals[0].year
+        val spEntries = getCurrentSPEntry(month, year)
+        val itemsCompleted = getGoalsCompleted(goals).size
+        val itemsHighPrio = getHighPriorityItems(goals).size
+        val itemsIterative = getIterativeItems(goals).size
+
+
         // stores current state of item information for this month in sp and returns the result in a dict
         if (goals.size == 0) {
             output?.onSharedPreferencesStoredFailed("No items found.")
             return
         }
-
-        val context = Aimission.getAppContext()
-        val month = goals[0].month
-        val year = goals[0].year
-        val spEntries = getCurrentSPEntry(month, year)
-
-        val itemsCompleted = getGoalsCompleted(goals).size
-        val itemsHighPrio = getHighPriorityItems(goals).size
-        val itemsIterative = getIterativeItems(goals).size
 
         // get information about the items and store this information in shared prefs.
         context?.apply {

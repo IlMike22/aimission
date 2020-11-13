@@ -21,15 +21,14 @@ import kotlinx.android.synthetic.main.cv_goal.view.*
 class GoalsAdapter(
         private var data: List<Goal>,
         private val settingEditPastItems: Boolean,
-        private val isActualMonth: Boolean,
         private val interactor: IGoalsInteractor,
+        private val isActualMonth: Boolean,
         private val activity: Activity? = null
 ) : RecyclerView.Adapter<GoalsAdapter.ViewHolderGoal>() {
     val router = GoalsRouter()
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderGoal {
         val aimItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_goal, parent, false) as CardView
-
 
         return ViewHolderGoal(aimItem)
     }
@@ -43,7 +42,7 @@ class GoalsAdapter(
         holder.cardViewGoal.apply {
             val goal = data[position]
             goalItemCV.titleTV.text = goal.title
-            goalItemCV.progressTV.text = createPartGoalsAchievedText(goal.partGoalsAchieved, goal.repeatCount)
+            goalItemCV.progressTV.text = setGoalProgressText(goal)
             goalItemCV.repeatTV.text = createRepeatText(goal.isComingBack)
 
             if (goal.isHighPriority) {
@@ -68,14 +67,13 @@ class GoalsAdapter(
                         ?: "", DateHelper.MODE_SELECTOR.Edit, activity)
             }
 
-            when (goal.status) {
-                Status.PROGRESS -> {
-                    setPartlyGoalAchievedIcon(goalItemCV)
-                }
-                Status.DONE -> goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_green_24dp)
-                else -> {
-                    goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_black_24dp)
-                }
+            if (goal.status == Status.PROGRESS) {
+                setPartlyGoalAchievedIcon(goalItemCV)
+                return@apply
+            }
+
+            if (goal.status == Status.DONE) {
+                goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_green_24dp)
             }
         }
     }
@@ -91,6 +89,20 @@ class GoalsAdapter(
     }
 
     private fun createRepeatText(isRepeatable: Boolean): String = if (isRepeatable) "wiederholend" else "nicht wiederholend"
+
+    private fun setGoalProgressText(goal:Goal):String {
+        if (goal.partGoalsAchieved == 0)
+            return when (goal.status) {
+                Status.OPEN -> "offen"
+                Status.DONE -> "erledigt"
+                else -> "undefined"
+            }
+
+        return createPartGoalsAchievedText(
+                partGoalsAchieved = goal.partGoalsAchieved,
+                repeatCount = goal.repeatCount
+        )
+    }
 
     private fun createPartGoalsAchievedText(partGoalsAchieved: Int, repeatCount: Int) = "$partGoalsAchieved von $repeatCount Teilzielen erreicht"
 
@@ -112,3 +124,4 @@ class GoalsAdapter(
         }
     }
 }
+
