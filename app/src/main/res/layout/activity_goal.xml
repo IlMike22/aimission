@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GoalScene.views.GoalActivity">
+    tools:context=".goalScene.views.GoalActivity">
 
     <fragment
         android:id="@+id/frg_goallist"
-        android:name="com.example.michl.aimission.GoalScene.views.GoalFragment"
+        android:name="com.example.michl.aimission.goalScene.views.GoalFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

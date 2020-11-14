@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".GoalsScene.views.GoalsActivity">
+    tools:context=".goalsScene.views.GoalsActivity">
 
     <fragment
         android:id="@+id/frg_goals"
-        android:name="com.example.michl.aimission.GoalsScene.views.GoalsFragment"
+        android:name="com.example.michl.aimission.goalsScene.views.GoalsFragment"
         android:layout_width="408dp"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"

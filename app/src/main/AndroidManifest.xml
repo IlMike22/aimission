@@ -3,26 +3,26 @@
     package="com.example.michl.aimission">
 
     <application
-        android:name=".Utility.Aimission"
+        android:name=".utitlity.Aimission"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LandingpageScene.views.LandingpageActivity">
+        <activity android:name=".landingpageScene.views.LandingpageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GoalScene.views.GoalActivity" />
-        <activity android:name=".GoalsScene.views.GoalsActivity" />
-        <activity android:name=".InfoScene.views.InfoActivity" />
-        <activity android:name=".SettingsScene.views.SettingsActivity" />
-        <activity android:name=".Base.BaseActivity" />
-        <activity android:name=".RegisterScene.views.RegisterActivity"></activity>
+        <activity android:name=".goalScene.views.GoalActivity" />
+        <activity android:name=".goalsScene.views.GoalsActivity" />
+        <activity android:name=".infoScene.views.InfoActivity" />
+        <activity android:name=".settingScene.views.SettingsActivity" />
+        <activity android:name=".base.BaseActivity" />
+        <activity android:name=".registerScene.views.RegisterActivity"></activity>
     </application>
 
 </manifest>

@@ -69,4 +69,10 @@
     <string name="register_error_empty_fields">Please fill all the input fields to register.</string>
     <string name="settings_value_edit_past_items">edit_past_items</string>
     <string name="settings_value_default_sort_mode">default_sort_mode</string>
+    <string name="goals_adapter_status_done">erledigt</string>
+    <string name="goals_adapter_status_open">offen</string>
+    <string name="goals_adapter_status_undefined">undefined</string>
+    <string name="goals_adapter_repeat_text_repeat">wiederholend</string>
+    <string name="goals_adapter_repeat_text_not_repeat">nicht wiederholend</string>
+    <string name="card_view_goal_content_description_genre">genre</string>
 </resources>
