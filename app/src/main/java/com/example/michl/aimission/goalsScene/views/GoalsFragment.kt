@@ -68,19 +68,22 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
 
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         GoalsConfigurator.configure(this)
-        if (isActualMonth())
-            fab_add_goal.visibility = View.VISIBLE
-        else
+
+        val isNotCurrentMonth = !isActualMonth()
+        if (isNotCurrentMonth) {
             fab_add_goal.visibility = View.GONE
+            return
+        }
+
+        fab_add_goal.visibility = View.VISIBLE
 
         fab_add_goal.setOnClickListener {
             activity?.supportFragmentManager?.apply {
                 router.showGoalDetail("", DateHelper.MODE_SELECTOR.Create, activity)
             }
         }
-
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -154,7 +157,7 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         )
         lytManager = LinearLayoutManager(activity?.applicationContext)
 
-        recyclerview_goals?.apply {
+        recycler_view_goals?.apply {
             setHasFixedSize(true)
             adapter = goalsAdapter
             layoutManager = lytManager
@@ -226,15 +229,15 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
     }
 
     private fun showEmptyView() {
-        includeEmptyTextView?.visibility = View.VISIBLE
-        scrollview_goals?.apply {
+        include_empty_view?.visibility = View.VISIBLE
+        scroll_view_goals?.apply {
             visibility = View.GONE
         }
     }
 
     private fun showViewWithGoals() {
-        includeEmptyTextView?.visibility = View.GONE
-        scrollview_goals?.apply {
+        include_empty_view?.visibility = View.GONE
+        scroll_view_goals?.apply {
             visibility = View.VISIBLE
         }
     }

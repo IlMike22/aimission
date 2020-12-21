@@ -30,7 +30,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.466"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:autofillHints="@string/goal_detail_title" />
 
             <EditText
                 android:id="@+id/edit_text_description"
@@ -44,7 +45,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.425"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_title"
+                android:autofillHints="@string/goal_detail_description" />
 
             <Switch
                 android:id="@+id/switch_comes_back"
@@ -112,7 +114,8 @@
                     app:layout_constraintHorizontal_bias="0.052"
                     app:layout_constraintStart_toEndOf="@+id/text_view_goal_repeat_amount_information"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_goal_repeat_information"
-                    app:layout_constraintVertical_bias="0.917" />
+                    app:layout_constraintVertical_bias="0.917"
+                    android:autofillHints="@string/goal_detail_repetitive" />
 
             </LinearLayout>
 
@@ -211,25 +214,25 @@
 
             <Button
                 android:id="@+id/button_save"
+                style="@style/button_goal_save_or_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_double"
-                android:padding="@dimen/padding_standard"
                 android:text="@string/goal_detail_save"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.741"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radio_group_genre" />
+                app:layout_constraintTop_toBottomOf="@+id/radio_group_genre"/>
 
             <Button
                 android:id="@+id/button_delete"
+                style="@style/button_goal_save_or_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_double"
+                android:layout_marginStart="@dimen/margin_standard"
+                android:layout_marginEnd="@dimen/margin_standard"
                 android:padding="@dimen/padding_standard"
                 android:text="@string/frg_aimdetail_btn_text_delete"
                 android:visibility="gone"
-                app:layout_constraintEnd_toStartOf="@+id/button_save"
                 app:layout_constraintHorizontal_bias="0.123"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/button_save" />

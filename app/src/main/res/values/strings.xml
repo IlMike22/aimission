@@ -25,6 +25,9 @@
     <string name="goal_detail_fun">Spaß und Freizeit</string>
     <string name="goal_detail_finance">Finanzen und Sparen</string>
 
+    <!-- fragment goals -->
+    <string name="add_goal">Neues Ziel hinzufügen</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

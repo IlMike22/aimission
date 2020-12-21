@@ -7,51 +7,52 @@
     tools:context=".goalsScene.views.GoalsFragment">
 
     <include
-        android:id="@+id/includeEmptyTextView"
+        android:id="@+id/include_empty_view"
+        style="@style/include_empty_screen"
         layout="@layout/empty_view_lyt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scrollview_goals"></include>
+        app:layout_constraintTop_toTopOf="@+id/linear_layout_parent"
+        tools:visibility="gone"></include>
+
 
     <ScrollView
-        android:id="@+id/scrollview_goals"
+        android:id="@+id/scroll_view_goals"
+        style="@style/scroll_view_goals"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.059"
-        tools:layout_editor_absoluteX="8dp">
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="visible">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview_goals"
+            android:id="@+id/recycler_view_goals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />
-
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_goal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="328dp"
-        android:layout_marginTop="188dp"
-        android:clickable="true"
-        android:src="@android:drawable/radiobutton_on_background"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="@+id/includeEmptyTextView"
-        app:layout_constraintTop_toBottomOf="@+id/includeEmptyTextView" />
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/add_goal"
+        android:src="@android:drawable/ic_input_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 
