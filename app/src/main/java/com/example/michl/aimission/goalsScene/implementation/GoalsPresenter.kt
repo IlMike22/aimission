@@ -44,15 +44,15 @@ class GoalsPresenter : IGoalsPresenter {
         output?.get()?.afterGoalStatusChange(position)
     }
 
-    override fun onGoalStatusChangedFailed(goal: Goal?, position: Int) {
+    override fun onGoalStatusChangedError(goal: Goal?, position: Int) {
         goal?.let { item ->
             val msg = "Unable to update status from item ${item.title} on position $position."
             Log.e(TAG, msg + " Please try in a few minutes again.")
-            output?.get()?.afterGoalStatusChangeFailed(msg)
+            output?.get()?.afterGoalStatusChangeError(msg)
         } ?: run {
             val msg = "Unable to update status from item. Item is null. Position is $position"
             Log.e(TAG, msg)
-            output?.get()?.afterGoalStatusChangeFailed(msg)
+            output?.get()?.afterGoalStatusChangeError(msg)
         }
     }
 
@@ -60,23 +60,23 @@ class GoalsPresenter : IGoalsPresenter {
         output?.get()?.afterIterativeGoalsLoaded(goals)
     }
 
-    override fun onIterativeGoalsReceivedFailed(msg: String) {
-        output?.get()?.afterIterativeGoalsLoadedFailed(msg)
+    override fun onIterativeGoalsReceivedError(msg: String) {
+        output?.get()?.afterIterativeGoalsLoadedError(msg)
     }
 
     override fun onHighPriorityGoalsReceived(goals: ArrayList<Goal>) {
         output?.get()?.afterHighPriorityGoalsLoaded(goals)
     }
 
-    override fun onHighPriorityGoalsReceivedFailed(msg: String) {
-        output?.get()?.afterHighPriorityGoalsLoadedFailed(msg)
+    override fun onHighPriorityGoalsReceivedError(msg: String) {
+        output?.get()?.afterHighPriorityGoalsLoadedError(msg)
     }
 
     override fun onDoneGoalsReceived(goals: ArrayList<Goal>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onItemInformationFromSharedPrefSucceed(completedItems: Int, highPrioItems: Int, iterativeItems: Int) {
+    override fun onItemInformationFromSharedPrefSuccess(completedItems: Int, highPrioItems: Int, iterativeItems: Int) {
         val msgCompletedItems = "Currently you have $completedItems items completed successfully. Congrats!"
         val msgHighPrioItemAmount = "In this month you have actually $highPrioItems high priority items."
         val msgIterativeItemAmount = "You have $iterativeItems iterative items in this month."
@@ -84,22 +84,22 @@ class GoalsPresenter : IGoalsPresenter {
         output?.get()?.afterGoalInformationLoaded(msgCompletedItems, msgHighPrioItemAmount, msgIterativeItemAmount)
     }
 
-    override fun onItemInformationFromSharedPrefFailed(msg: String) {
+    override fun onItemInformationFromSharedPrefError(msg: String) {
         val message = "An error occured while trying to get all the item information from shared pref. Details: $msg"
-        output?.get()?.afterGoalInformationLoadedFailed(message)
+        output?.get()?.afterGoalInformationLoadedError(message)
     }
 
-    override fun onSPStoreSucceed(result: Map<String, Int>) {
+    override fun onSPStoreSuccess(result: Map<String, Int>) {
         val itemsDoneMsg = "Currently you have ${result["itemsDone"]} items completed for this month."
         val itemsHighPrioMsg = "There are ${result["itemsHighPrio"]} items with high priority this month."
         val itemsIterativeMsg = "${result["itemsIterative"]} items are iterative."
 
-        output?.get()?.afterSPStoredSucceed(itemsDoneMsg, itemsHighPrioMsg, itemsIterativeMsg)
+        output?.get()?.afterSPStoredSuccess(itemsDoneMsg, itemsHighPrioMsg, itemsIterativeMsg)
     }
 
-    override fun onSharedPreferencesStoredFailed(errorMsg: String) {
+    override fun onSharedPreferencesStoredError(errorMsg: String) {
         val message = "Something went wrong while trying to store current item status in sp. Details: $errorMsg"
-        output?.get()?.afterSPStoredFailed(message)
+        output?.get()?.afterSPStoredError(message)
     }
 
     private fun sortGoalsByDefaultSettings(goals: ArrayList<Goal>): ArrayList<Goal> {

@@ -74,7 +74,7 @@ class GoalsInteractor : IGoalsInteractor {
             output?.onGoalStatusChanged(position)
 
         } ?: run {
-            output?.onGoalStatusChangedFailed(null, position)
+            output?.onGoalStatusChangedError(null, position)
         }
     }
 
@@ -90,7 +90,7 @@ class GoalsInteractor : IGoalsInteractor {
 
         // stores current state of item information for this month in sp and returns the result in a dict
         if (goals.size == 0) {
-            output?.onSharedPreferencesStoredFailed("No items found.")
+            output?.onSharedPreferencesStoredError("No items found.")
             return
         }
 
@@ -101,7 +101,7 @@ class GoalsInteractor : IGoalsInteractor {
             DbHelper.storeInSharedPrefs(this, spEntries[2], itemsIterative)
         }
 
-        output?.onSPStoreSucceed(mapOf("itemsCompleted" to itemsCompleted, "itemsHighPrio" to itemsHighPrio, "itemsIterative" to itemsIterative))
+        output?.onSPStoreSuccess(mapOf("itemsCompleted" to itemsCompleted, "itemsHighPrio" to itemsHighPrio, "itemsIterative" to itemsIterative))
     }
 
     override fun getGoalInformationFromSharedPrefs(month: Int, year: Int) {
@@ -112,7 +112,7 @@ class GoalsInteractor : IGoalsInteractor {
             val itemsDone = DbHelper.getSharedPrefsValueAsInt(this, spEntry[0])
             val itemsHighPrio = DbHelper.getSharedPrefsValueAsInt(this, spEntry[1])
             val itemsIterative = DbHelper.getSharedPrefsValueAsInt(this, spEntry[2])
-            output?.onItemInformationFromSharedPrefSucceed(itemsDone, itemsHighPrio, itemsIterative)
+            output?.onItemInformationFromSharedPrefSuccess(itemsDone, itemsHighPrio, itemsIterative)
         }
     }
 

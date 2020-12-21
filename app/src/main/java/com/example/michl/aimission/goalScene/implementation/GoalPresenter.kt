@@ -18,12 +18,12 @@ class GoalPresenter : IGoalPresenter {
     }
 
     override fun onStoreGoalSucceed() {
-        output?.get()?.afterSaveItemSucceed()
+        output?.get()?.afterSaveItemSuccess()
     }
 
     override fun onStoreGoalFailed() {
         val msg = "An error occured while trying to update item."
-        output?.get()?.afterSaveItemFailed(msg)
+        output?.get()?.afterSaveItemError(msg)
     }
 
     override fun onGoalReadSucceed(goal: Goal) {
@@ -42,29 +42,29 @@ class GoalPresenter : IGoalPresenter {
             ValidationResult.NO_AMOUNT_OF_REPEATS_ERROR -> "Your goal is repeatable. Please set the amount of repeats for this goal."
             else -> "Oha an unknown validation error occured. Cannot store this item. Please try again later."
         }
-        output?.get()?.afterValidationFailed(message)
+        output?.get()?.afterValidationError(message)
     }
 
     override fun onUpdateGoalFailed() {
         val msg = "An error occured while trying to update item."
         Log.e(TAG, msg)
-        output?.get()?.afterUpdateItemFailed(msg)
+        output?.get()?.afterUpdateItemError(msg)
     }
 
     override fun updateGoalSucceed() {
         val msg = "Item was updated successfully."
         Log.i(TAG, msg)
-        output?.get()?.afterUpdateItemSucceed(msg)
+        output?.get()?.afterUpdateItemSuccess(msg)
     }
 
     override fun onDeleteGoalSucceed() {
         val msg = "Item was deleted successfully."
-        output?.get()?.afterDeleteItemSucceed(msg)
+        output?.get()?.afterRemoveItemSuccess(msg)
     }
 
     override fun onDeleteGoalFailed() {
         val msg = "An error occured while trying to delete item."
-        output?.get()?.afterDeleteItemFailed(msg)
+        output?.get()?.afterRemoveItemError(msg)
     }
 }
 

@@ -174,7 +174,7 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         showEmptyView()
     }
 
-    override fun afterGoalsLoadedFailed(errorMsg: String) {
+    override fun afterGoalsLoadedError(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
@@ -182,7 +182,7 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         goalsAdapter.notifyItemChanged(position)
     }
 
-    override fun afterGoalStatusChangeFailed(msg: String) {
+    override fun afterGoalStatusChangeError(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
@@ -191,7 +191,7 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         Toast.makeText(context, "Amount of iterative items: ${goals.size}", Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterIterativeGoalsLoadedFailed(msg: String) {
+    override fun afterIterativeGoalsLoadedError(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
@@ -199,7 +199,7 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         Toast.makeText(context, "Found ${goals.size} high priority items for user.", Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterHighPriorityGoalsLoadedFailed(msg: String) {
+    override fun afterHighPriorityGoalsLoadedError(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
@@ -211,17 +211,17 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         Log.i(TAG, msgItemsIterative)
     }
 
-    override fun afterGoalInformationLoadedFailed(errorMsg: String) {
+    override fun afterGoalInformationLoadedError(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterSPStoredSucceed(itemsDoneMsg: String, itemsHighPrioMsg: String, itemsIterativeMsg: String) {
+    override fun afterSPStoredSuccess(itemsDoneMsg: String, itemsHighPrioMsg: String, itemsIterativeMsg: String) {
         Log.i(TAG, "items done: $itemsDoneMsg")
         Log.i(TAG, "items high prio: $itemsHighPrioMsg")
         Log.i(TAG, "items iterative $itemsIterativeMsg")
     }
 
-    override fun afterSPStoredFailed(message: String) {
+    override fun afterSPStoredError(message: String) {
         Log.e(TAG, message)
     }
 

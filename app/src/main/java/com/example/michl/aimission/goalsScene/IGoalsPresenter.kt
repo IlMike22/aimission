@@ -9,26 +9,38 @@ interface IGoalsPresenter {
             year: Int,
             addedDefaultGoalsSize:Int = 0
     )
+
     fun onNoUserIdExists()
+
     fun onGoalStatusChanged(position: Int)
-    fun onGoalStatusChangedFailed(
+
+    fun onGoalStatusChangedError(
             goal: Goal?,
             position: Int
     )
+
     fun onIterativeGoalsReceived(goals: ArrayList<Goal>)
+
     fun onDoneGoalsReceived(goals: ArrayList<Goal>)
-    fun onIterativeGoalsReceivedFailed(msg: String)
+
+    fun onIterativeGoalsReceivedError(msg: String)
+
     fun onHighPriorityGoalsReceived(goals: ArrayList<Goal>)
-    fun onHighPriorityGoalsReceivedFailed(msg: String)
-    fun onItemInformationFromSharedPrefSucceed(
+
+    fun onHighPriorityGoalsReceivedError(msg: String)
+
+    fun onItemInformationFromSharedPrefSuccess(
             goalsDone: Int,
             goalsHighPriority: Int,
             goalsIterative: Int
     )
-    fun onSPStoreSucceed(
+
+    fun onSPStoreSuccess(
             result: Map<String,
                     Int>
     )
-    fun onSharedPreferencesStoredFailed(errorMsg: String)
-    fun onItemInformationFromSharedPrefFailed(msg: String)
+
+    fun onSharedPreferencesStoredError(errorMsg: String)
+
+    fun onItemInformationFromSharedPrefError(msg: String)
 }

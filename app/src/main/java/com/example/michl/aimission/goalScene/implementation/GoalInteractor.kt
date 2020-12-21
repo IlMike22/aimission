@@ -40,7 +40,7 @@ class GoalInteractor : IGoalInteractor {
         }
     }
 
-    override fun deleteGoal(userId: String, goalId: String) {
+    override fun removeGoal(userId: String, goalId: String) {
         if (DbHelper.deleteGoal(userId, goalId))
             output?.onDeleteGoalSucceed()
         else

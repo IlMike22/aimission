@@ -3,15 +3,26 @@ package com.example.michl.aimission.goalScene
 import com.example.michl.aimission.models.Goal
 
 interface IGoalFragment {
-    fun afterDeleteItemSucceed(msg: String)
-    fun afterDeleteItemFailed(msg: String)
+    fun afterRemoveItemSuccess(msg: String)
+
+    fun afterRemoveItemError(msg: String)
+
     fun onFirebaseUserNotExists(msg: String)
+
     fun onFirebaseUserExists(userId: String)
-    fun afterSaveItemSucceed()
-    fun afterSaveItemFailed(msg: String)
-    fun afterUpdateItemSucceed(msg: String)
-    fun afterUpdateItemFailed(msg: String)
+
+    fun afterSaveItemSuccess()
+
+    fun afterSaveItemError(msg: String)
+
+    fun afterUpdateItemSuccess(msg: String)
+
+    fun afterUpdateItemError(msg: String)
+
     fun showGoal(item: Goal)
+
     fun showErrorMessageToUser(msg: String)
-    fun afterValidationFailed(message:String)
+
+    fun afterValidationError(message:String)
+
 }

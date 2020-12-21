@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="radio_button">
+        <item name="android:padding">@dimen/padding_standard</item>
+    </style>
+
 </resources>

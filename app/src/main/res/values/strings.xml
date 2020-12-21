@@ -8,6 +8,24 @@
     <string name="bottom_bar_info">Info</string>
     <string name="bottom_bar_settings">Einstellungen</string>
 
+    <!--fragment goal_detail -->
+    <string name="goal_detail_title">Titel</string>
+    <string name="goal_detail_description">Beschreibung</string>
+    <string name="goal_detail_periodic">Wiederkehrend</string>
+    <string name="goal_detail_periodic_description">Ziel startet jeden Monat aufs Neue</string>
+    <string name="goal_detail_repetitive">Wiederholend</string>
+    <string name="goal_detail_repetitive_amount">Wie oft wiederholen?</string>
+    <string name="goal_detail_high_priority">A-Ziel</string>
+    <string name="goal_detail_high_priority_description">A-Ziele werden besonders hervorgehoben</string>
+    <string name="goal_detail_save">speichern</string>
+    <string name="goal_detail_private">Privat</string>
+    <string name="goal_detail_work">Beruf und berufliche Weiterbildung</string>
+    <string name="goal_detail_education">private Weiterbildung</string>
+    <string name="goal_detail_health">Sport und Fittness</string>
+    <string name="goal_detail_fun">Spaß und Freizeit</string>
+    <string name="goal_detail_finance">Finanzen und Sparen</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="frg_info_btn_login">Login</string>
@@ -18,21 +36,6 @@
     <string name="txt_hint_pswrd">Password</string>
     <string name="txt_hint_pswrd_repeat">Repeat Password</string>
     <string name="msg_no_items">Momentan gibt es hier nichts zu sehen.</string>
-    <string name="frg_aimdetail_tv_title">Titel</string>
-    <string name="frg_aimdetail_tv_description">Beschreibung</string>
-    <string name="frg_aimdetail_switch_periodic">Wiederkehrend</string>
-    <string name="frg_aimdetail_tv_periodic">Ziel startet jeden Monat aufs Neue</string>
-    <string name="frg_aimdetail_switch_repitive">Wiederholend</string>
-    <string name="frg_aimdetail_tv_repeat_count">Wie oft wiederholen?</string>
-    <string name="frg_aimdetail_switch_aaim">A-Ziel</string>
-    <string name="frg_aimdetail_tv_aaim">A-Ziele werden besonders hervorgehoben</string>
-    <string name="frg_aimdetail_btn_save">speichern</string>
-    <string name="frg_aimdetail_rb_private">Privat</string>
-    <string name="frg_aimdetail_rb_work">Beruf und berufliche Weiterbildung</string>
-    <string name="frg_aimdetail_rb_education">private Weiterbildung</string>
-    <string name="frg_aimdetail_rb_health">Sport und Fittness</string>
-    <string name="frg_aimdetail_rb_fun">Spaß und Freizeit</string>
-    <string name="frg_aimdetail_rb_finance">Finanzen und Sparen</string>
     <string name="frg_aimdetail_error_msg_item_id_null">An error occured while trying to read out item information for editing. Please try again later.</string>
     <string name="frg_aimdetail_error_msg_unknown_error_edit_mode">An unknown error occured while trying to read out item information for editing. Please try again later.</string>
     <string name="frg_aimdetail_btn_text_delete">Löschen</string>

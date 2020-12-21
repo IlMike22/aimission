@@ -6,201 +6,236 @@
     android:layout_height="match_parent"
     tools:context=".goalScene.views.GoalFragment">
 
-    <EditText
-        android:id="@+id/frg_aimdetail_txt_title"
-        android:layout_width="353dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="@string/frg_aimdetail_tv_title"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="parent">
 
-    <EditText
-        android:id="@+id/frg_aimdetail_txt_description"
-        android:layout_width="348dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="@string/frg_aimdetail_tv_description"
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_txt_title" />
-
-    <Switch
-        android:id="@+id/frg_aimdetail_switch_comesback"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/frg_aimdetail_switch_periodic"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_txt_description" />
-
-    <TextView
-        android:id="@+id/frg_aimdetail_tv_infoAimRepeat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/frg_aimdetail_tv_periodic"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/frg_aimdetail_switch_comesback"
-        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_txt_description" />
-
-    <Switch
-        android:id="@+id/frg_aimdetail_switch_repeat"
-        android:layout_width="136dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/frg_aimdetail_switch_repitive"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_switch_comesback" />
-
-    <EditText
-        android:id="@+id/frg_aimdetail_txt_repeat"
-        android:layout_width="38dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="19dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.052"
-        app:layout_constraintStart_toEndOf="@+id/frg_aimdetail_switch_repeat"
-        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_tv_infoAimRepeatAmount"
-        app:layout_constraintVertical_bias="0.917" />
-
-    <TextView
-        android:id="@+id/frg_aimdetail_tv_infoAimRepeatAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/frg_aimdetail_tv_repeat_count"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.026"
-        app:layout_constraintStart_toEndOf="@+id/frg_aimdetail_txt_repeat"
-        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_tv_infoAimRepeat" />
-
-    <Switch
-        android:id="@+id/frg_aimdetail_switch_aaim"
-        android:layout_width="136dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/frg_aimdetail_switch_aaim"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_switch_repeat" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="60dp"
-        android:text="@string/frg_aimdetail_tv_aaim"
-        app:layout_constraintStart_toEndOf="@+id/frg_aimdetail_switch_aaim"
-        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_tv_infoAimRepeat" />
-
-    <Button
-        android:id="@+id/frg_aimdetail_btn_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="296dp"
-        android:layout_marginTop="236dp"
-        android:text="@string/frg_aimdetail_btn_save"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <RadioGroup
-        android:id="@+id/frg_aimdetail_rbGroup_genre"
-        android:layout_width="366dp"
-        android:layout_height="197dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/frg_aimdetail_btn_save"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.793"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-        <RadioButton
-            android:id="@+id/frg_aimdetail_rb_genrePrivate"
+        <LinearLayout
+            android:id="@+id/linear_layout_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/frg_aimdetail_rb_private" />
+            android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/frg_aimdetail_rb_genreWork"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/frg_aimdetail_rb_work" />
+            <EditText
+                android:id="@+id/edit_text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_standard"
+                android:layout_margin="@dimen/margin_double"
+                android:ems="10"
+                android:hint="@string/goal_detail_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.466"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <RadioButton
-            android:id="@+id/frg_aimdetail_rb_genreEducation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/frg_aimdetail_rb_education" />
+            <EditText
+                android:id="@+id/edit_text_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_standard"
+                android:layout_margin="@dimen/margin_double"
+                android:ems="10"
+                android:hint="@string/goal_detail_description"
+                android:inputType="textMultiLine"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.425"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_title" />
 
-        <RadioButton
-            android:id="@+id/frg_aimdetail_rb_genreHealth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/frg_aimdetail_rb_health" />
+            <Switch
+                android:id="@+id/switch_comes_back"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_standard"
+                android:layout_margin="@dimen/margin_double"
+                android:text="@string/goal_detail_periodic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.435"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_description" />
 
-        <RadioButton
-            android:id="@+id/frg_aimdetail_rb_genreFun"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/frg_aimdetail_rb_fun" />
+            <TextView
+                android:id="@+id/text_view_goal_repeat_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_standard"
+                android:layout_margin="@dimen/margin_double"
+                android:text="@string/goal_detail_periodic_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.106"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/switch_comes_back" />
 
-        <RadioButton
-            android:id="@+id/frg_aimdetail_rb_genreFinance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/frg_aimdetail_rb_finance" />
+            <Switch
+                android:id="@+id/switch_repeat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_standard"
+                android:layout_margin="@dimen/margin_double"
+                android:text="@string/goal_detail_repetitive"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_goal_repeat_information" />
 
-    </RadioGroup>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/frg_aimdetail_btn_delete"
-        android:layout_width="118dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/frg_aimdetail_btn_text_delete"
-        android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/frg_aimdetail_btn_save"
-        app:layout_constraintHorizontal_bias="0.123"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frg_aimdetail_rbGroup_genre" />
+                <TextView
+                    android:id="@+id/text_view_goal_repeat_amount_information"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding_standard"
+                    android:layout_margin="@dimen/margin_double"
+                    android:text="@string/goal_detail_repetitive_amount"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_goal_repeat_information" />
 
+                <EditText
+                    android:id="@+id/edit_text_goal_repeat"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:padding="@dimen/padding_standard"
+                    android:layout_margin="@dimen/margin_double"
+                    android:ems="10"
+                    android:inputType="number"
+                    app:layout_constraintBottom_toTopOf="@+id/text_view_high_priority_goal_information"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.052"
+                    app:layout_constraintStart_toEndOf="@+id/text_view_goal_repeat_amount_information"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_goal_repeat_information"
+                    app:layout_constraintVertical_bias="0.917" />
+
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/switch_high_priority_goal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_double"
+                android:padding="@dimen/padding_standard"
+                android:text="@string/goal_detail_high_priority"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/switch_repeat" />
+
+            <TextView
+                android:id="@+id/text_view_high_priority_goal_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_double" android:padding="@dimen/padding_standard"
+                android:text="@string/goal_detail_high_priority_description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/switch_high_priority_goal" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_genre"
+                style="@style/radio_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.793"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_high_priority_goal_information">
+
+                <RadioButton
+                    android:id="@+id/radio_button_genre_private"
+                    style="@style/radio_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/goal_detail_private"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_high_priority_goal_information" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_genre_work"
+                    style="@style/radio_button"
+                    android:layout_width="346dp"
+                    android:layout_height="32dp"
+                    android:layout_weight="1"
+                    android:text="@string/goal_detail_work"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_button_genre_private" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_genre_education"
+                    style="@style/radio_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/goal_detail_education"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_button_genre_work" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_genre_health"
+                    style="@style/radio_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/goal_detail_health"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_button_genre_education" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_genre_finance"
+                    style="@style/radio_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/goal_detail_finance"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_button_genre_health" />
+
+                <RadioButton
+                    android:id="@+id/radio_button_genre_fun"
+                    style="@style/radio_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/goal_detail_fun"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_button_genre_finance" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_double"
+                android:padding="@dimen/padding_standard"
+                android:text="@string/goal_detail_save"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.741"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radio_group_genre" />
+
+            <Button
+                android:id="@+id/button_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_double"
+                android:padding="@dimen/padding_standard"
+                android:text="@string/frg_aimdetail_btn_text_delete"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/button_save"
+                app:layout_constraintHorizontal_bias="0.123"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_save" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

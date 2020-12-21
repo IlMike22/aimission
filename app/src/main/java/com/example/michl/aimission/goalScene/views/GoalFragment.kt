@@ -48,7 +48,7 @@ class GoalFragment : IGoalFragment, Fragment() {
 
         if (mode == DateHelper.MODE_SELECTOR.Edit) {
 
-            frg_aimdetail_btn_delete.visibility = View.VISIBLE
+            button_delete.visibility = View.VISIBLE
 
             try {
                 output?.getDetailData(id)
@@ -59,23 +59,23 @@ class GoalFragment : IGoalFragment, Fragment() {
         }
         output?.getAndValidateFirebaseUser()
 
-        frg_aimdetail_btn_save.setOnClickListener {
+        button_save.setOnClickListener {
             var repeatCount = 0
-            val title = frg_aimdetail_txt_title.text.toString()
-            val description = frg_aimdetail_txt_description.text.toString()
+            val title = edit_text_title.text.toString()
+            val description = edit_text_description.text.toString()
 
             try {
-                val userInputRepeatTime = frg_aimdetail_txt_repeat.text.toString()
+                val userInputRepeatTime = edit_text_goal_repeat.text.toString()
                 if (userInputRepeatTime.isNotEmpty())
                     repeatCount = userInputRepeatTime.toInt()
             } catch (exc: Exception) {
                 Log.e(TAG, "Could not convert String into Int (repeatCount). Repeat count remains 0 as initially given.")
             }
 
-            val isHighPrio = frg_aimdetail_switch_aaim.isChecked
-            val genre = getGenre(frg_aimdetail_rbGroup_genre.checkedRadioButtonId)
-            val comesBack = frg_aimdetail_switch_comesback.isChecked
-            val isGoalRepeatable = frg_aimdetail_switch_repeat.isChecked
+            val isHighPriority = switch_high_priority_goal.isChecked
+            val genre = getGenre(radio_group_genre.checkedRadioButtonId)
+            val comesBack = switch_comes_back.isChecked
+            val isGoalRepeatable = switch_repeat.isChecked
 
             try {
                 if (id.isEmpty()) {
@@ -87,7 +87,7 @@ class GoalFragment : IGoalFragment, Fragment() {
                         title = title,
                         description = description,
                         repeatCount = repeatCount,
-                        isHighPriority = isHighPrio,
+                        isHighPriority = isHighPriority,
                         status = Status.OPEN,
                         genre = genre,
                         month = getCurrentMonth(),
@@ -106,7 +106,7 @@ class GoalFragment : IGoalFragment, Fragment() {
             }
         }
 
-        frg_aimdetail_btn_delete.setOnClickListener {
+        button_delete.setOnClickListener {
             context?.let { context ->
                 showSimpleDialog(
                         context = context,
@@ -129,63 +129,58 @@ class GoalFragment : IGoalFragment, Fragment() {
     }
 
 
-    override fun afterDeleteItemSucceed(msg: String) {
+    override fun afterRemoveItemSuccess(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         activity?.finish()
     }
 
-    override fun afterDeleteItemFailed(msg: String) {
+    override fun afterRemoveItemError(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         activity?.finish()
     }
 
-    override fun afterSaveItemSucceed() {
+    override fun afterSaveItemSuccess() {
         Toast.makeText(context, "Goal successfully saved!", Toast.LENGTH_SHORT).show()
         activity?.finish()
     }
 
-    override fun afterSaveItemFailed(msg: String) {
+    override fun afterSaveItemError(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterUpdateItemSucceed(msg: String) {
+    override fun afterUpdateItemSuccess(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
         activity?.finish()
     }
 
-    override fun afterUpdateItemFailed(msg: String) {
+    override fun afterUpdateItemError(msg: String) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
     }
 
     override fun showGoal(goal: Goal) {
         this.goal = goal
 
-        frg_aimdetail_txt_title.setText(goal.title)
-        frg_aimdetail_txt_description.setText(goal.description)
-        if (goal.repeatCount > 0) {
+        edit_text_title.setText(goal.title)
+        edit_text_description.setText(goal.description)
 
-            frg_aimdetail_switch_repeat.isChecked = true
-        }
+        if (goal.repeatCount > 0) switch_repeat.isChecked = true
+        if (goal.isComingBack) switch_comes_back.isChecked = true
+        if (goal.isHighPriority) switch_high_priority_goal.isChecked = true
 
-        if (goal.isComingBack == true)
-            frg_aimdetail_switch_comesback.isChecked = true
-
-        if (goal.isHighPriority == true)
-            frg_aimdetail_switch_aaim.isChecked = true
-        frg_aimdetail_txt_repeat.setText(goal.repeatCount.toString())
+        edit_text_goal_repeat.setText(goal.repeatCount.toString())
 
         when (goal.genre) {
-            Genre.PRIVATE -> frg_aimdetail_rb_genrePrivate.isChecked = true
-            Genre.WORK -> frg_aimdetail_rb_genreWork.isChecked = true
-            Genre.FUN -> frg_aimdetail_rb_genreFun.isChecked = true
-            Genre.EDUCATION -> frg_aimdetail_rb_genreEducation.isChecked = true
-            Genre.HEALTH -> frg_aimdetail_rb_genreHealth.isChecked = true
-            Genre.FINANCES -> frg_aimdetail_rb_genreFinance.isChecked = true
+            Genre.PRIVATE -> radio_button_genre_private.isChecked = true
+            Genre.WORK -> radio_button_genre_work.isChecked = true
+            Genre.FUN -> radio_button_genre_fun.isChecked = true
+            Genre.EDUCATION -> radio_button_genre_education.isChecked = true
+            Genre.HEALTH -> radio_button_genre_health.isChecked = true
+            Genre.FINANCES -> radio_button_genre_finance.isChecked = true
             Genre.UNDEFINED -> Toast.makeText(context, "AimItem's genre is unknown!", Toast.LENGTH_SHORT).show()
         }
 
-        frg_aimdetail_switch_comesback.setOnClickListener {
-            val comesBackIsDisabled = frg_aimdetail_switch_comesback.isChecked == false
+        switch_comes_back.setOnClickListener {
+            val comesBackIsDisabled = switch_comes_back.isChecked == false
             if (goal.isComingBack && comesBackIsDisabled)
                 showDisableComesBackWarning()
         }
@@ -195,7 +190,7 @@ class GoalFragment : IGoalFragment, Fragment() {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterValidationFailed(message: String) {
+    override fun afterValidationError(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
@@ -207,7 +202,7 @@ class GoalFragment : IGoalFragment, Fragment() {
         }
 
         goal?.apply {
-            output?.deleteGoal(userID, this.id)
+            output?.removeGoal(userID, this.id)
         }
     }
 
@@ -225,7 +220,7 @@ class GoalFragment : IGoalFragment, Fragment() {
         val isDenied = !isConfirmed
 
         if (isDenied) {
-            frg_aimdetail_switch_comesback.isChecked = true
+            switch_comes_back.isChecked = true
             return
         }
 
@@ -258,12 +253,12 @@ class GoalFragment : IGoalFragment, Fragment() {
 
     private fun getGenre(selectedRbId: Int): Genre {
         return when (selectedRbId) {
-            R.id.frg_aimdetail_rb_genrePrivate -> Genre.PRIVATE
-            R.id.frg_aimdetail_rb_genreWork -> Genre.WORK
-            R.id.frg_aimdetail_rb_genreEducation -> Genre.EDUCATION
-            R.id.frg_aimdetail_rb_genreHealth -> Genre.HEALTH
-            R.id.frg_aimdetail_rb_genreFun -> Genre.FUN
-            R.id.frg_aimdetail_rb_genreFinance -> Genre.FINANCES
+            R.id.radio_button_genre_private -> Genre.PRIVATE
+            R.id.radio_button_genre_work -> Genre.WORK
+            R.id.radio_button_genre_education -> Genre.EDUCATION
+            R.id.radio_button_genre_health -> Genre.HEALTH
+            R.id.radio_button_genre_fun -> Genre.FUN
+            R.id.radio_button_genre_finance -> Genre.FINANCES
             else -> Genre.UNDEFINED
         }
     }
