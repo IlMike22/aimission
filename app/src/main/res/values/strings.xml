@@ -28,6 +28,14 @@
     <!-- fragment goals -->
     <string name="add_goal">Neues Ziel hinzufügen</string>
 
+    <!-- fragment settings -->
+    <string name="settings_title">"Settings"</string>
+    <string name="settings_enable_editing_in_past">Enable editing in the past</string>
+    <string name="settings_sorting_mode">Which sorting mode do you want by default?</string>
+    <string name="settings_sorting_mode_creation_date">Sort by creation date</string>
+    <string name="settings_sorting_mode_items_done">Sort by items done</string>
+    <string name="settings_sorting_mode_priority">Sort by priority items</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

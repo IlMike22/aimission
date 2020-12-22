@@ -28,41 +28,41 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         context?.apply {
             val settings = readSharedPreferences(context = this)
-            frg_settings_switch_enable_past_editing.isChecked = settings.get("edit_past_items").toString().toBoolean() //todo optimize convert
+            switch_settings_enable_past_editing.isChecked = settings.get("edit_past_items").toString().toBoolean() //todo optimize convert
 
             when (settings.get("default_sort_mode").toString().toDefaultSortMode()) {
-                DefaultSortMode.SORT_MODE_CREATION_DATE -> settings_radio_button_sort_creation_date.isChecked = true
-                DefaultSortMode.SORT_MODE_ITEMS_DONE -> settings_radio_button_sort_items_done.isChecked = true
-                DefaultSortMode.SORT_MODE_PRIORITY -> settings_radio_button_sort_priority.isChecked = true
+                DefaultSortMode.SORT_MODE_CREATION_DATE -> radio_button_settings_sorting_creation_date.isChecked = true
+                DefaultSortMode.SORT_MODE_ITEMS_DONE -> radio_button_settings_sorting_items_done.isChecked = true
+                DefaultSortMode.SORT_MODE_PRIORITY -> radio_button_settings_sorting_priority.isChecked = true
             }
 
-            frg_settings_switch_enable_past_editing.setOnClickListener {
+            switch_settings_enable_past_editing.setOnClickListener {
                 context?.apply {
                     DbHelper.storeInSharedPrefs(
                             context = this,
                             key = "Settings_EditPastItems",
-                            value = frg_settings_switch_enable_past_editing.isChecked
+                            value = switch_settings_enable_past_editing.isChecked
                     )
                 }
             }
 
-            settings_radio_button_group_sort.setOnCheckedChangeListener { buttonView, isChecked ->
+            radio_group_settings_sorting.setOnCheckedChangeListener { buttonView, isChecked ->
                 when (buttonView.checkedRadioButtonId) {
-                    R.id.settings_radio_button_sort_creation_date -> {
+                    R.id.radio_button_settings_sorting_creation_date -> {
                         DbHelper.storeInSharedPrefs(
                                 context = this,
                                 key = "Settings_DefaultSortMode",
                                 value = DefaultSortMode.SORT_MODE_CREATION_DATE.toText()
                         )
                     }
-                    R.id.settings_radio_button_sort_items_done -> {
+                    R.id.radio_button_settings_sorting_items_done -> {
                         DbHelper.storeInSharedPrefs(
                                 context = this,
                                 key = "Settings_DefaultSortMode",
                                 value = DefaultSortMode.SORT_MODE_ITEMS_DONE.toText()
                         )
                     }
-                    R.id.settings_radio_button_sort_priority -> {
+                    R.id.radio_button_settings_sorting_priority -> {
                         DbHelper.storeInSharedPrefs(
                                 context = this,
                                 key = "Settings_DefaultSortMode",
