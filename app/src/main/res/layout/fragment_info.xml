@@ -7,130 +7,107 @@
     tools:context=".infoScene.views.InfoFragment">
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/loginGroup"
+        android:id="@+id/group_info_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:constraint_referenced_ids="frg_main_tv_login, frg_main_txt_email, frg_main_txt_pswrd, frg_main_btnLogin, frg_main_btnRegister" />
+        app:constraint_referenced_ids="text_view_info_login, edit_text_info_email, edit_text_info_password, linear_layout_info_login_register" />
 
     <androidx.constraintlayout.widget.Group
-        android:id="@+id/logoutGroup"
+        android:id="@+id/group_info_logout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        app:constraint_referenced_ids="frg_main_btnLogout, frg_main_tvUserInfo"
-        ></androidx.constraintlayout.widget.Group>
+        app:constraint_referenced_ids="button_info_logout, text_view_info_user_info"></androidx.constraintlayout.widget.Group>
 
-        <TextView
-            android:id="@+id/frg_main_tv_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/frg_info_tv_please_login"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <EditText
-            android:id="@+id/frg_main_txt_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:ems="10"
-            android:inputType="textEmailAddress"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frg_main_tv_login" />
-
-        <EditText
-            android:id="@+id/frg_main_txt_pswrd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:ems="10"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frg_main_txt_email" />
-
-        <Button
-            android:id="@+id/frg_main_btnLogin"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:text="@string/frg_info_btn_login"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frg_main_txt_pswrd" />
-
-    <Button
-        android:id="@+id/frg_main_btnRegister"
-        android:layout_width="136dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
-        android:layout_marginLeft="144dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/frg_info_btn_register"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/frg_main_btnLogin"
-        app:layout_constraintTop_toBottomOf="@+id/frg_main_txt_pswrd" />
-
-    <Button
-        android:id="@+id/frg_main_btnLogout"
+    <TextView
+        android:id="@+id/text_view_info_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="140dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Abmelden"
+        android:layout_margin="@dimen/margin_standard"
+        android:text="@string/info_text_view_please_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_text_info_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_standard"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_info_login" />
+
+    <EditText
+        android:id="@+id/edit_text_info_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_standard"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_info_email" />
+
+    <LinearLayout
+        android:id="@+id/linear_layout_info_login_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_info_password"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/button_info_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_standard"
+            android:layout_weight="1"
+            android:text="@string/info_button_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button_info_register"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_standard"
+            android:layout_weight="1"
+            android:text="@string/info_button_register"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_info_login" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_info_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_standard"
+        android:text="@string/info_button_logout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.416"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/logoutGroup" />
+        app:layout_constraintTop_toTopOf="@+id/group_info_logout" />
 
     <TextView
-        android:id="@+id/frg_main_tvUserInfo"
+        android:id="@+id/text_view_info_user_info"
         android:layout_width="265dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/frg_main_btnLogout"
+        android:layout_margin="@dimen/margin_standard"
+        app:layout_constraintBottom_toTopOf="@+id/button_info_logout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/frg_main_tv_login"
-        app:layout_constraintTop_toTopOf="@+id/logoutGroup" />
+        app:layout_constraintStart_toStartOf="@+id/text_view_info_login"
+        app:layout_constraintTop_toTopOf="@+id/group_info_logout" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/progress_bar_info"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_margin="@dimen/margin_standard"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

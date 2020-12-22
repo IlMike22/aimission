@@ -36,16 +36,18 @@
     <string name="settings_sorting_mode_items_done">Sort by items done</string>
     <string name="settings_sorting_mode_priority">Sort by priority items</string>
 
+    <!--fragment info (login / logout) -->
+    <string name="info_button_register">Registrieren</string>
+    <string name="info_button_login">Login</string>
+    <string name="info_text_view_please_login">Bitte anmelden</string>
+    <string name="info_button_logout">Abmelden</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- general -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="frg_info_btn_login">Login</string>
-    <string name="frg_info_btn_register">Registrieren</string>
-    <string name="frg_info_tv_please_login">Bitte anmelden</string>
-    <string name="txt_hint_email">Email</string>
-    <string name="btn_text_register">Register</string>
-    <string name="txt_hint_pswrd">Password</string>
-    <string name="txt_hint_pswrd_repeat">Repeat Password</string>
+    <string name="text_view_hint_email">Email</string>
+    <string name="button_register">Register</string>
+    <string name="text_view_hint_password">Password</string>
+    <string name="text_view_hint_password_repeat">Repeat Password</string>
     <string name="msg_no_items">Momentan gibt es hier nichts zu sehen.</string>
     <string name="frg_aimdetail_error_msg_item_id_null">An error occured while trying to read out item information for editing. Please try again later.</string>
     <string name="frg_aimdetail_error_msg_unknown_error_edit_mode">An unknown error occured while trying to read out item information for editing. Please try again later.</string>

@@ -7,68 +7,42 @@
     tools:context=".registerScene.views.RegisterFragment">
 
     <EditText
-        android:id="@+id/txtEmail"
-        android:layout_width="334dp"
+        android:id="@+id/edit_text_register_email"
+        style="@style/register_edit_text_email"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="@string/txt_hint_email"
-        android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnRegister"
+        android:id="@+id/button_register_register"
+        style="@style/register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/btn_text_register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.939"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPswrdRepeat" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_register_password_repeat" />
 
     <EditText
-        android:id="@+id/txtPswrd"
-        android:layout_width="335dp"
+        android:id="@+id/edit_text_register_password"
+        style="@style/register_edit_text_password"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:hint="@string/txt_hint_pswrd"
-        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_register_email" />
 
     <EditText
-        android:id="@+id/txtPswrdRepeat"
-        android:layout_width="335dp"
+        android:id="@+id/edit_text_register_password_repeat"
+        style="@style/register_edit_text_password_repeat"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:autofillHints=""
-        android:hint="@string/txt_hint_pswrd_repeat"
-        android:inputType="textPassword"
+        android:layout_margin="@dimen/margin_standard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtPswrd" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_register_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

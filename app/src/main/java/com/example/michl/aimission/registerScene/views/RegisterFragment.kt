@@ -30,7 +30,7 @@ class RegisterFragment : Fragment(), IRegisterFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         RegisterConfigurator.configure(this)
 
-        btnRegister.setOnClickListener {
+        button_register_register.setOnClickListener {
 
             onRegisterClicked()
         }
@@ -39,9 +39,9 @@ class RegisterFragment : Fragment(), IRegisterFragment {
     }
 
     override fun onRegisterClicked() {
-        val email = txtEmail.text.toString()
-        val pswrd = txtPswrd.text.toString()
-        val pswrdRepeat = txtPswrdRepeat.text.toString()
+        val email = edit_text_register_email.text.toString()
+        val pswrd = edit_text_register_password.text.toString()
+        val pswrdRepeat = edit_text_register_password_repeat.text.toString()
 
         if (validateInput(email, pswrd, pswrdRepeat)) {
             output.registerUser(email, pswrd)

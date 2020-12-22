@@ -32,19 +32,19 @@ class InfoFragment : Fragment(), IInfoFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         InfoConfigurator.configure(this)
 
-        frg_main_btnLogin.setOnClickListener {
+        button_info_login.setOnClickListener {
 
-            var email = frg_main_txt_email.text.toString()
-            val pswrd = frg_main_txt_pswrd.text.toString()
+            var email = edit_text_info_email.text.toString()
+            val pswrd = edit_text_info_password.text.toString()
 
             onLoginUserClicked(email, pswrd)
         }
 
-        frg_main_btnLogout.setOnClickListener {
+        button_info_logout.setOnClickListener {
             onLogoutClicked()
         }
 
-        frg_main_btnRegister.setOnClickListener {
+        button_info_register.setOnClickListener {
             onRegisterClicked()
         }
 
@@ -80,13 +80,13 @@ class InfoFragment : Fragment(), IInfoFragment {
     }
 
     override fun afterUserLoggedInError(errorMessage: String) {
-        progressBar?.visibility = View.GONE
+        progress_bar_info?.visibility = View.GONE
         showLoginStatus()
         Toast.makeText(activity, errorMessage, Toast.LENGTH_SHORT).show()
     }
 
     override fun afterUserLoggedInSuccess(email: String, uuid: String, successMessage: String) {
-        progressBar.visibility = View.GONE
+        progress_bar_info.visibility = View.GONE
         Toast.makeText(activity, successMessage, Toast.LENGTH_SHORT).show()
         // disable login layout group, show logout layout group instead
         showLogoutStatus()
@@ -118,22 +118,22 @@ class InfoFragment : Fragment(), IInfoFragment {
     }
 
     private fun showLoginStatus() {
-        logoutGroup.visibility = View.GONE
-        loginGroup.visibility = View.VISIBLE
+        group_info_logout.visibility = View.GONE
+        group_info_login.visibility = View.VISIBLE
     }
 
     private fun showLogoutStatus() {
-        loginGroup.visibility = View.GONE
-        logoutGroup.visibility = View.VISIBLE
+        group_info_login.visibility = View.GONE
+        group_info_logout.visibility = View.VISIBLE
     }
 
     private fun showLoadingStatus() {
-        progressBar.visibility = View.VISIBLE
-        loginGroup.visibility = View.GONE
-        loginGroup.visibility = View.GONE
+        progress_bar_info.visibility = View.VISIBLE
+        group_info_login.visibility = View.GONE
+        group_info_login.visibility = View.GONE
     }
 
     private fun showUserInformation(email: String, uuid: String) {
-        frg_main_tvUserInfo.text = "Hello $email. You are successfully logged in. Your uuid is $uuid"
+        text_view_info_user_info.text = "Hello $email. You are successfully logged in. Your uuid is $uuid"
     }
 }

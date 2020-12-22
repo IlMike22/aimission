@@ -69,4 +69,31 @@
         <item name="android:text">@string/settings_sorting_mode_priority</item>
     </style>
 
+    <!-- register -->
+    <style name="register_default_margins">
+        <item name="android:layout_margin">@dimen/margin_standard</item>
+    </style>
+
+    <style name="register_button" parent="register_default_margins">
+        <item name="android:text">@string/button_register</item>
+    </style>
+
+    <style name="register_edit_text_email" parent="register_default_margins">
+        <item name="android:ems">10</item>
+        <item name="android:hint">@string/text_view_hint_email</item>
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <style name="register_edit_text_password" parent="register_default_margins">
+        <item name="android:ems">10</item>
+        <item name="android:hint">@string/text_view_hint_password</item>
+        <item name="android:inputType">textPassword</item>
+    </style>
+
+    <style name="register_edit_text_password_repeat" parent="register_default_margins">
+        <item name="android:ems">10</item>
+        <item name="android:hint">@string/text_view_hint_password_repeat</item>
+        <item name="android:inputType">textPassword</item>
+    </style>
+
 </resources>
