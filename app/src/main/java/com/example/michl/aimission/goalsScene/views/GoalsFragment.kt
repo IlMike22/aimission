@@ -25,6 +25,7 @@ import com.example.michl.aimission.utitlity.SettingHelper
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.activity_goals.*
 import kotlinx.android.synthetic.main.fragment_goals.*
 
 class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
@@ -69,6 +70,7 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         GoalsConfigurator.configure(this)
 
         val isNotCurrentMonth = !isActualMonth()
@@ -86,7 +88,7 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater!!.inflate(R.menu.menu_goal_list, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -96,10 +98,14 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
         return false
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        val id = item!!.itemId
-        if (id == R.id.menu_item_goal_list_sorting_priority) {
-            if (::goals.isInitialized) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val isGoalsNotInitialized = !::goals.isInitialized
+        if (isGoalsNotInitialized) {
+            return true
+        }
+
+        when (item.itemId) {
+            R.id.menu_item_goal_list_sorting_priority -> {
                 goalsAdapter.updateGoals(
                         sortGoalsBySortMode(
                                 sortMode = DefaultSortMode.SORT_MODE_PRIORITY,
@@ -107,10 +113,11 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
                         )
                 )
             }
-        }
-
-        if (id == R.id.menu_item_goal_list_sorting_creation_date) {
-            if (::goals.isInitialized) {
+            android.R.id.home -> {
+                output.updateGoals()
+                activity?.finish()
+            }
+            R.id.menu_item_goal_list_sorting_creation_date -> {
                 goalsAdapter.updateGoals(
                         sortGoalsBySortMode(
                                 sortMode = DefaultSortMode.SORT_MODE_CREATION_DATE,
@@ -118,10 +125,7 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
                         )
                 )
             }
-        }
-
-        if (id == R.id.menu_item_goal_list_sorting_done) {
-            if (::goals.isInitialized) {
+            R.id.menu_item_goal_list_sorting_done -> {
                 goalsAdapter.updateGoals(
                         sortGoalsBySortMode(
                                 sortMode = DefaultSortMode.SORT_MODE_ITEMS_DONE,
@@ -207,7 +211,6 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
     }
 
     override fun afterGoalInformationLoaded(msgItemsCompleted: String, msgItemsHighPrio: String, msgItemsIterative: String) {
-
         //todo not working at the moment
         Log.i(TAG, msgItemsCompleted)
         Log.i(TAG, msgItemsHighPrio)

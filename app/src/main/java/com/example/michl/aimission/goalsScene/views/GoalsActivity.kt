@@ -10,10 +10,15 @@ class GoalsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_goals)
+        setSupportActionBar(findViewById(R.id.toolbar_goals))
+
+        val actionBar = supportActionBar
+        actionBar?.title = getString(R.string.goals_title)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentById(R.id.frg_goals)
+        val fragment = supportFragmentManager.findFragmentById(R.id.fragment_goals)
         if (!(fragment is IOnBackPressed) || !((fragment as IOnBackPressed).onBackPressed()))
             super.onBackPressed()
             finish()

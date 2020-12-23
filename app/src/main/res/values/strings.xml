@@ -26,7 +26,8 @@
     <string name="goal_detail_finance">Finanzen und Sparen</string>
 
     <!-- fragment goals -->
-    <string name="add_goal">Neues Ziel hinzufügen</string>
+    <string name="goals_add_goal">Neues Ziel hinzufügen</string>
+    <string name="goals_title">Übersicht</string>
 
     <!-- fragment settings -->
     <string name="settings_title">"Settings"</string>

@@ -35,9 +35,9 @@ class InfoFragment : Fragment(), IInfoFragment {
         button_info_login.setOnClickListener {
 
             var email = edit_text_info_email.text.toString()
-            val pswrd = edit_text_info_password.text.toString()
+            val password = edit_text_info_password.text.toString()
 
-            onLoginUserClicked(email, pswrd)
+            onLoginUserClicked(email, password)
         }
 
         button_info_logout.setOnClickListener {
