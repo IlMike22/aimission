@@ -4,23 +4,26 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.example.michl.aimission.base.MainRouter
+import com.example.michl.aimission.base.implementation.MainRouter
 import com.example.michl.aimission.infoScene.implementation.REQUEST_USER_REGISTER_SUCCEED
 import com.example.michl.aimission.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_base.*
+import kotlinx.android.synthetic.main.activity_base.bottomNavBar
+import kotlinx.android.synthetic.main.activity_landingpage.*
 
-class LandingpageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class LandingPageActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     val router = MainRouter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_landingpage)
+        val actionBar = toolbar_landing_page
+        actionBar?.title = "Aimission"
 
         router.openMainView(supportFragmentManager)
 
         bottomNavBar.setOnNavigationItemSelectedListener { item ->
-
             when (item.itemId) {
                 R.id.action_home -> {
                     router.openMainView(supportFragmentManager)

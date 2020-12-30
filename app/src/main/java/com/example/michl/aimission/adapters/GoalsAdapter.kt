@@ -41,19 +41,19 @@ class GoalsAdapter(
     ) {
         holder.cardViewGoal.apply {
             val goal = data[position]
-            goalItemCV.titleTV.text = goal.title
-            goalItemCV.progressTV.text = setGoalProgressText(goal)
-            goalItemCV.repeatTV.text = createRepeatText(goal.isComingBack)
+            cardViewGoal.titleTV.text = goal.title
+            cardViewGoal.progressTV.text = setGoalProgressText(goal)
+            cardViewGoal.repeatTV.text = createRepeatText(goal.isComingBack)
 
             if (goal.isHighPriority) {
-                ivHighPriority.visibility = View.VISIBLE
+                imageViewHighPriority.visibility = View.VISIBLE
             }
 
             val areSettingsNotEditableInPast = !settingEditPastItems
             val isNotActualMonth = !isActualMonth
 
             if (areSettingsNotEditableInPast && isNotActualMonth) {
-                goalItemCV.btnFinishGoal.setOnClickListener {
+                cardViewGoal.btnFinishGoal.setOnClickListener {
                     Toast.makeText(
                             context,
                             context.getString(R.string.list_adapter_toast_no_edit_in_past),
@@ -62,23 +62,23 @@ class GoalsAdapter(
                 }
                 return@apply
             }
-            goalItemCV.btnFinishGoal.setOnClickListener {
+            cardViewGoal.btnFinishGoal.setOnClickListener {
                 interactor.changeGoalProgress(goal, position)
             }
-            goalItemCV.setOnClickListener {
+            cardViewGoal.setOnClickListener {
                 router.showGoalDetail(goal.id
                         ?: "", DateHelper.MODE_SELECTOR.Edit, activity)
             }
 
-            goalItemCV.iv_genre.setImageResource(setGenreIcon(goal.genre))
+            cardViewGoal.iv_genre.setImageResource(setGenreIcon(goal.genre))
 
             if (goal.status == Status.PROGRESS) {
-                setPartlyGoalAchievedIcon(goalItemCV)
+                setPartlyGoalAchievedIcon(cardViewGoal)
                 return@apply
             }
 
             if (goal.status == Status.DONE) {
-                goalItemCV.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_green_24dp)
+                cardViewGoal.btnFinishGoal.setImageResource(R.drawable.ic_check_circle_green_24dp)
             }
         }
     }

@@ -14,10 +14,10 @@ import com.example.michl.aimission.R
 import com.example.michl.aimission.utitlity.DateHelper.DateHelper.isCurrentMonthAlreadyFinished
 import kotlinx.android.synthetic.main.cv_month.view.*
 
-class MonthListAdapter(
+class MonthsAdapter(
         private val mDataSet: ArrayList<Month>,
         private val context: Context
-) : RecyclerView.Adapter<MonthListAdapter.ViewHolderMonthItem>() {
+) : RecyclerView.Adapter<MonthsAdapter.ViewHolderMonthItem>() {
     private val router = LandingpageRouter()
 
     class ViewHolderMonthItem(val monthItem: CardView) : RecyclerView.ViewHolder(monthItem)

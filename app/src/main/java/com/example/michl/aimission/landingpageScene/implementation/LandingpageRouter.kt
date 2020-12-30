@@ -5,12 +5,12 @@ import android.content.Intent
 import androidx.core.content.ContextCompat.startActivity
 import com.example.michl.aimission.goalsScene.views.GoalsActivity
 import com.example.michl.aimission.landingpageScene.ILandingpageRouter
-import com.example.michl.aimission.landingpageScene.views.LandingpageFragment
+import com.example.michl.aimission.landingpageScene.views.LandingPageFragment
 import com.example.michl.aimission.models.Month
 import java.lang.ref.WeakReference
 
 class LandingpageRouter : ILandingpageRouter {
-    var fragment: WeakReference<LandingpageFragment>? = null
+    var fragment: WeakReference<LandingPageFragment>? = null
 
     override fun openGoals(
             context:Context,

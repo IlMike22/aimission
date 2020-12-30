@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/goalItemCV"
+    android:id="@+id/cardViewGoal"
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:layout_gravity="center"
@@ -46,7 +46,7 @@
                     tools:text="6 Sessions Coffee Break Italian" />
 
                 <ImageView
-                    android:id="@+id/ivHighPriority"
+                    android:id="@+id/imageViewHighPriority"
                     android:layout_width="20dp"
                     android:layout_height="35dp"
                     android:layout_gravity="right"

@@ -1,16 +1,14 @@
-package com.example.michl.aimission.base
+package com.example.michl.aimission.base.implementation
 
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.michl.aimission.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_base.*
 
 abstract class BaseActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-
     val router = MainRouter()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,19 +38,18 @@ abstract class BaseActivity : AppCompatActivity(), BottomNavigationView.OnNaviga
 
 
     private fun updateNavBarState() {
-        var actionId = getNavigationMenuItemId()
-        selectBottomNavigationBarItem(actionId)
+        val id = getNavigationMenuItemId()
+        selectBottomNavigationBarItem(id)
     }
 
-    fun selectBottomNavigationBarItem(itemId: Int) {
+    private fun selectBottomNavigationBarItem(itemId: Int) {
         val menu = bottomNavBar.menu
 
         for (i in 0..menu.size()) {
-            var tempItem = menu.getItem(i)
+            val item = menu.getItem(i)
 
-            if (tempItem.itemId == itemId) {
-                Log.i("michl", "Item with id $itemId found")
-                tempItem.isChecked = true
+            if (item.itemId == itemId) {
+                item.isChecked = true
                 break
             }
         }

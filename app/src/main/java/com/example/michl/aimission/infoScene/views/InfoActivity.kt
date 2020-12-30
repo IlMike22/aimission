@@ -3,7 +3,7 @@ package com.example.michl.aimission.infoScene.views
 import android.content.Intent
 import android.util.Log
 import android.view.MenuItem
-import com.example.michl.aimission.base.BaseActivity
+import com.example.michl.aimission.base.implementation.BaseActivity
 import com.example.michl.aimission.R
 
 class InfoActivity : BaseActivity() {

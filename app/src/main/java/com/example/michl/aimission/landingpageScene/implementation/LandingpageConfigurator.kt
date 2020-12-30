@@ -1,13 +1,13 @@
 package com.example.michl.aimission.landingpageScene.implementation
 
-import com.example.michl.aimission.landingpageScene.views.LandingpageFragment
+import com.example.michl.aimission.landingpageScene.views.LandingPageFragment
 import java.lang.ref.WeakReference
 
 object LandingpageConfigurator {
     /*
        Initialize all clean code components for info scene
         */
-    fun configure(fragment: LandingpageFragment) {
+    fun configure(fragment: LandingPageFragment) {
 
         val router = LandingpageRouter()
         router.fragment = WeakReference(fragment)

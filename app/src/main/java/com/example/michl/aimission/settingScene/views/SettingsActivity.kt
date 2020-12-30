@@ -1,7 +1,7 @@
 package com.example.michl.aimission.settingScene.views
 
 import android.view.MenuItem
-import com.example.michl.aimission.base.BaseActivity
+import com.example.michl.aimission.base.implementation.BaseActivity
 import com.example.michl.aimission.R
 
 class SettingsActivity : BaseActivity() {

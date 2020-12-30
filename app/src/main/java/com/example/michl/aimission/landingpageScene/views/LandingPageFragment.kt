@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.michl.aimission.adapters.MonthListAdapter
+import com.example.michl.aimission.adapters.MonthsAdapter
 import com.example.michl.aimission.landingpageScene.ILandingpageFragment
 import com.example.michl.aimission.landingpageScene.implementation.LandingpageConfigurator
 import com.example.michl.aimission.landingpageScene.implementation.LandingpageInteractor
@@ -24,11 +24,11 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_landingpage.*
 
 
-class LandingpageFragment : ILandingpageFragment, Fragment() {
+class LandingPageFragment : ILandingpageFragment, Fragment() {
     lateinit var router: LandingpageRouter
     lateinit var output: LandingpageInteractor
-    private lateinit var lytManager: RecyclerView.LayoutManager
-    private lateinit var monthItemAdapter: RecyclerView.Adapter<*>
+    private lateinit var monthsLayoutManager: RecyclerView.LayoutManager
+    private lateinit var monthsAdapter: RecyclerView.Adapter<*>
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +42,7 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        activity?.let { activity ->
+        activity?.let { _ ->
             LandingpageConfigurator.configure(this)
         }
 
@@ -51,13 +51,13 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
         // writing a sample data to db (users name)
         firebaseAuth = FirebaseAuth.getInstance()
 
-        val firebaseDb = FirebaseDatabase.getInstance()
-        val databaseRef = firebaseDb.getReference("Aim")
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val firebaseDatabaseReference = firebaseDatabase.getReference("Aim")
 
         // sample read out second dataset with known id
 
-        databaseRef.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
+        firebaseDatabaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
                 Log.i("aimission", "an data changed error occured")
             }
 
@@ -72,24 +72,25 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
     }
 
     /**
-    Loads all aim items for current user from db and creates list which is shown in MainFragment.
+    Loads all goals for current user from db and creates list which is shown in MainFragment.
     If user is not logged in, we show an empty list with request to login instead.
      */
-    override fun afterUserIdNotFound(errorMsg: String) {
-        Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
+    override fun afterUserIdNotFound(error: String) {
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterMonthItemsLoadedSuccessfully(months: ArrayList<Month>) {
+    override fun afterMonthsLoadedSuccessfully(months: ArrayList<Month>) {
         hideProgressBar()
         context?.apply {
-            monthItemAdapter = MonthListAdapter(months, this)
+            monthsAdapter = MonthsAdapter(months, this)
         }
-        lytManager = LinearLayoutManager(activity?.applicationContext)
 
-        monthListRV?.apply {
+        monthsLayoutManager = LinearLayoutManager(activity?.applicationContext)
+
+        recycler_view_months?.apply {
             setHasFixedSize(true)
-            adapter = monthItemAdapter
-            layoutManager = lytManager
+            adapter = monthsAdapter
+            layoutManager = monthsLayoutManager
         }
     }
 
@@ -101,22 +102,22 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
         val monthList = ArrayList<Month>()
         monthList.add(month)
-        context?.apply { monthItemAdapter = MonthListAdapter(monthList, this) }
+        context?.apply { monthsAdapter = MonthsAdapter(monthList, this) }
                 ?: println("Aimission - No context found. Cannot call adapter.")
 
-        lytManager = LinearLayoutManager(activity?.applicationContext)
+        monthsLayoutManager = LinearLayoutManager(activity?.applicationContext)
 
-        monthListRV.apply {
+        recycler_view_months.apply {
             setHasFixedSize(true)
-            adapter = monthItemAdapter
-            layoutManager = lytManager
+            adapter = monthsAdapter
+            layoutManager = layoutManager
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if (::monthItemAdapter.isInitialized)
-            monthItemAdapter.notifyDataSetChanged()
+        if (::monthsAdapter.isInitialized)
+            monthsAdapter.notifyDataSetChanged()
     }
 
     private fun showProgressBar() {
@@ -125,7 +126,7 @@ class LandingpageFragment : ILandingpageFragment, Fragment() {
 
     private fun hideProgressBar() {
         if (progress_bar_info != null) {
-            progress_bar_info.visibility = View.GONE // todo doesnt work
+            progress_bar_info.visibility = View.GONE
         }
     }
 }

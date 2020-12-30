@@ -19,7 +19,7 @@ class LandingpagePresenter(val context: Context?) : ILandingpagePresenter {
     }
 
     override fun onMonthsLoaded(goals: ArrayList<Goal?>, months: ArrayList<Month>) {
-        output?.get()?.afterMonthItemsLoadedSuccessfully(sortMonths(months))
+        output?.get()?.afterMonthsLoadedSuccessfully(sortMonths(months))
     }
 
     override fun onMonthsLoadedFailed(errorMsg: String) {

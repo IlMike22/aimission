@@ -4,21 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".landingpageScene.views.LandingpageFragment">
+    tools:context=".landingpageScene.views.LandingPageFragment">
 
     <ProgressBar
         android:id="@+id/progress_bar_info"
         style="?android:attr/progressBarStyle"
-        android:layout_width="69dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
     <ScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/scroll_view_months"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -29,7 +30,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/monthListRV"
+            android:id="@+id/recycler_view_months"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical">
