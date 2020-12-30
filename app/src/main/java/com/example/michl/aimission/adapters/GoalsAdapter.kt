@@ -70,7 +70,7 @@ class GoalsAdapter(
                         ?: "", DateHelper.MODE_SELECTOR.Edit, activity)
             }
 
-            cardViewGoal.iv_genre.setImageResource(setGenreIcon(goal.genre))
+            cardViewGoal.image_view_genre.setImageResource(setGenreIcon(goal.genre))
 
             if (goal.status == Status.PROGRESS) {
                 setPartlyGoalAchievedIcon(cardViewGoal)
