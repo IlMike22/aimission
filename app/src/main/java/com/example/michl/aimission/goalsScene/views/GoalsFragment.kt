@@ -151,6 +151,7 @@ class GoalsFragment : IGoalsFragment, Fragment(), IOnBackPressed {
     ) {
         val userSettings = getUserSettings()
         val addedDefaultGoalsMessage = "A new month item was created and Aimission added $addedDefaultGoalsSize default goals to it."
+
         goalsAdapter = GoalsAdapter(
                 data = goals,
                 settingEditPastItems = userSettings,

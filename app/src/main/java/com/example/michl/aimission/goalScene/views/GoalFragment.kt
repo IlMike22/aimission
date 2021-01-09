@@ -8,15 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.michl.aimission.goalScene.IGoalFragment
-import com.example.michl.aimission.goalScene.implementation.GoalConfigurator
-import com.example.michl.aimission.goalScene.IGoalInteractor
-import com.example.michl.aimission.utitlity.DateHelper
-import com.example.michl.aimission.models.Goal
-import com.example.michl.aimission.models.Genre
-import com.example.michl.aimission.models.Status
 import com.example.michl.aimission.R
+import com.example.michl.aimission.goalScene.IGoalFragment
+import com.example.michl.aimission.goalScene.IGoalInteractor
+import com.example.michl.aimission.goalScene.implementation.GoalConfigurator
+import com.example.michl.aimission.models.Genre
+import com.example.michl.aimission.models.Goal
+import com.example.michl.aimission.models.Status
 import com.example.michl.aimission.utitlity.Aimission
+import com.example.michl.aimission.utitlity.DateHelper
 import com.example.michl.aimission.utitlity.DbHelper
 import com.example.michl.aimission.utitlity.DbHelper.Companion.TAG
 import com.example.michl.aimission.utitlity.showSimpleDialog
@@ -28,8 +28,8 @@ import kotlin.math.absoluteValue
 
 class GoalFragment : IGoalFragment, Fragment() {
     var output: IGoalInteractor? = null
-    private var userID: String = ""
     var goal: Goal? = null
+    private var userID: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -47,7 +47,6 @@ class GoalFragment : IGoalFragment, Fragment() {
         var id = bundle?.getString("AimId") ?: ""
 
         if (mode == DateHelper.MODE_SELECTOR.Edit) {
-
             button_delete.visibility = View.VISIBLE
 
             try {
@@ -57,6 +56,7 @@ class GoalFragment : IGoalFragment, Fragment() {
                 output?.createErrorMessageIfItemIdIsNull(getString(R.string.frg_aimdetail_error_msg_unknown_error_edit_mode))
             }
         }
+
         output?.getAndValidateFirebaseUser()
 
         button_save.setOnClickListener {
@@ -117,8 +117,8 @@ class GoalFragment : IGoalFragment, Fragment() {
         }
     }
 
-    override fun onFirebaseUserNotExists(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    override fun onFirebaseUserNotExists(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         activity?.finish()
     }
 
@@ -129,13 +129,13 @@ class GoalFragment : IGoalFragment, Fragment() {
     }
 
 
-    override fun afterRemoveItemSuccess(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    override fun afterRemoveItemSuccess(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         activity?.finish()
     }
 
-    override fun afterRemoveItemError(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    override fun afterRemoveItemError(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         activity?.finish()
     }
 
@@ -144,17 +144,17 @@ class GoalFragment : IGoalFragment, Fragment() {
         activity?.finish()
     }
 
-    override fun afterSaveItemError(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    override fun afterSaveItemError(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterUpdateItemSuccess(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+    override fun afterUpdateItemSuccess(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         activity?.finish()
     }
 
-    override fun afterUpdateItemError(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+    override fun afterUpdateItemError(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     override fun showGoal(goal: Goal) {
@@ -176,32 +176,32 @@ class GoalFragment : IGoalFragment, Fragment() {
             Genre.EDUCATION -> radio_button_genre_education.isChecked = true
             Genre.HEALTH -> radio_button_genre_health.isChecked = true
             Genre.FINANCES -> radio_button_genre_finance.isChecked = true
-            Genre.UNDEFINED -> Toast.makeText(context, "AimItem's genre is unknown!", Toast.LENGTH_SHORT).show()
+            Genre.UNDEFINED -> Toast.makeText(context, "Goal`s genre is unknown!", Toast.LENGTH_SHORT).show()
         }
 
         switch_comes_back.setOnClickListener {
-            val comesBackIsDisabled = switch_comes_back.isChecked == false
-            if (goal.isComingBack && comesBackIsDisabled)
+            val goalNotComesBack = !switch_comes_back.isChecked
+            if (goal.isComingBack && goalNotComesBack)
                 showDisableComesBackWarning()
         }
     }
 
-    override fun showErrorMessageToUser(msg: String) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    override fun showErrorMessageToUser(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun afterValidationError(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun deleteGoal(deleteGoal: Boolean) {
-        val cancelDelete = !deleteGoal
+    private fun deleteGoal(isRemoveGoal: Boolean) {
+        val cancelDelete = !isRemoveGoal
 
         if (cancelDelete) {
             return
         }
 
-        goal?.apply {
+        this.goal?.apply {
             output?.removeGoal(userID, this.id)
         }
     }
@@ -218,7 +218,6 @@ class GoalFragment : IGoalFragment, Fragment() {
 
     private fun disableComingBack(isConfirmed: Boolean) {
         val isDenied = !isConfirmed
-
         if (isDenied) {
             switch_comes_back.isChecked = true
             return
@@ -241,15 +240,9 @@ class GoalFragment : IGoalFragment, Fragment() {
         }
     }
 
-    private fun getCurrentMonth(): Int {
-        val current = LocalDate.now()
-        return current.month.value
-    }
+    private fun getCurrentMonth(): Int = LocalDate.now().month.value
 
-    private fun getCurrentYear(): Int {
-        val current = LocalDate.now()
-        return current.year.absoluteValue
-    }
+    private fun getCurrentYear(): Int = LocalDate.now().year.absoluteValue
 
     private fun getGenre(selectedRbId: Int): Genre {
         return when (selectedRbId) {

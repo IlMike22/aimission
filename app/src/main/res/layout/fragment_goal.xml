@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".goalScene.views.GoalFragment">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_goal"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
@@ -26,12 +38,12 @@
                 android:padding="@dimen/padding_standard"
                 android:layout_margin="@dimen/margin_double"
                 android:ems="10"
-                android:hint="@string/goal_detail_title"
+                android:hint="@string/goal_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.466"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:autofillHints="@string/goal_detail_title" />
+                android:autofillHints="@string/goal_title" />
 
             <EditText
                 android:id="@+id/edit_text_description"
@@ -40,13 +52,13 @@
                 android:padding="@dimen/padding_standard"
                 android:layout_margin="@dimen/margin_double"
                 android:ems="10"
-                android:hint="@string/goal_detail_description"
+                android:hint="@string/goal_description"
                 android:inputType="textMultiLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.425"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_title"
-                android:autofillHints="@string/goal_detail_description" />
+                android:autofillHints="@string/goal_description" />
 
             <Switch
                 android:id="@+id/switch_comes_back"
@@ -54,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_standard"
                 android:layout_margin="@dimen/margin_double"
-                android:text="@string/goal_detail_periodic"
+                android:text="@string/goal_periodic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.435"
                 app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_standard"
                 android:layout_margin="@dimen/margin_double"
-                android:text="@string/goal_detail_periodic_description"
+                android:text="@string/goal_periodic_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.106"
                 app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_standard"
                 android:layout_margin="@dimen/margin_double"
-                android:text="@string/goal_detail_repetitive"
+                android:text="@string/goal_repetitive"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_view_goal_repeat_information" />
 
@@ -94,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/padding_standard"
                     android:layout_margin="@dimen/margin_double"
-                    android:text="@string/goal_detail_repetitive_amount"
+                    android:text="@string/goal_repetitive_amount"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="parent"
@@ -115,7 +127,7 @@
                     app:layout_constraintStart_toEndOf="@+id/text_view_goal_repeat_amount_information"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_goal_repeat_information"
                     app:layout_constraintVertical_bias="0.917"
-                    android:autofillHints="@string/goal_detail_repetitive" />
+                    android:autofillHints="@string/goal_repetitive" />
 
             </LinearLayout>
 
@@ -125,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_double"
                 android:padding="@dimen/padding_standard"
-                android:text="@string/goal_detail_high_priority"
+                android:text="@string/goal_high_priority"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/switch_repeat" />
 
@@ -134,7 +146,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_double" android:padding="@dimen/padding_standard"
-                android:text="@string/goal_detail_high_priority_description"
+                android:text="@string/goal_high_priority_description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/switch_high_priority_goal" />
 
@@ -156,7 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/goal_detail_private"
+                    android:text="@string/goal_private"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_high_priority_goal_information" />
 
@@ -166,7 +178,7 @@
                     android:layout_width="346dp"
                     android:layout_height="32dp"
                     android:layout_weight="1"
-                    android:text="@string/goal_detail_work"
+                    android:text="@string/goal_work"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radio_button_genre_private" />
 
@@ -176,7 +188,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/goal_detail_education"
+                    android:text="@string/goal_education"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radio_button_genre_work" />
 
@@ -186,7 +198,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/goal_detail_health"
+                    android:text="@string/goal_health"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radio_button_genre_education" />
 
@@ -196,7 +208,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/goal_detail_finance"
+                    android:text="@string/goal_finance"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radio_button_genre_health" />
 
@@ -206,7 +218,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/goal_detail_fun"
+                    android:text="@string/goal_fun"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radio_button_genre_finance" />
 
@@ -217,7 +229,7 @@
                 style="@style/button_goal_save_or_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/goal_detail_save"
+                android:text="@string/goal_save"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.741"
                 app:layout_constraintStart_toStartOf="parent"

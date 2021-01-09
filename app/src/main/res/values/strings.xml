@@ -8,22 +8,22 @@
     <string name="bottom_bar_info">Info</string>
     <string name="bottom_bar_settings">Einstellungen</string>
 
-    <!--fragment goal_detail -->
-    <string name="goal_detail_title">Titel</string>
-    <string name="goal_detail_description">Beschreibung</string>
-    <string name="goal_detail_periodic">Wiederkehrend</string>
-    <string name="goal_detail_periodic_description">Ziel startet jeden Monat aufs Neue</string>
-    <string name="goal_detail_repetitive">Wiederholend</string>
-    <string name="goal_detail_repetitive_amount">Wie oft wiederholen?</string>
-    <string name="goal_detail_high_priority">A-Ziel</string>
-    <string name="goal_detail_high_priority_description">A-Ziele werden besonders hervorgehoben</string>
-    <string name="goal_detail_save">speichern</string>
-    <string name="goal_detail_private">Privat</string>
-    <string name="goal_detail_work">Beruf und berufliche Weiterbildung</string>
-    <string name="goal_detail_education">private Weiterbildung</string>
-    <string name="goal_detail_health">Sport und Fittness</string>
-    <string name="goal_detail_fun">Spaß und Freizeit</string>
-    <string name="goal_detail_finance">Finanzen und Sparen</string>
+    <!--fragment goal -->
+    <string name="goal_title">Details</string>
+    <string name="goal_description">Beschreibung</string>
+    <string name="goal_periodic">Wiederkehrend</string>
+    <string name="goal_periodic_description">Ziel startet jeden Monat aufs Neue</string>
+    <string name="goal_repetitive">Wiederholend</string>
+    <string name="goal_repetitive_amount">Wie oft wiederholen?</string>
+    <string name="goal_high_priority">A-Ziel</string>
+    <string name="goal_high_priority_description">A-Ziele werden besonders hervorgehoben</string>
+    <string name="goal_save">speichern</string>
+    <string name="goal_private">Privat</string>
+    <string name="goal_work">Beruf und berufliche Weiterbildung</string>
+    <string name="goal_education">private Weiterbildung</string>
+    <string name="goal_health">Sport und Fittness</string>
+    <string name="goal_fun">Spaß und Freizeit</string>
+    <string name="goal_finance">Finanzen und Sparen</string>
 
     <!-- fragment goals -->
     <string name="goals_add_goal">Neues Ziel hinzufügen</string>

@@ -7,7 +7,7 @@
     tools:context=".goalScene.views.GoalActivity">
 
     <fragment
-        android:id="@+id/frg_goallist"
+        android:id="@+id/fragment_goal"
         android:name="com.example.michl.aimission.goalScene.views.GoalFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
