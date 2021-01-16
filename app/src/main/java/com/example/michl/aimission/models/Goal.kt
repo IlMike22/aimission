@@ -25,6 +25,8 @@ data class Goal(
 
 )
 
+
+
 enum class Status(val value: Int) {
     OPEN(0),
     PROGRESS(1),

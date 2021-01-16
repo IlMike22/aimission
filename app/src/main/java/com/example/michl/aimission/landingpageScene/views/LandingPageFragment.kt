@@ -23,13 +23,13 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_landingpage.*
 
-
 class LandingPageFragment : ILandingpageFragment, Fragment() {
     lateinit var router: LandingpageRouter
     lateinit var output: LandingpageInteractor
     private lateinit var monthsLayoutManager: RecyclerView.LayoutManager
     private lateinit var monthsAdapter: RecyclerView.Adapter<*>
     private lateinit var firebaseAuth: FirebaseAuth
+    private val LOG = "Aimission"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -41,28 +41,24 @@ class LandingPageFragment : ILandingpageFragment, Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         activity?.let { _ ->
             LandingpageConfigurator.configure(this)
         }
 
         showProgressBar()
 
-        // writing a sample data to db (users name)
         firebaseAuth = FirebaseAuth.getInstance()
 
         val firebaseDatabase = FirebaseDatabase.getInstance()
         val firebaseDatabaseReference = firebaseDatabase.getReference("Aim")
 
-        // sample read out second dataset with known id
-
         firebaseDatabaseReference.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
-                Log.i("aimission", "an data changed error occured")
+                Log.i(LOG, "an data changed error occured")
             }
 
             override fun onDataChange(data: DataSnapshot) {
-                Log.i("aimission", "the data has changed")
+                Log.i(LOG, "the data has changed")
 
                 output.getUsersMonthList(data)
             }
@@ -94,14 +90,17 @@ class LandingPageFragment : ILandingpageFragment, Fragment() {
         }
     }
 
-    override fun afterMonthItemsLoadedFailed(errorMsg: String) {
+    override fun afterMonthItemsLoadedError(errorMsg: String) {
         Toast.makeText(context, errorMsg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun afterEmptyMonthListLoaded(msg: String, month: Month) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+    override fun afterEmptyMonthListLoaded(message: String, month: Month) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+
         val monthList = ArrayList<Month>()
+
         monthList.add(month)
+
         context?.apply { monthsAdapter = MonthsAdapter(monthList, this) }
                 ?: println("Aimission - No context found. Cannot call adapter.")
 

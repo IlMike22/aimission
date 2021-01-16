@@ -12,11 +12,14 @@ data class Month(
         var goalsCompleted: Int,
         var month: Int,
         var year: Int,
-        var isFirstStart:Boolean,
-        var isDepecrecated:Boolean
-):Parcelable
+        var isFirstStart: Boolean,
+        var isDepecrecated: Boolean
+) : Parcelable
 
-fun ArrayList<Month>.containsMonth(month: Int, year: Int): Boolean {
+fun ArrayList<Month>.containsMonth(
+        month: Int,
+        year: Int
+): Boolean {
     for (item in this) {
         if (item.month == month && item.year == year)
             return true

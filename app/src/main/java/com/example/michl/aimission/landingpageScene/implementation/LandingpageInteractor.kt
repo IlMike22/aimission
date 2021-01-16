@@ -24,14 +24,16 @@ class LandingpageInteractor : ILandingpageInteractor {
         val query = FirebaseDatabase.getInstance().reference.child("Aim").child(getCurrentUserId()).orderByChild("month")
 
         query.addListenerForSingleValueEvent(object : ValueEventListener {
+            val currentMonth = createNewMonth()
+
             override fun onCancelled(p0: DatabaseError) {
                 Log.i(TAG, "Firebase data sync was canceled.")
             }
 
             override fun onDataChange(data: DataSnapshot) {
-                var isNewMonthAdded = false
                 clearDeprecatedGoals(goals)
-                val currentMonth = createNewMonth()
+
+                val iterativeGoals = getIterativeGoalsFromDatabase(goals)
 
                 for (dataset in data.children) {
                     try {
@@ -41,31 +43,21 @@ class LandingpageInteractor : ILandingpageInteractor {
                     }
                 }
 
-                if (goals.size > 0) {
-                    val months = getMonths(goals)
-                    if (!months.containsMonth(currentMonth.month, currentMonth.year)) {
-                        months.add(currentMonth)
-                        goals.addAll(setIterativeGoals())
-
-                    }
-                    output?.onMonthsLoaded(
-                            goals = goals,
-                            months = months
-                    )
-
-                    return
-                }
-
-                if (getIterativeGoals().isEmpty()) {
+                if (goals.isEmpty()) {
                     output?.onEmptyMonthsLoaded(currentMonth)
                     return
                 }
 
-                goals.addAll(setIterativeGoals())
+                val months = getMonths(goals)
+                addMonthIfNotExists(months, currentMonth)
+
+                // todo needed? verify!
+                goals.addAll(iterativeGoals)
 
                 output?.onMonthsLoaded(
                         goals = goals,
-                        months = getMonths(goals))
+                        months = months
+                )
             }
         })
     }
@@ -96,9 +88,9 @@ class LandingpageInteractor : ILandingpageInteractor {
                             isFirstStart = false,
                             isDepecrecated = true))
                     goalAmount = 1
-                    if (goal?.status == Status.DONE)
-                        goalsCompleted = 1
-                    else goalsCompleted = 0
+                    goalsCompleted = if (goal?.status == Status.DONE)
+                        1
+                    else 0
 
                     currentMonth = goal?.month ?: -1
                     currentYear = goal?.year ?: -1
@@ -124,6 +116,7 @@ class LandingpageInteractor : ILandingpageInteractor {
                 }
             }
         }
+
         return result
     }
 
@@ -140,7 +133,7 @@ class LandingpageInteractor : ILandingpageInteractor {
                 isDepecrecated = false)
     }
 
-    private fun clearDeprecatedGoals(goalds: ArrayList<Goal?>): Unit {
+    private fun clearDeprecatedGoals(goals: ArrayList<Goal?>) {
         goals.clear()
     }
 
@@ -151,19 +144,23 @@ class LandingpageInteractor : ILandingpageInteractor {
         return true
     }
 
-    private fun setIterativeGoals(): ArrayList<Goal> {
-        val iterativeGoals = getIterativeGoals()
-        iterativeGoals.forEach { iterativeGoal ->
+    private fun setIterativeGoals(goals: ArrayList<Goal>) {
+        goals.forEach { iterativeGoal ->
             DbHelper.createOrUpdateGoal(
                     userId = getCurrentUserId(),
                     goal = iterativeGoal
             )
         }
-
-        return iterativeGoals
     }
 
-    private fun getIterativeGoals(): ArrayList<Goal> =
+    private fun getIterativeGoalsFromDatabase(goals: ArrayList<Goal?>): ArrayList<Goal> =
             DbHelper.getIterativeGoals(goals)
+
+    private fun addMonthIfNotExists(months: ArrayList<Month>, month: Month) {
+        val monthsNotContainMonth = !months.containsMonth(month = month.month, year = month.year)
+        if (monthsNotContainMonth) {
+            months.add(month)
+        }
+    }
 
 }

@@ -22,7 +22,7 @@ class DbHelper {
                 goal: Goal
         ): Boolean {
             return try {
-                getGoalTableReference().child(userId).child(goal.id ?: "").setValue(goal)
+                getGoalTableReference().child(userId).child(goal.id).setValue(goal)
                 true
             } catch (exception: Exception) {
                 Log.e("Aimission", "Failed writing new item in table Aim. Details: ${exception.message}")
@@ -165,6 +165,7 @@ class DbHelper {
         fun getIterativeGoals(goals: ArrayList<Goal?>): ArrayList<Goal> {
             val iterativeGoals = ArrayList<Goal>()
             val ids = readIterativeGoalsFromSharedPrefs()
+
             goals.forEach { goal ->
                 goal?.apply {
                     if (ids.contains(id)) {

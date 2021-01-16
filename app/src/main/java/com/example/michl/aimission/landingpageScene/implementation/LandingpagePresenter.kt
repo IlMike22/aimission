@@ -23,7 +23,7 @@ class LandingpagePresenter(val context: Context?) : ILandingpagePresenter {
     }
 
     override fun onMonthsLoadedFailed(errorMsg: String) {
-        output?.get()?.afterMonthItemsLoadedFailed(errorMsg)
+        output?.get()?.afterMonthItemsLoadedError(errorMsg)
     }
 
     override fun onEmptyMonthsLoaded(month: Month) {
