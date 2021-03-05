@@ -28,9 +28,9 @@ class GoalsAdapter(
     val context = Aimission.context
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ViewHolderGoal {
-        val aimItem = LayoutInflater.from(parent.context).inflate(R.layout.cv_goal, parent, false) as CardView
+        val goal = LayoutInflater.from(parent.context).inflate(R.layout.cv_goal, parent, false) as CardView
 
-        return ViewHolderGoal(aimItem)
+        return ViewHolderGoal(goal)
     }
 
     override fun getItemCount() = data.size
@@ -51,7 +51,6 @@ class GoalsAdapter(
 
             val areSettingsNotEditableInPast = !settingEditPastItems
             val isNotActualMonth = !isActualMonth
-
             if (areSettingsNotEditableInPast && isNotActualMonth) {
                 cardViewGoal.btnFinishGoal.setOnClickListener {
                     Toast.makeText(
@@ -62,9 +61,11 @@ class GoalsAdapter(
                 }
                 return@apply
             }
+
             cardViewGoal.btnFinishGoal.setOnClickListener {
                 interactor.changeGoalProgress(goal, position)
             }
+
             cardViewGoal.setOnClickListener {
                 router.showGoalDetail(goal.id
                         ?: "", DateHelper.MODE_SELECTOR.Edit, activity)

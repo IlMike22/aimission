@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- strings -->
+    <string name="go_to_login_button_text">Zum Login</string>
+    <string name="go_to_login_textview_text">Du bist nicht bei Firebase angemeldet. Hole das bitte nach.</string>
+    <!-- dimen -->
+    <dimen name="go_to_login_margin">8dp</dimen>
+
+    <!-- styles -->
+    <style name="go_to_login_button">
+        <item name="android:layout_margin">@dimen/go_to_login_margin</item>
+    </style>
+    <style name="go_to_login_text">
+        <item name="fontWeight">200</item>
+        <item name="android:layout_margin">@dimen/go_to_login_margin</item>
+    </style>
+</resources>

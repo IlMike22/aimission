@@ -20,7 +20,7 @@ class InfoInteractor : IInfoInteractor {
     override fun loginUserWithUserCredentials(email: String, password: String) {
         try {
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-                var firebaseUser = firebaseAuth.currentUser
+                val firebaseUser = firebaseAuth.currentUser
                 if (firebaseUser?.uid != null) {
                     Log.i(TAG, "User with uuid ${firebaseUser.uid} successfully logged in.")
                     output?.onUserLoggedInSuccess(email, firebaseAuth.currentUser?.uid ?: "[noUserId]")

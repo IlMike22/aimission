@@ -20,9 +20,9 @@ class InfoRouter : InfoRouterInput {
 
 
     override fun openRegisterView(activity: Activity) {
-        Aimission.getAppContext()?.apply {
-            var intent = Intent(Aimission.getAppContext(),RegisterActivity::class.java)
+        Aimission.getAppContext().apply {
+            val intent = Intent(Aimission.getAppContext(),RegisterActivity::class.java)
             activity.startActivityForResult(intent, REQUEST_USER_REGISTER_SUCCEED) // todo in docu we dont need activity as parameter but here it has to be. why?
-        }?: Log.e(TAG, "Context is null. Cannot load activity RegisterActivity")
+        }
     }
 }

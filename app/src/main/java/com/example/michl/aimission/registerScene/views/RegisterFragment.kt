@@ -31,7 +31,6 @@ class RegisterFragment : Fragment(), IRegisterFragment {
         RegisterConfigurator.configure(this)
 
         button_register_register.setOnClickListener {
-
             onRegisterClicked()
         }
 

@@ -48,13 +48,23 @@ class LandingPageFragment : ILandingpageFragment, Fragment() {
         showProgressBar()
 
         firebaseAuth = FirebaseAuth.getInstance()
+        val user = firebaseAuth.currentUser
+
+        if (user == null) {
+            Toast.makeText(context,"Du bist nicht in Firebase angemeldet. Hole das nach.",Toast.LENGTH_SHORT).show()
+
+            scroll_view_months.visibility = View.GONE // todo do it with data binding later
+            emptyScreenContainer.visibility = View.VISIBLE // todo later with binding
+            hideProgressBar()
+            return
+        }
 
         val firebaseDatabase = FirebaseDatabase.getInstance()
         val firebaseDatabaseReference = firebaseDatabase.getReference("Aim")
 
         firebaseDatabaseReference.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
-                Log.i(LOG, "an data changed error occured")
+                Log.i(LOG, "A data changed error occured. Details ${error.message}")
             }
 
             override fun onDataChange(data: DataSnapshot) {
